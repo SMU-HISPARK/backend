@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ include file="../layout/header.jsp" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <script  src="http://code.jquery.com/jquery-latest.min.js"></script>
 <!DOCTYPE html>
 <html lang="ko">
@@ -417,9 +418,9 @@
 
         function openPopup(){
             window.open(
-                "shopupdate.jsp",   // 열 페이지 (같은 폴더에 popup.html 있다고 가정)
+                "/mypage/shopupdate",   // 열 페이지 (같은 폴더에 popup.html 있다고 가정)
                 "infoupdate",  // 창 이름
-                "width=800,height=900,top=100,left=200,resizable=no,scrollbars=yes"
+                "width=800,height=600,top=100,left=200,resizable=no,scrollbars=yes"
             );
         }
 
@@ -558,7 +559,7 @@
                     <summary>상품상세 <span>(3)</span></summary>
                     <!-- 상품 하나 -->
                     <div class="orderProduct_one">
-                        <img src="productimage/photocard.png" alt="상품1" />
+                        <img src="../images/productimage/photocard.png" alt="상품1" />
                         <div class="productInfo">
                             <p class="productName">HI-SRARK PHOTOCARD SET ver. 1 / 2</p>
                             <p class="productOption">옵션: ver.1</p>
@@ -569,7 +570,7 @@
 
                     <!-- 반복될 부분 -->
                     <div class="orderProduct_one">
-                        <img src="productimage/acrylic_keyring_YUHYUN.png" alt="상품2" />
+                        <img src="../images/productimage/acrylic_keyring_YUHYUN.png" alt="상품2" />
                         <div class="productInfo">
                             <p class="productName">YUHYUN ACRYLIC KEYRING</p>
                             <p class="productOption">옵션: YUHYUN</p>
@@ -580,7 +581,7 @@
                     
                     <!-- 반복될 부분 -->
                     <div class="orderProduct_one">
-                        <img src="productimage/acrylic_keyring_JEONGHUN.png" alt="상품3" />
+                        <img src="../images/productimage/acrylic_keyring_JEONGHUN.png" alt="상품3" />
                         <div class="productInfo">
                             <p class="productName">JEONGHUN ACRYLIC KEYRING</p>
                             <p class="productOption">옵션: JEONGHUN</p>
@@ -703,15 +704,15 @@
                 
                 <div class="detail-section">
                     <div class = "subtitle">배송 추적</div>
-                    ${tracking.steps.map(step => `
-                        <div class="tracking-step">
-                            <div>
-                                <div class="tracking-status">${step.status}</div>
-                                <div style="font-size: 12px; color: #666;">${step.location}</div>
-                            </div>
-                            <div class="tracking-date">${step.date}</div>
+                    <c:forEach var="step" items="${tracking.steps}">
+                    <div class="tracking-step">
+                        <div>
+                            <div class="tracking-status">${step.status}</div>
+                            <div style="font-size: 12px; color: #666;">${step.location}</div>
                         </div>
-                    `).join('')}
+                        <div class="tracking-date">${step.date}</div>
+                    </div>
+                	</c:forEach>
                 </div>
             `;
             

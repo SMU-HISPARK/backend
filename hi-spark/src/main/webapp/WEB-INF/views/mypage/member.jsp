@@ -160,7 +160,7 @@
 
         function openPopup(){
             window.open(
-                "chgpw.jsp",   // 열 페이지 (같은 폴더에 popup.html 있다고 가정)
+                "/mypage/chgpw",   // 열 페이지 (같은 폴더에 popup.html 있다고 가정)
                 "pwupdate",  // 창 이름
                 "width=550,height=650,top=100,left=200,resizable=no,scrollbars=yes"
             );
