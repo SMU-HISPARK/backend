@@ -1,10 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ include file="../layout/header.jsp" %>
-<script  src="http://code.jquery.com/jquery-latest.min.js"></script>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+  <script src="http://code.jquery.com/jquery-latest.min.js"></script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>회원 가입 - 약관동의</title>
@@ -227,11 +227,12 @@
       </div>
       <div class="btn-box">
         <button class="btn cancel">취소</button>
-        <button class="btn submit">다음</button>
+        <button class="btn submit" onclick="nextBtn()">다음</button>
       </div>
     </div>
   </div>
   <script>
+    // 전체 동의 버튼 누를 시, 모든 체크박스 체크
     const allAgreeCheckbox = document.getElementById('all-agree-checkbox');
     const agreeCheckboxes = document.querySelectorAll('.agree-checkbox');
     allAgreeCheckbox.addEventListener('change', (event) => {
@@ -240,6 +241,11 @@
         checkbox.checked = isChecked;
       });
     });
+
+    // 다음 버튼 클릭 시 동의 체크 (추후 구현)
+    function nextBtn(){
+    	location.href = "/member/step02";
+    }
   </script>
 </body>
 </html>

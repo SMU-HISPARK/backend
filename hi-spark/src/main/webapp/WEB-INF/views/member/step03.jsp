@@ -1,10 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ include file="../layout/header.jsp" %>
-<script  src="http://code.jquery.com/jquery-latest.min.js"></script>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+	<script src="http://code.jquery.com/jquery-latest.min.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>회원 가입 완료</title>
@@ -156,7 +156,7 @@
         <div class="message-box">
             <p>회원가입이 완료되었습니다.</p>
             <div class="btn-box">
-                <button class="btn" onclick="location.href='vlast_shop_login.html'">로그인 페이지로 이동</button>
+                <button class="btn" onclick="location.href='/member/login'">로그인 페이지로 이동</button>
             </div>
         </div>
     </div>

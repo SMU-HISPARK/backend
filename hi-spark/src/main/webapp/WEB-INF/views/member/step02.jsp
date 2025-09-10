@@ -1,10 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ include file="../layout/header.jsp" %>
-<script  src="http://code.jquery.com/jquery-latest.min.js"></script>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+  <script src="http://code.jquery.com/jquery-latest.min.js"></script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>회원 가입</title>
@@ -199,6 +199,19 @@
       }
     }
   </style>
+  <script>
+  	// 확인 버튼 클릭 시 제출 (폰 넘버링을 따로 두면 없어도 됨)
+  	function submitBtn(){
+  		phoneNumbering();
+  		$("#join_form").submit();
+  	}
+  	
+  	// 전화번호 합치는 함수
+  	function phoneNumbering(){
+  		let number = "" + $('#p_head').val() + $('#p_body').val() + $('#p_tail').val();
+  		$('#phone').val(number);
+  	}
+  </script>
 </head>
 <body>
   <div class="container">
@@ -214,73 +227,77 @@
     </div>
 
     <div class="form-box">
-      <table>
-        <tr>
-          <td>아이디 <span style="color:red"></span></td>
-          <td>
-            <div class="id-check-box">
-              <input type="text" placeholder="영문소문자/숫자, 4~16자">
-              <button type="button">중복확인</button>
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td>비밀번호 <span style="color:red"></span></td>
-          <td><input type="password" placeholder="영문 대소문자/숫자/특수문자 중 2가지 이상 조합, 10자~16자"></td>
-        </tr>
-        <tr>
-          <td>비밀번호 확인 <span style="color:red"></span></td>
-          <td><input type="password"></td>
-        </tr>
-        <tr>
-          <td>이름</td>
-          <td><input type="text"></td>
-        </tr>
-        <tr>
-          <td>닉네임 <span style="color:red"></span></td>
-          <td><input type="text" placeholder="사용할 닉네임 입력"></td>
-        </tr>
-        <tr>
-          <td>휴대전화 <span style="color:red"></span></td>
-          <td>
-            <div class="phone-input">
-              <select>
-                <option>010</option>
-                <option>011</option>
-                <option>016</option>
-                <option>017</option>
-              </select>
-              <span>-</span>
-              <input type="text" maxlength="4">
-              <span>-</span>
-              <input type="text" maxlength="4">
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td>이메일 <span style="color:red"></span></td>
-          <td>
-            <div class="email-input">
-              <input type="email" placeholder="example@domain.com">
-              <button>인증번호받기</button>
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td>인증번호 확인</td>
-          <td>
-            <div class="code-input">
-              <input type="text" placeholder="인증번호 입력">
-              <button>확인</button>
-            </div>
-          </td>
-        </tr>
-      </table>
+      <form id="join_form" action="/member/step03" method="post">
+        <table>
+          <tr>
+            <td>아이디 <span style="color:red"></span></td>
+            <td>
+              <div class="id-check-box">
+                <input type="text" name="username" maxlength="16" pattern="[a-z0-9_]{4,16}" placeholder="영문소문자/숫자, 4~16자, _ 허용">
+                <button type="button">중복확인</button>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>비밀번호 <span style="color:red"></span></td>
+            <td><input type="password" name="password" maxlength="20" 
+            placeholder="영문 대소문자/숫자/특수문자 중 2가지 이상 조합, 8자~20자"></td>
+          </tr>
+          <tr>
+            <td>비밀번호 확인 <span style="color:red"></span></td>
+            <td><input type="password"></td>
+          </tr>
+          <tr>
+            <td>이름</td>
+            <td><input type="text" name="name"></td>
+          </tr>
+          <tr>
+            <td>닉네임 <span style="color:red"></span></td>
+            <td><input type="text" name="nickname" placeholder="사용할 닉네임 입력"></td>
+          </tr>
+          <tr>
+            <td>휴대전화 <span style="color:red"></span></td>
+            <td>
+              <div class="phone-input">
+                <select id="p_head">
+                  <option>010</option>
+                  <option>011</option>
+                  <option>016</option>
+                  <option>017</option>
+                </select>
+                <span>-</span>
+                <input type="text" id="p_body" maxlength="4">
+                <span>-</span>
+                <input type="text" id="p_tail" maxlength="4">
+                <input type="hidden" id="phone" name="phone" value="">
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>이메일 <span style="color:red"></span></td>
+            <td>
+              <div class="email-input">
+                <input type="email" name="email" placeholder="example@domain.com">
+                <button>인증번호받기</button>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>인증번호 확인</td>
+            <td>
+              <div class="code-input">
+                <input type="text" placeholder="인증번호 입력">
+                <button>확인</button>
+              </div>
+            </td>
+          </tr>
+        </table>
+      </form>
     </div>
 
     <div class="btn-box">
       <button class="btn cancel">취소</button>
-      <button class="btn submit">확인</button>
+      <button class="btn submit" onclick="submitBtn()">확인</button>
     </div>
   </div>
 </body>

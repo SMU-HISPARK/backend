@@ -42,8 +42,14 @@ dependencies {
 	implementation 'jakarta.servlet.jsp.jstl:jakarta.servlet.jsp.jstl-api' //스프링부트 3.0 이상
 	implementation 'org.glassfish.web:jakarta.servlet.jsp.jstl' //스프링부트 3.0 이상
 	
-	//파일업로드
-	implementation("commons-io:commons-io:2.20.0")
+	// log출력 - jdbc 변동
+	implementation 'org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4.1:1.16'
+	
+	// 파일 업로드
+	implementation 'commons-io:commons-io:2.20.0' 
+	
+	// 회원가입 문자열 규정
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
 }
 
 tasks.named('test') {

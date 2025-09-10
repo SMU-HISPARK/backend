@@ -1,10 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ include file="../layout/header.jsp" %>
-<script  src="http://code.jquery.com/jquery-latest.min.js"></script>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+  <script src="http://code.jquery.com/jquery-latest.min.js"></script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>로그인</title>
@@ -138,6 +138,11 @@
       font-weight: 700;
     }
   </style>
+  <script>
+  	if(${notFound} == "1")){
+  		alert("아이디 또는 비밀번호가 다릅니다.");
+  	}
+  </script>
 </head>
 <body>
     <div class="icons">
@@ -149,9 +154,9 @@
   <div class="container">
     <div class="login-box">
       <h1>로그인</h1>
-      <form>
-        <input type="text" placeholder="아이디" class="input-box" required>
-        <input type="password" placeholder="비밀번호" class="input-box" required>
+      <form action="/member/login" method="post">
+        <input type="text" name="username" placeholder="아이디" class="input-box" required>
+        <input type="password" name="password" placeholder="비밀번호" class="input-box" required>
         <button type="submit" class="btn btn-login">로그인</button>
       </form>
       <div class="links">
