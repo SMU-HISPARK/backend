@@ -34,6 +34,22 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+	
+	// JSP
+	implementation 'org.apache.tomcat.embed:tomcat-embed-jasper'
+	// JSTL
+	implementation 'jakarta.servlet:jakarta.servlet-api' //스프링부트 3.0 이상
+	implementation 'jakarta.servlet.jsp.jstl:jakarta.servlet.jsp.jstl-api' //스프링부트 3.0 이상
+	implementation 'org.glassfish.web:jakarta.servlet.jsp.jstl' //스프링부트 3.0 이상
+	
+	//파일업로드
+	implementation("commons-io:commons-io:2.20.0")
+	
+	// email text메일 보냄
+	implementation 'org.springframework.boot:spring-boot-starter-mail'
+	// email html메일 보냄
+	implementation 'javax.mail:javax.mail-api:1.6.2'
+	
 }
 
 tasks.named('test') {

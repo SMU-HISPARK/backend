@@ -1,0 +1,226 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Hi-Spark Shop</title>
+		<link rel="stylesheet" type="text/css" href="css/shop.css">
+		<link rel="stylesheet" type="text/css" href="css/base.css">
+		<link rel="icon" href="../images/hispark_crop.png">
+	</head>
+	<body>
+		<div class="wrap">
+			<!-- header -->
+			<div id="header">
+				
+				<div id="snbBox">
+					<a href="/shop"><h1><img src="images/hispark_crop.png" alt="(로고)" /></h1></a>
+					<div id="snb">
+						<ul>
+							<li><a href="#">로그인</a></li>
+							<li><a href="#">회원가입</a></li>
+							<li><a href="main.html">메인으로</a></li>
+						</ul>
+
+					</div>
+
+					<!-- 우측 아이콘 -->
+					<div class="hMenu hRight">
+					<a href="/cart" class="cartWrapper">
+						<img src="images/cart.png" style="width:29px;" /> <!--여기부터 다음줄까지-->
+						<span class="cartBadge">3</span> <!-- 스프링에서 c:if 활용 커뮤니티에선 display:none -->
+					</a>
+					<a href="/"><img src="images/user.png" style="width:28px;" /></a>
+				</div>
+				</div>
+			</div>
+
+			<!-- container -->
+			<div class="container">
+				<div class="banner">
+					<img src="https://file.cafe24cos.com/banner-admin-live/upload/vlastshop/0656f217-1310-4a55-f6d8-060104815bee.jpeg">
+				</div>
+				<div class="list_text">
+					<p>All Products</p>
+				</div>
+				<div class="product_list">
+					<div class="product">
+						<div class="product_img">
+							<a href="shop_detail.html">
+								<img src="../images/productimage/photocard.png"/>
+							</a>
+						</div>
+						<div class="product_name">HI-SRARK PHOTOCARD SET ver. 1 / 2</div>
+						<div class="product_price">6,600원</div>
+					</div>
+					<div class="product">
+						<div class="product_img">
+							<img src="../images/productimage/spark_keyring.jpg"/>
+						</div>
+						<div class="product_name">SPARK KEYRING</div>
+						<div class="product_price">22,000원</div>
+					</div>
+					<div class="product">
+						<div class="product_img">
+							<img src="../images/productimage/acrylic_keyring_JEONGHUN.png"/>
+						</div>
+						<div class="product_name">JEONGHUN ACRYLIC KEYRING</div>
+						<div class="product_price">12,000원</div>
+					</div>
+					<div class="product">
+						<div class="product_img">
+							<img src="../images/productimage/acrylic_keyring_YUHYUN.png"/>
+						</div>
+						<div class="product_name">YUHYUN ACRYLIC KEYRING</div>
+						<div class="product_price">12,700원</div>
+					</div>
+					<div class="product">
+						<div class="product_img">
+							<img src="../images/productimage/acrylic_keyring_KYOUNG.png"/>
+						</div>
+						<div class="product_name">KYOUNG ACRYLIC KEYRING</div>
+						<div class="product_price">12,000원</div>
+					</div>
+					<div class="product">
+						<div class="product_img">
+							<img src="../images/productimage/acrylic_keyring_SEUNGMIN.png"/>
+						</div>
+						<div class="product_name">SEUNGMIN ACRYLIC KEYRING</div>
+						<div class="product_price">12,000원</div>
+					</div>
+					<div class="product">
+						<div class="product_img">
+							<img src="../images/productimage/acrylic_keyring_JION.png"/>
+						</div>
+						<div class="product_name">JION ACRYLIC KEYRING</div>
+						<div class="product_price">12,000원</div>
+					</div>
+					<div class="product">
+						<div class="product_img">
+							<img src="../images/productimage/tshirt_white.png"/>
+						</div>
+						<div class="product_name">2025 BIRTHDAY KIT_YEJUN</div>
+						<div class="product_price">17,000원</div>
+					</div>
+					<div class="product">
+						<div class="product_img">
+							<img src="../images/productimage/tshirt_black.png"/>
+						</div>
+						<div class="product_name">2025 BIRTHDAY KIT_BAMBY</div>
+						<div class="product_price">17,000원</div>
+					</div>
+					<div class="product">
+						<div class="product_img">
+							<img src="../images/productimage/tumbler.png"/>
+						</div>
+						<div class="product_name">2025 BIRTHDAY KIT_YEJUN</div>
+						<div class="product_price">17,000원</div>
+					</div>
+					<div class="product">
+						<div class="product_img">
+							<img src="../images/productimage/karabiner.png"/>
+						</div>
+						<div class="product_name">HI-SPARK KARABINER</div>
+						<div class="product_price">17,000원</div>
+					</div>
+					<div class="product">
+						<div class="product_img">
+							<img src="../images/productimage/light.png"/>
+						</div>
+						<div class="product_name">2025 BIRTHDAY KIT_BAMBY</div>
+						<div class="product_price">17,000원</div>
+					</div>
+					<div class="product">
+						<div class="product_img">
+							<img src="../images/productimage/album1.png"/>
+						</div>
+						<div class="product_name">2025 BIRTHDAY KIT_YEJUN</div>
+						<div class="product_price">17,000원</div>
+					</div>
+					<div class="product">
+						<div class="product_img">
+							<img src="https://vlastshop.com/web/product/medium/202506/81c66a697d78d1a297d371e6a156a74d.jpg"/>
+						</div>
+						<div class="product_name">2025 BIRTHDAY KIT_BAMBY</div>
+						<div class="product_price">17,000원</div>
+					</div>
+					<div class="product">
+						<div class="product_img">
+							<img src="https://vlastshop.com/web/product/medium/202508/4d59846f54ba35daba7186fc5970839d.jpg"/>
+						</div>
+						<div class="product_name">2025 BIRTHDAY KIT_YEJUN</div>
+						<div class="product_price">17,000원</div>
+					</div>
+					<div class="product">
+						<div class="product_img">
+							<img src="https://vlastshop.com/web/product/medium/202506/81c66a697d78d1a297d371e6a156a74d.jpg"/>
+						</div>
+						<div class="product_name">2025 BIRTHDAY KIT_BAMBY</div>
+						<div class="product_price">17,000원</div>
+					</div>
+					<div class="product">
+						<div class="product_img">
+							<img src="https://vlastshop.com/web/product/medium/202508/4d59846f54ba35daba7186fc5970839d.jpg"/>
+						</div>
+						<div class="product_name">2025 BIRTHDAY KIT_YEJUN</div>
+						<div class="product_price">17,000원</div>
+					</div>
+					<div class="product">
+						<div class="product_img">
+							<img src="https://vlastshop.com/web/product/medium/202506/81c66a697d78d1a297d371e6a156a74d.jpg"/>
+						</div>
+						<div class="product_name">2025 BIRTHDAY KIT_BAMBY</div>
+						<div class="product_price">17,000원</div>
+					</div>
+					<div class="product">
+						<div class="product_img">
+							<img src="https://vlastshop.com/web/product/medium/202508/4d59846f54ba35daba7186fc5970839d.jpg"/>
+						</div>
+						<div class="product_name">2025 BIRTHDAY KIT_YEJUN</div>
+						<div class="product_price">17,000원</div>
+					</div>
+					<div class="product">
+						<div class="product_img">
+							<img src="https://vlastshop.com/web/product/medium/202506/81c66a697d78d1a297d371e6a156a74d.jpg"/>
+						</div>
+						<div class="product_name">2025 BIRTHDAY KIT_BAMBY</div>
+						<div class="product_price">17,000원</div>
+					</div>
+					
+				</div>
+				<!-- <div class="paginator">
+					<h2>페이지네이터</h2>
+				</div> -->
+				
+			</div>
+
+
+    <div id="footerWrap">
+		<div id="footer">
+			
+			<div id="finfo">
+				<div id="flogo"><img src="images/hispark.png" alt="하이스파크 로고" /></div>
+				<address>
+					<ul>
+						<li>㈜스파크</li>
+						<li>대표자 김슬비</li>
+						<li class="tnone">주소 서울시 용산구 독서당로 111(한남더힐)</li>
+						<li class="webnone">소비자상담실 02)123-4567</li>
+						<li>사업자등록번호 012-345-6789</li>
+						<li class="tnone">통신판매신고 제 강남 – 1160호</li>
+						<li class="copy">COPYRIGHT © 2025 HI-SPARK <span>ALL RIGHTS RESERVED.</span></li>
+					</ul>
+				</address>
+
+			</div>
+            <div class="social-links">
+                <a href="https://www.youtube.com/user/smtown/" class="youtube-button" target="_blank" rel="noopener noreferrer"></a>
+                <a href="https://www.instagram.com/hispark__official/" class="instagram-button" target="_blank" rel="noopener noreferrer"></a>
+                <a href="https://twitter.com/hispark5/" class="x-button" target="_blank" rel="noopener noreferrer"></a>
+                <a href="https://www.facebook.com/smtown/" class="facebook-button" target="_blank" rel="noopener noreferrer"></a>
+            </div>
+		</div>
+	</div>
+</body>
+</html>
