@@ -153,7 +153,7 @@
             
     </div>
 
-    <div class = "blank" style = "height : 100px;">
+    <div class = "blank" style = "height : 100px; ">
 
     </div>
     <script>
