@@ -153,12 +153,10 @@
             
     </div>
 
-    <div class = "blank" style = "height : 50px; ">
+    <div class = "blank" style = "height : 100px; ">
 
     </div>
-    <div class = "blank" style = "height : 50px; ">
-
-    </div>
+    
     <script>
 
         function openPopup(){
