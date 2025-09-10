@@ -35,3 +35,31 @@ out/
 
 ### VS Code ###
 .vscode/
+
+
+# Environment variables
+.env
+.env.local
+.env.development
+.env.production
+
+# Google credentials
+service-account.json
+*service-account*.json
+credentials.json
+*credentials*.json
+
+# API keys and secrets
+*.key
+*.pem
+config/secrets.json
+
+# Application properties with credentials (if needed)
+# application-local.properties
+# application-prod.properties
+
+
+.env
+service-account.json
+*service-account*.json
+*.json

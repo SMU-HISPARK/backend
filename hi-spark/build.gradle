@@ -34,6 +34,7 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
 	
 	// JSP
 	implementation 'org.apache.tomcat.embed:tomcat-embed-jasper'
@@ -44,6 +45,19 @@ dependencies {
 	
 	//파일업로드
 	implementation("commons-io:commons-io:2.20.0")
+	
+	
+	// 스케줄
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	annotationProcessor 'org.projectlombok:lombok'
+	testImplementation 'org.springframework.security:spring-security-test'
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+    
+    // Google API 간단 버전
+    implementation 'com.google.apis:google-api-services-calendar:+'
+    implementation 'com.google.api-client:google-api-client:+'
+    implementation 'com.google.oauth-client:google-oauth-client-jetty:+'
+	
 }
 
 tasks.named('test') {
