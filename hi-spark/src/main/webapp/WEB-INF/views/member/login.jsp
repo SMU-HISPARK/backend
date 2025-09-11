@@ -155,7 +155,7 @@
     <div class="login-box">
       <h1>로그인</h1>
       <form action="/member/login" method="post">
-        <input type="text" name="username" placeholder="아이디" class="input-box" required>
+        <input type="text" name="id" placeholder="아이디" class="input-box" required>
         <input type="password" name="password" placeholder="비밀번호" class="input-box" required>
         <button type="submit" class="btn btn-login">로그인</button>
       </form>

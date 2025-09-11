@@ -51,20 +51,20 @@ public class MemberController {
 	@PostMapping("/member/login")
 	public String login(
 			@RequestParam(name="redirectTo",required=false) String redirectURL,
-			@RequestParam("username") String username,
+			@RequestParam("id") String id,
 			@RequestParam("password") String password,
 			Model model
 			) {
 		
 		// 일치하는 아이디 찾기
-		MemberDto memfind = mServ.findByUsernameAndPassword(username, password);
+		MemberDto memfind = mServ.findByIdAndPassword(id, password);
 		if(memfind == null) {
 			model.addAttribute("notFound", "1");
 			return "member/login";
 		}
 		
 		// 로그인 세션 설정
-		session.setAttribute("session_id", memfind.getUsername());
+		session.setAttribute("session_id", memfind.getId());
 		session.setAttribute("session_name", memfind.getNickname());
 		
 		// 로그인 요청이 들어온 페이지로 리다이렉트

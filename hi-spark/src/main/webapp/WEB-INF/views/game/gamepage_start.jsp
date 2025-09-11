@@ -291,7 +291,7 @@
             <form action="/member/login" method="post">
                 <span class="close">&times;</span>
                 <h3>로그인 후 결과를 저장해 보세요.</h2>
-                <input type="text" name="username" placeholder="아이디">
+                <input type="text" name="id" placeholder="아이디">
                 <input type="password" name="password" placeholder="비밀번호">
                 <input type="hidden" name="redirectTo" value="/game">
                 <button type="submit" class="black">로그인</button>

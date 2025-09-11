@@ -24,18 +24,10 @@ import lombok.NoArgsConstructor;
 public class Member {
 	
 	@Id
-	@GeneratedValue(strategy=GenerationType.SEQUENCE)
-	@SequenceGenerator(
-			name = "member_seq_gen",
-			sequenceName = "member_seq",
-			initialValue = 1,
-			allocationSize = 1)
-	private Long member_id;
-	
 	@Pattern(regexp = "[a-z0-9_]{4,16}$",
 			message = "영문 소문자, 숫자, 언더바_만 허용됩니다.")
-	@Column(length = 16, nullable = false, unique = true)
-	private String username;
+	@Column(length = 16)
+	private String id;
 	
 	@Pattern(regexp = "^[A-Za-z0-9!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>/?`~]{8,20}$")
 	@Column(length = 20, nullable = false)

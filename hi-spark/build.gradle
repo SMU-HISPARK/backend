@@ -1,7 +1,7 @@
 plugins {
-	id 'java'
-	id 'org.springframework.boot' version '3.5.5'
-	id 'io.spring.dependency-management' version '1.1.7'
+   id 'java'
+   id 'org.springframework.boot' version '3.5.5'
+   id 'io.spring.dependency-management' version '1.1.7'
 }
 
 group = 'com.java'
@@ -9,49 +9,51 @@ version = '0.0.1-SNAPSHOT'
 description = 'HI-SPARK'
 
 java {
-	toolchain {
-		languageVersion = JavaLanguageVersion.of(21)
-	}
+   toolchain {
+      languageVersion = JavaLanguageVersion.of(21)
+   }
 }
 
 configurations {
-	compileOnly {
-		extendsFrom annotationProcessor
-	}
+   compileOnly {
+      extendsFrom annotationProcessor
+   }
 }
 
 repositories {
-	mavenCentral()
+   mavenCentral()
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'org.springframework.boot:spring-boot-starter-web-services'
-	compileOnly 'org.projectlombok:lombok'
-	developmentOnly 'org.springframework.boot:spring-boot-devtools'
-	runtimeOnly 'com.oracle.database.jdbc:ojdbc11'
-	annotationProcessor 'org.projectlombok:lombok'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-	
-	// JSP
-	implementation 'org.apache.tomcat.embed:tomcat-embed-jasper'
-	// JSTL
-	implementation 'jakarta.servlet:jakarta.servlet-api' //스프링부트 3.0 이상
-	implementation 'jakarta.servlet.jsp.jstl:jakarta.servlet.jsp.jstl-api' //스프링부트 3.0 이상
-	implementation 'org.glassfish.web:jakarta.servlet.jsp.jstl' //스프링부트 3.0 이상
-	
-	// log출력 - jdbc 변동
-	implementation 'org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4.1:1.16'
-	
-	// 파일 업로드
-	implementation 'commons-io:commons-io:2.20.0' 
-	
-	// 회원가입 문자열 규정
-	implementation 'org.springframework.boot:spring-boot-starter-validation'
+   implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+   implementation 'org.springframework.boot:spring-boot-starter-web'
+   implementation 'org.springframework.boot:spring-boot-starter-web-services'
+   compileOnly 'org.projectlombok:lombok'
+   developmentOnly 'org.springframework.boot:spring-boot-devtools'
+   runtimeOnly 'com.oracle.database.jdbc:ojdbc11'
+   annotationProcessor 'org.projectlombok:lombok'
+   testImplementation 'org.springframework.boot:spring-boot-starter-test'
+   testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+   
+   // JSP
+   implementation 'org.apache.tomcat.embed:tomcat-embed-jasper'
+   // JSTL
+   implementation 'jakarta.servlet:jakarta.servlet-api' //스프링부트 3.0 이상
+   implementation 'jakarta.servlet.jsp.jstl:jakarta.servlet.jsp.jstl-api' //스프링부트 3.0 이상
+   implementation 'org.glassfish.web:jakarta.servlet.jsp.jstl' //스프링부트 3.0 이상
+   
+   //파일업로드
+   implementation("commons-io:commons-io:2.20.0")
+   
+   // email text메일 보냄
+   implementation 'org.springframework.boot:spring-boot-starter-mail'
+   // email html메일 보냄
+   implementation 'javax.mail:javax.mail-api:1.6.2'
+   
+   // 회원가입 시 문자열 판별에 사용
+   implementation 'org.springframework.boot:spring-boot-starter-validation'
 }
 
 tasks.named('test') {
-	useJUnitPlatform()
+   useJUnitPlatform()
 }

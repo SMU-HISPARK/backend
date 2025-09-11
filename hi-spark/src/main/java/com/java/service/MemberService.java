@@ -7,6 +7,6 @@ public interface MemberService {
 
 	void save(Member member);
 
-	MemberDto findByUsernameAndPassword(String username, String password);
+	MemberDto findByIdAndPassword(String username, String password);
 
 }

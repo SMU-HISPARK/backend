@@ -233,7 +233,7 @@
             <td>아이디 <span style="color:red"></span></td>
             <td>
               <div class="id-check-box">
-                <input type="text" name="username" maxlength="16" pattern="[a-z0-9_]{4,16}" placeholder="영문소문자/숫자, 4~16자, _ 허용">
+                <input type="text" name="id" maxlength="16" pattern="[a-z0-9_]{4,16}" placeholder="영문소문자/숫자, 4~16자, _ 허용">
                 <button type="button">중복확인</button>
               </div>
             </td>
