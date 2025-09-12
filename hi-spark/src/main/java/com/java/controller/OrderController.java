@@ -1,6 +1,7 @@
 package com.java.controller;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,26 +11,31 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.java.entity.Cart;
+import com.java.entity.CartItem;
 import com.java.entity.Member;
 import com.java.entity.Orders;
+import com.java.service.CartService;
+import com.java.service.MemberService;
 import com.java.service.OrderService;
 
 @Controller
 public class OrderController {
 
 	@Autowired OrderService orderService;
+	@Autowired CartService cartService;
+	@Autowired MemberService memberService;
 	
-	@PostMapping("/order/order_form/all")
-	public String orderform(Model model) {
-		Member member = new Member(1,"aaa","1111","010-1111-1111","냠냠이","김냠냠","aaa@gmail.com",0,new Timestamp(System.currentTimeMillis()));
-		String session_id = "aaa";
-//		Cart cart = orderService.getCartByMember_Id(session_id);
-//		Orders order = orderService.createOrderFromCart(cart);
-		return "shop/4_shop_order";
+	@PostMapping("/order/order_form")
+	public String orderform(@RequestParam List<Integer> cartItemIds, Model model) {
+		int memberId = 1;
+		Cart cart = cartService.getCartByMember_MemberId(memberId);
+        model.addAttribute("cart", cart);
+	    return "order/orderForm";
 	}
 	
 	@PostMapping("/order/order_finish")
 	public String orderfinish() {
-		return "shop/5_shop_order_finish";
+		
+		return "shop/shop_order_finish";
 	}
 }

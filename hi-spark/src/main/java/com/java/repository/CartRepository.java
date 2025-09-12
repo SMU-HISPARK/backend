@@ -13,7 +13,9 @@ import com.java.entity.Member;
 import jakarta.transaction.Transactional;
 
 public interface CartRepository extends JpaRepository<Cart, Integer> {
-	
+
 	Optional<Cart> findByMember(Member member);
+	
+	Optional<Cart> findByMember_MemberId(int memberId);
 
 }

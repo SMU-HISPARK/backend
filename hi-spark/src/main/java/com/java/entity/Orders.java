@@ -27,8 +27,8 @@ public class Orders {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int order_id;
 	
-	@Column(nullable = false,length=100)
-	private String order_code;
+	@Column(name="order_code", nullable = false,length=100)
+	private String orderCode;
 	
 	@ManyToOne
 	@JoinColumn(name="member_id")

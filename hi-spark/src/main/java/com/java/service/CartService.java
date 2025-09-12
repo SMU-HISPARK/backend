@@ -7,6 +7,8 @@ import com.java.entity.Member;
 
 public interface CartService {
 
-	Cart findByMember(Member member);
+	Cart getCartByMember(Member member);
+
+	Cart getCartByMember_MemberId(int memberId);
 
 }

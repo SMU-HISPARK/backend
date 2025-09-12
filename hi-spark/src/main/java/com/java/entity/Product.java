@@ -19,23 +19,21 @@ public class Product {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int product_id;
+	@Column(name="product_id")
+	private int productId;
 	
-	@Column(nullable=false,length=100)
-	private String product_name;
+	@Column(name="product_name",nullable=false,length=100)
+	private String productName;
 	
-	@Column(nullable=false,length=500)
-	private String product_img;
+	@Column(name="product_img",nullable=false,length=500)
+	private String productImg;
 	
-	@Column(nullable=false)
-	private int product_price;
+	@Column(name="product_price",nullable=false)
+	private int productPrice;
 	
-//	@Column(nullable=false)
-//	private boolean has_option;
+	@Column(name="product_quantity", nullable=false)
+	private int productQuantity;  //수량
 	
-	@Column(nullable=false)
-	private int product_quantity;  //수량
-	
-	@Column(length=1000)
-	private String product_content;  //상품설명
+	@Column(name="product_content",length=1000)
+	private String productContent;  //상품설명
 }

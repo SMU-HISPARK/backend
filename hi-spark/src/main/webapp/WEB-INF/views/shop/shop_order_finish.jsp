@@ -21,7 +21,7 @@
                 <a href="order.html"><img src="../images/shopping/left.png" style="width:28px;" /></a>
             </div>
             <div class="hMenu hRight">
-                <a href="/cart" class="cartWrapper">
+                <a href="/shop/cart" class="cartWrapper">
                     <img src="../images/cart.png" style="width:29px;" />
                     <span class="cartBadge">3</span>
                 </a>

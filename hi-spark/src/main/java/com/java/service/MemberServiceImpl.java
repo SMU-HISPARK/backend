@@ -14,8 +14,8 @@ public class MemberServiceImpl implements MemberService {
 	@Autowired MemberRepository memberRepository;
 	
 	@Override
-	public Member findByLoginId(String loginId) {
-		Member member = memberRepository.findByLoginId(loginId).orElseGet(
+	public Member findById(int memberId) {
+		Member member = memberRepository.findById(memberId).orElseGet(
 				()-> {return(new Member());}
 				);
 		

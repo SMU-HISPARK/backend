@@ -27,7 +27,7 @@
 
 					<!-- 우측 아이콘 -->
 					<div class="hMenu hRight">
-					<a href="/cart" class="cartWrapper">
+					<a href="/shop/cart" class="cartWrapper">
 						<img src="images/cart.png" style="width:29px;" /> <!--여기부터 다음줄까지-->
 						<span class="cartBadge">3</span> <!-- 스프링에서 c:if 활용 커뮤니티에선 display:none -->
 					</a>
@@ -47,7 +47,7 @@
 				<div class="product_list">
 					<div class="product">
 						<div class="product_img">
-							<a href="shop_detail.html">
+							<a href="/shop/detail">
 								<img src="../images/productimage/photocard.png"/>
 							</a>
 						</div>
@@ -175,4 +175,5 @@
 		</div>
 	</div>
 </body>
+<script type="text/javascript" src="js/cart.js"></script>
 </html>

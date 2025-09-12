@@ -23,31 +23,30 @@ public class CartController {
 	@Autowired MemberService memberService;
 	
 	@GetMapping("/shop")
-	public String shop_index() {
-		return "shop/1_shop_main";
+	public String shop_main() {
+		return "shop/shop_main";
 	}
 	
-	@GetMapping("/detail")
-	public String detail() {
-		return "shop/2_shop_detail";
+	@GetMapping("/shop/detail")
+	public String shop_detail() {
+		return "shop/shop_detail";
 	}
 	
-	@GetMapping("/cart")
-	public String cart(@CookieValue(value="session_id",defaultValue="aaa") String sessionId,
-			Model model) {
+	@GetMapping("/shop/cart")
+	public String cart(Model model) {
+		int memberId = 1;
 		
-		
-		Member member = memberService.findByLoginId(sessionId);
+		Member member = memberService.findById(memberId);
 		if ( member == null ) {  
 			// to-do 
 			// 오류처리
 			model.addAttribute("error", "member not found");
-			return "shop/3_shop_cart";
+			return "shop/shop_cart";
 		}
 		
-		Cart cart = cartService.findByMember(member);
+		Cart cart = cartService.getCartByMember(member);
 
 		model.addAttribute("cart", cart);
-		return "shop/3_shop_cart";
+		return "shop/shop_cart";
 	}
 }

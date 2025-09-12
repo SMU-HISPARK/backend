@@ -13,6 +13,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.MapsId;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
@@ -23,23 +24,24 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
+@Builder
 @Entity
 public class Cart {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "cart_id")
+    private int cartId;   // PK
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int cart_id;
-	
     @OneToOne
-    @JoinColumn(name = "member_id")
-	private Member member;
-	
-	@OneToMany(mappedBy = "cart", cascade = CascadeType.ALL)
+    @JoinColumn(name = "member_id", unique = true)
+    private Member member;   // 1:1 매핑
+
+    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CartItem> items;
-	
-	@UpdateTimestamp
-	@Column(name="updated_at")
-	private Timestamp updatedAt;
+
+    @UpdateTimestamp
+    @Column(name="updated_at")
+    private Timestamp updatedAt;
 
 }

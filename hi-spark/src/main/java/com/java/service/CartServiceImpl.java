@@ -14,14 +14,23 @@ import com.java.repository.CartRepository;
 public class CartServiceImpl implements CartService {
 
 	@Autowired CartRepository cartRepository;
-	@Autowired MemberService memberService;
+	@Autowired MemberRepository memberRepository;
 	
 	@Override
-	public Cart findByMember(Member member) {
+	public Cart getCartByMember(Member member) {
 	    Cart cart = cartRepository.findByMember(member).orElseGet(
 	    		() -> {return (new Cart());}
 	    		);
 		return cart;
 	}
+
+	@Override
+	public Cart getCartByMember_MemberId(int memberId) {
+		Member member = memberRepository.findById(memberId)
+	            .orElseThrow(() -> new RuntimeException("회원이 존재하지 않습니다."));
+	    return cartRepository.findByMember(member)
+	            .orElseThrow(() -> new RuntimeException("장바구니가 존재하지 않습니다."));
+	}
+
 
 }

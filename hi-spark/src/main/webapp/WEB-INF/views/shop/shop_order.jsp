@@ -69,7 +69,7 @@
                 <a href="javascript:void(0);" id="backBtn"><img src="../images/shopping/left.png" style="width:28px;" /></a>
             </div>
             <div class="hMenu hRight">
-                <a href="/cart" class="cartWrapper">
+                <a href="/shop/cart" class="cartWrapper">
                     <img src="../images/cart.png" style="width:29px;" />
                     <span class="cartBadge">3</span>
                 </a>
@@ -82,7 +82,7 @@
         </div>
 
         <div class="contentWrap">
-            <form action="/order/order_finish" class="orderFrm" method="post">  <!--post로바꾸기-->
+            <form action="/order/order_finish" class="purchaseFrm" method="post">  <!--post로바꾸기-->
                 <div class="addressBox">
                     <details open>
                         <summary>배송지</summary>
@@ -320,5 +320,5 @@
 
     
 </body>
-<script type="text/javascript" src="../js/order.js"></script>
+<script type="text/javascript" src="js/order.js"></script>
 </html>

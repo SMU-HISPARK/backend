@@ -5,16 +5,16 @@
 	<head>
 		<meta charset="UTF-8">
 		<title>Hi-Spark Shop</title>
-		<link rel="stylesheet" type="text/css" href="css/shop_detail.css">
-        <link rel="stylesheet" type="text/css" href="css/base.css">
-        <link rel="icon" href="images/hispark_crop.png">
+		<link rel="stylesheet" type="text/css" href="../css/shop_detail.css">
+        <link rel="stylesheet" type="text/css" href="../css/base.css">
+        <link rel="icon" href="../images/hispark_crop.png">
 	</head>
 	<body>
 		<div class="wrap">
 			<!-- header -->
 			<div id="header">
 				<div id="snbBox">
-					<a href="shop_main.html"><h1><img src="images/hispark_crop.png" alt="(로고)" /></h1></a>
+					<a href="shop_main.html"><h1><img src="../images/hispark_crop.png" alt="(로고)" /></h1></a>
 					<div id="snb">
 						<ul>
 							<li><a href="#">로그인</a></li>
@@ -26,11 +26,11 @@
 
 					<!-- 우측 아이콘 -->
 					<div class="hMenu hRight">
-					<a href="/cart" class="cartWrapper">
-						<img src="images/cart.png" style="width:29px;" /> <!--여기부터 다음줄까지-->
+					<a href="/shop/cart" class="cartWrapper">
+						<img src="../images/cart.png" style="width:29px;" /> <!--여기부터 다음줄까지-->
 						<span class="cartBadge">3</span> <!-- 스프링에서 c:if 활용 커뮤니티에선 display:none -->
 					</a>
-					<a href="/"><img src="images/user.png" style="width:28px;" /></a>
+					<a href="/"><img src="../images/user.png" style="width:28px;" /></a>
 				</div>
 				</div>
 			</div>
@@ -39,7 +39,7 @@
 			<div class="container">
 				<div class="product_detail">
                     <div class="product_img">
-                        <img src="productimage/acrylic_keyring_JEONGHUN.png"/>
+                        <img src="../images/productimage/acrylic_keyring_JEONGHUN.png"/>
                     </div>
                     <div class="product_data">
                         <div class="product_name">
@@ -97,7 +97,7 @@
 		<div id="footer">
 			
 			<div id="finfo">
-				<div id="flogo"><img src="images/hispark.png" alt="하이스파크 로고" /></div>
+				<div id="flogo"><img src="../images/hispark.png" alt="하이스파크 로고" /></div>
 				<address>
 					<ul>
 						<li>㈜스파크</li>

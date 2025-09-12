@@ -6,5 +6,5 @@ import com.java.entity.Member;
 
 public interface MemberService {
 
-	Member findByLoginId(String loginId);
+	Member findById(int memberId);
 }
