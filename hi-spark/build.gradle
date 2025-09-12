@@ -44,6 +44,10 @@ dependencies {
 	
 	//파일업로드
 	implementation("commons-io:commons-io:2.20.0")
+	
+	// 아티스트 챗봇
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'com.google.cloud:google-cloud-dialogflow:4.1.7'
 }
 
 tasks.named('test') {
