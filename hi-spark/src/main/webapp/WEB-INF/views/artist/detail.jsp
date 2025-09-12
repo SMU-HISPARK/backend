@@ -93,13 +93,12 @@
                         <th class="photo"><p style="text-align: center; width: 96%;">활동사진</p></th>
                     </tr>
                     <tr>
-                        <td class="phone">
-                            <button class="chatBtn" onclick="showPopup()">
-                                <p>${artist.phone}<br>
-                                
-                            </p>
-                            </button>
-                        </td>
+	                    <td class="phone">
+     						<button class="chatBtn" onclick="showPopup(${artist.ano})">
+				                <p>${artist.phone}</p>
+				            </button>
+						</td>
+
                         <td class="photo">
                         <img src="${artist.clubimage_01}">
                         <img src="${artist.clubimage_02}">
