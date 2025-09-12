@@ -35,6 +35,28 @@
             }
         });
     });
+    document.addEventListener("DOMContentLoaded", function(){
+        const modal = document.getElementById("imgModal");
+        const modalImg = document.getElementById("modalImg");
+        const closeBtn = document.querySelector(".close");
+
+        document.querySelectorAll(".profile_image img").forEach(img => {
+            img.addEventListener("click", function() {
+                modal.style.display = "block";
+                modalImg.src = this.src;
+            });
+        });
+
+        closeBtn.addEventListener("click", function() {
+            modal.style.display = "none";
+        });
+
+        modal.addEventListener("click", function(e) {
+            if (e.target === modal) {
+                modal.style.display = "none";
+            }
+        });
+    });
 
 </script>
 <body>
@@ -60,7 +82,7 @@
                     </tr>
                     <tr class="profile_info">
                         <th>생년월일</th>
-                        <td>${artist.birth}</td>
+                        <td>${artist.birth}.</td>
                     </tr>
                     <tr class="profile_info">
                         <th>MBTI</th>
@@ -68,11 +90,11 @@
                     </tr>
                     <tr class="profile_info">
                         <th>키</th>
-                        <td>${artist.height}</td>
+                        <td>${artist.height}cm</td>
                     </tr>
                     <tr class="profile_info">
                         <th>몸무게</th>
-                        <td>${artist.weight}</td>
+                        <td>${artist.weight}kg</td>
                     </tr>
                     <tr class="profile_info">
                         <th>동아리</th>

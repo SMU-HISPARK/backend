@@ -16,11 +16,11 @@
     <div class="main_div">
         <div class="div_01">
             <div class="member">
-                <a href="/artist/detail?ano=2"><img src="../images/artistimage/승민폴라.png" class="polaroid"></a>
+                <a href="/artist/detail?ano=1"><img src="../images/artistimage/승민폴라.png" class="polaroid"></a>
                 <img src="../images/artistimage/오브젝트_승민.png" class="object sm">
             </div>
             <div class="member">
-                <a href="/artist/detail?ano=3"><img src="../images/artistimage/유현폴라.png" class="polaroid"></a>
+                <a href="/artist/detail?ano=2"><img src="../images/artistimage/유현폴라.png" class="polaroid"></a>
                 <img src="../images/artistimage/오브젝트_유현.png" class="object yh">
             </div>
 
@@ -28,7 +28,7 @@
     
         <div class="div_02">
             <div class="member">
-                <a href="/artist/detail?ano=6"><img src="../images/artistimage/경폴라.png" class="polaroid"></a>
+                <a href="/artist/detail?ano=3"><img src="../images/artistimage/경폴라.png" class="polaroid"></a>
                 <img src="../images/artistimage/오브젝트_경.png" class="object g">
             </div>
             <div class="member">
