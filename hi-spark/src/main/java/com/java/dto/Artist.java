@@ -31,7 +31,7 @@ public class Artist {  // 클래스명 대문자로 변경
     @Column(nullable = false, length = 50)
     private String name;
     @Column(nullable = false, length = 50)
-    private String eng_name;
+    private String engname;
 
     @Column(nullable = false, length = 50)
     private String birth;
@@ -69,8 +69,8 @@ public class Artist {  // 클래스명 대문자로 변경
     private String profitimage;
 
     @Column(length = 255)
-    private String comment_text;
+    private String acomment;
 
     @Column(nullable = false, length = 50)
-    private String friend_name;
+    private String memberfriend;
 }

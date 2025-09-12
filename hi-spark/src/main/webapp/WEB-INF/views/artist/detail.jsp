@@ -64,7 +64,7 @@
         
         <div class="name">
             <h3>TEAM MEMBER</h2>
-                <h1>${artist.eng_name}</h1>
+                <h1>${artist.engname}</h1>
             </div>
         <div class="content">
             <div class="total">
@@ -121,6 +121,8 @@
                                 
                             </p>
                             </button>
+                            <p class="ment">연락처를 클릭하면<br>
+                             멤버와 대화를 할 수 있어요!</p>
                         </td>
                         <td class="photo">
                         <img src="${artist.clubimage_01}">
@@ -138,7 +140,7 @@
                     <tr>
                         <td class="phone">
                             <div class="phone_sticker">
-                               <p>${artist.comment_text}
+                               <p>${artist.acomment}
                                 
                             </p>
                             </div>
