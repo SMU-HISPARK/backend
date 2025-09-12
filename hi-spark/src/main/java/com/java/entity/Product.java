@@ -13,29 +13,30 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-@Builder  	    //부분생성자
+@Builder         //부분생성자
 @Entity
 public class Product {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int product_id;
-	
-	@Column(nullable=false,length=100)
-	private String product_name;
-	
-	@Column(nullable=false,length=500)
-	private String product_img;
-	
-	@Column(nullable=false)
-	private int product_price;
-	
-//	@Column(nullable=false)
-//	private boolean has_option;
-	
-	@Column(nullable=false)
-	private int product_quantity;  //수량
-	
-	@Column(length=1000)
-	private String product_content;  //상품설명
+   @Id
+   @GeneratedValue(strategy = GenerationType.IDENTITY)
+   @Column(name="product_id")
+   private int productId;
+   
+   @Column(name="product_name",nullable=false,length=100)
+   private String productName;
+   
+   @Column(name="product_img",nullable=false,length=500)
+   private String productImg;
+   
+   @Column(name="product_price",nullable=false)
+   private int productprice;
+   
+   @Column(name="delivery_fee",nullable=false)
+   private int delfee;
+   
+   @Column(name="product_quantity", nullable=false)
+   private int productQuantity;  //수량
+   
+   @Column(name="product_content",length=12000)
+   private String productContent;  //상품설명
 }

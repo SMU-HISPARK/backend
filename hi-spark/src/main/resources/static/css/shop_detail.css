@@ -56,7 +56,6 @@
 .product_text td {
     /* border: 1px solid black; */
     padding: 5px 8px 5px 0;
-    width: 80%;
     font-size: 15px;
     font-weight: 400px;
     color: #636363;
@@ -100,6 +99,43 @@
     display: flex;
     gap: 15px;
 }
+.quantity-title{
+	color:  #1a1a1a;
+}
+.quantity-control {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+.quantity-btn {
+    padding: 2px 6px;
+    cursor: pointer;
+    background: white;
+    width: 36px;
+    height: 36px;
+    border:1px solid #ccc;
+}
+
+.quantity-input {
+    border-top:1px solid #ccc;
+    border-bottom:1px solid #ccc;
+    border-left:none;
+    border-right:none;
+    width: 50px;
+    height: 36px;
+    text-align: center;
+    padding: 2px;
+}
+
+.action-buttons {
+    margin: 20px 0;
+    text-align: center;
+    display:flex;
+    gap: 10px;
+    justify-content: end;
+}
+
+
 .basket {
     /* width: 160px; */
     width: 50%;

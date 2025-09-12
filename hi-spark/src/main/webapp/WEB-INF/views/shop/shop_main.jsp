@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -45,16 +48,23 @@
 					<p>All Products</p>
 				</div>
 				<div class="product_list">
+						<c:forEach var="product" items="${list}">
 					<div class="product">
-						<div class="product_img">
-							<a href="shop_detail.html">
-								<img src="../images/productimage/photocard.png"/>
-							</a>
-						</div>
-						<div class="product_name">HI-SRARK PHOTOCARD SET ver. 1 / 2</div>
-						<div class="product_price">6,600원</div>
-					</div>
-					<div class="product">
+							<div class="product_img">
+									<a href="/shop/detail?productId=${product.productId}">
+	
+										<img src="${product.productImg}"/>
+									</a>
+								</div>
+								<div class="product_name">${product.productName}</div>
+								<div class="product_price">
+									<fmt:formatNumber value="${product.productprice}" pattern="#,###" />
+								</div>
+							</div>
+						</c:forEach>
+					
+					
+				<!--  	<div class="product">
 						<div class="product_img">
 							<img src="../images/productimage/spark_keyring.jpg"/>
 						</div>
