@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,11 +16,11 @@
     <div class="main_div">
         <div class="div_01">
             <div class="member">
-                <a href="/artist/detail?mno=1"><img src="../images/artistimage/승민폴라.png" class="polaroid"></a>
+                <a href="/artist/detail?ano=2"><img src="../images/artistimage/승민폴라.png" class="polaroid"></a>
                 <img src="../images/artistimage/오브젝트_승민.png" class="object sm">
             </div>
             <div class="member">
-                <a href="/artist/detail?mno=2"><img src="../images/artistimage/유현폴라.png" class="polaroid"></a>
+                <a href="/artist/detail?ano=3"><img src="../images/artistimage/유현폴라.png" class="polaroid"></a>
                 <img src="../images/artistimage/오브젝트_유현.png" class="object yh">
             </div>
 
@@ -25,15 +28,15 @@
     
         <div class="div_02">
             <div class="member">
-                <a href="/artist/detail?mno=3"><img src="../images/artistimage/경폴라.png" class="polaroid"></a>
+                <a href="/artist/detail?ano=6"><img src="../images/artistimage/경폴라.png" class="polaroid"></a>
                 <img src="../images/artistimage/오브젝트_경.png" class="object g">
             </div>
             <div class="member">
-                <a href="/artist/detail?mno=4"><img src="../images/artistimage/지온폴라.png" class="polaroid"></a>            
+                <a href="/artist/detail?ano=4"><img src="../images/artistimage/지온폴라.png" class="polaroid"></a>            
                 <img src="../images/artistimage/오브젝트_지온.png" class="object jo">
             </div>
             <div class="member">
-                <a href="/artist/detail?mno=5"><img src="../images/artistimage/정훈폴라.png" class="polaroid"></a>
+                <a href="/artist/detail?ano=5"><img src="../images/artistimage/정훈폴라.png" class="polaroid"></a>
                 <img src="../images/artistimage/오브젝트_정훈.png" class="object jh">
             </div>
 

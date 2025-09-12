@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -39,7 +42,7 @@
         
         <div class="name">
             <h3>TEAM MEMBER</h2>
-                <h1>PARK JION</h1>
+                <h1>${artist.eng_name}</h1>
             </div>
         <div class="content">
             <div class="total">
@@ -48,40 +51,40 @@
                     <tr>
                         <!-- 사진 -->
                         <td rowspan="9" class="profile_image">
-                        <img src="../images/artistimage/지온증사.png">
+                        <img src="${artist.profitimage}">
                         </td>
                     </tr>
                     <tr class="profile_info">
                         <th>이름</th>
-                        <td>박지온</td>
+                        <td>${artist.name}</td>
                     </tr>
                     <tr class="profile_info">
                         <th>생년월일</th>
-                        <td>2009.05.26.</td>
+                        <td>${artist.birth}</td>
                     </tr>
                     <tr class="profile_info">
                         <th>MBTI</th>
-                        <td>ENFP</td>
+                        <td>${artist.mbti}</td>
                     </tr>
                     <tr class="profile_info">
                         <th>키</th>
-                        <td>174.0cm</td>
+                        <td>${artist.height}</td>
                     </tr>
                     <tr class="profile_info">
                         <th>몸무게</th>
-                        <td>60kg</td>
+                        <td>${artist.weight}</td>
                     </tr>
                     <tr class="profile_info">
                         <th>동아리</th>
-                        <td>제과제빵부</td>
+                        <td>${artist.club}</td>
                     </tr>
                     <tr class="profile_info">
                         <th>동아리 가입한 이유</th>
-                        <td>재밌어보여서</td>
+                        <td>${artist.clubReason}</td>
                     </tr>
                     <tr class="profile_info">
                         <th>좋아하는 것</th>
-                        <td>내가 만든 빵</td>
+                        <td>${artist.favorite}</td>
                     </tr>
                 </table>
                 <table class="inform">
@@ -92,15 +95,15 @@
                     <tr>
                         <td class="phone">
                             <button class="chatBtn" onclick="showPopup()">
-                                <p>010-2009-0526<br>
+                                <p>${artist.phone}<br>
                                 
                             </p>
                             </button>
                         </td>
                         <td class="photo">
-                        <img src="../images/artistimage/지온_활동사진.png">
-                        <img src="../images/artistimage/교실에서 지온.png">
-                        <img src="../images/artistimage/단체사진.png">
+                        <img src="${artist.clubimage_01}">
+                        <img src="${artist.clubimage_02}">
+                        <img src="${artist.clubimage_03}">
                         </td>
                     </tr>
                 </table>
@@ -113,17 +116,18 @@
                     <tr>
                         <td class="phone">
                             <div class="phone_sticker">
-                               <p>나랑 놀자<br>
-                                ヽ(◍˃ᗜ˂◍)ﾉ!
+                               <p>${artist.comment_text}
                                 
                             </p>
                             </div>
                         </td>
                         <td class="photo_member">
-                        <a href="#"><img src="../images/artistimage/경 증사.png"></a>
-                        <a href="#"></a><img src="../images/artistimage/세웅증사.png"></a>
-                        <a href="#"></a><img src="../images/artistimage/승민증사.png"></a>
-                        <a href="#"></a><img src="../images/artistimage/유현증사.png"></a>
+                        <c:forEach var="other" items="${list}">
+                        	<c:if test="${artist.ano ne other.ano}">
+                        		<a href="/artist/detail?ano=${other.ano}"><img src="${other.profitimage}"></a>
+							</c:if>
+                        </c:forEach>
+
                         </td>
                     </tr>
                 </table>
