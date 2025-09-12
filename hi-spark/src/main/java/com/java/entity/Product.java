@@ -30,8 +30,8 @@ public class Product {
 	@Column(nullable=false)
 	private int product_price;
 	
-	@Column(nullable=false)
-	private boolean has_option;
+//	@Column(nullable=false)
+//	private boolean has_option;
 	
 	@Column(nullable=false)
 	private int product_quantity;  //수량

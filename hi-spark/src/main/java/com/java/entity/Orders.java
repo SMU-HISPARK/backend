@@ -43,31 +43,33 @@ public class Orders {
 	@Column(nullable=false, length=100)
 	private String zipcode;
 	
-	@Column(nullable=false, length=100)
-	private String address_main;
+	@Column(name="address_main", nullable=false, length=100)
+	private String addressMain;
 	
-	@Column(nullable=false, length=100)
-	private String address_detail;
+	@Column(name="adress_detail", nullable=false, length=100)
+	private String addressDetail;
 	
-	@Column(nullable=false) //0: 상품준비중 1:배송중 2:배송완료 -1: 취소
-	private int order_state;
+	@Column(name="order_state", nullable=false) //0: 상품준비중 1:배송중 2:배송완료 -1: 취소
+	private int orderState;
 	
-	@Column(nullable=false)
-	private String payment_method;
+	@Column(name="payment_method", nullable=false)
+	private String paymentMethod;
 	
-	@Column(nullable=false)
-	private int total_amount;
+	@Column(name="total_amount", nullable=false)
+	private int totalAmount;
 	
-	@Column(nullable=false)
-	private int deliver_cost;
+	@Column(name="deliver_cost", nullable=false)
+	private int deliverCost;
 	
-	@Column(nullable=false, length=100)
-	private String delivery_message;
+	@Column(name="delivery_message", nullable=false, length=100)
+	private String deliveryMessage;
 	
 	@CreationTimestamp
-	private Timestamp created_at;
+	@Column(name="created_at")
+	private Timestamp createdAt;
 	
 	@UpdateTimestamp
-	private Timestamp updated_at;
+	@Column(name="updated_at")
+	private Timestamp updatedAt;
 
 }

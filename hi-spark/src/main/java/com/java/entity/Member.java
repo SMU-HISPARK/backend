@@ -25,12 +25,12 @@ public class Member {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int member_id;
-	
+	@Column(name="member_id")
+	private int memberId;
 	
 	@Pattern(regexp = "[a-z0-9_]{4,16}$",
 			message = "영문 소문자, 숫자, 언더바_만 허용됩니다.")
-	@Column(length = 16, nullable = false, unique = true)
+	@Column(name="login_id", length = 16, nullable = false, unique = true)
 	private String loginId;
 	
 	@Pattern(regexp = "^[A-Za-z0-9!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>/?`~]{8,20}$")
@@ -53,8 +53,7 @@ public class Member {
 	private int point;
 	
 	@CreationTimestamp
-	private Timestamp created_at;
-
-	
+	@Column(name="created_at")
+	private Timestamp createdAt;
 	
 }

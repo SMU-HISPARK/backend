@@ -8,7 +8,7 @@ import com.java.entity.Member;
 
 public interface MemberRepository extends JpaRepository<Member, Integer> {
 
-	Member findByLoginId(String id);
+	Optional<Member> findByLoginId(String loginId);
 
 	
 }

@@ -7,6 +7,7 @@ import java.util.List;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -25,12 +26,6 @@ import lombok.NoArgsConstructor;
 @Entity
 public class Cart {
 
-	public Cart(String sessionId) {
-		Member member = new Member();
-			member.setLoginId(sessionId);
-			this.member = member;
-			this.items = new ArrayList<>();
-	}
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,9 +36,10 @@ public class Cart {
 	private Member member;
 	
 	@OneToMany(mappedBy = "cart", cascade = CascadeType.ALL)
-    private List<CartItem> items = new ArrayList<>();
+    private List<CartItem> items;
 	
 	@UpdateTimestamp
-	private Timestamp updated_at;
+	@Column(name="updated_at")
+	private Timestamp updatedAt;
 
 }

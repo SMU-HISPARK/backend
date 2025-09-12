@@ -8,13 +8,12 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import com.java.entity.Cart;
+import com.java.entity.Member;
 
 import jakarta.transaction.Transactional;
 
-public interface ShoppingRepository extends JpaRepository<Cart, Integer> {
-
-	Optional<Cart> findByMember_LoginId(String id);
+public interface CartRepository extends JpaRepository<Cart, Integer> {
 	
-	
+	Optional<Cart> findByMember(Member member);
 
 }
