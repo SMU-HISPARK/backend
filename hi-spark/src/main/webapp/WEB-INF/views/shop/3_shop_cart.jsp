@@ -55,7 +55,7 @@
         </div>
         
         <div class="cart-content">
-            <form action="order.html" name="orderFrm" method="get">  <!--post로바꾸기-->
+            <form action="/order/order_form" name="orderFrm" method="post">  <!--post로바꾸기-->
 
                 <div class="pricebasketbox">
                     <div class="basketbox">
@@ -135,9 +135,6 @@
                                 </tr>
                                 <tr style="height:20px;"></tr>
                                 <tr>
-                                    <td colspan="2" class="optionselect">
-                                        ㄴ 옵션 선택사항: YUHYUN
-                                    </td>
                                 </tr>
                                 <tr>
                                     <td class="quantity-title">수량</td>
@@ -182,9 +179,6 @@
                                 </tr>
                                 <tr style="height:20px;"></tr>
                                 <tr>
-                                    <td colspan="2" class="optionselect">
-                                        ㄴ 옵션 선택사항: JEONGHUN
-                                    </td>
                                 </tr>
                                 <tr>
                                     <td class="quantity-title">수량</td>
@@ -276,5 +270,5 @@
 	</div>
 
 </body>
-</html>
 <script type="text/javascript" src="js/cart.js"></script>
+</html>

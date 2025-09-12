@@ -136,7 +136,7 @@ summary::marker {
 
 summary::after {
     content: "";
-    background: url('../images/arrow-up.png');
+    background: url('../images/shopping/arrow-up.png');
     background-size: contain;
     background-repeat: no-repeat;
     width: 28px;
@@ -150,7 +150,7 @@ summary::after {
 
 details:not([open]) summary::after {
     content: "";
-    background: url('../images/arrow-down.png');
+    background: url('../images/shopping/arrow-down.png');
     background-size: contain;
     background-repeat: no-repeat;
     width: 28px;
@@ -161,7 +161,7 @@ details:not([open]) summary::after {
     top: 50%;
 }
 
-#acceptant, #address1, #address2{
+#receiver, #address1, #address2{
     width: 100%;
 }
 

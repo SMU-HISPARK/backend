@@ -100,21 +100,21 @@
 						<div class="product_img">
 							<img src="../images/productimage/tshirt_white.png"/>
 						</div>
-						<div class="product_name">2025 BIRTHDAY KIT_YEJUN</div>
+						<div class="product_name">SPARK T-SHIRT WHITE</div>
 						<div class="product_price">17,000원</div>
 					</div>
 					<div class="product">
 						<div class="product_img">
 							<img src="../images/productimage/tshirt_black.png"/>
 						</div>
-						<div class="product_name">2025 BIRTHDAY KIT_BAMBY</div>
+						<div class="product_name">SPARK T-SHIRT BLACK</div>
 						<div class="product_price">17,000원</div>
 					</div>
 					<div class="product">
 						<div class="product_img">
 							<img src="../images/productimage/tumbler.png"/>
 						</div>
-						<div class="product_name">2025 BIRTHDAY KIT_YEJUN</div>
+						<div class="product_name">HI-SPARK TUMBLER</div>
 						<div class="product_price">17,000원</div>
 					</div>
 					<div class="product">
@@ -128,65 +128,17 @@
 						<div class="product_img">
 							<img src="../images/productimage/light.png"/>
 						</div>
-						<div class="product_name">2025 BIRTHDAY KIT_BAMBY</div>
+						<div class="product_name">HISPARK FAN LIGHT</div>
 						<div class="product_price">17,000원</div>
 					</div>
 					<div class="product">
 						<div class="product_img">
 							<img src="../images/productimage/album1.png"/>
 						</div>
-						<div class="product_name">2025 BIRTHDAY KIT_YEJUN</div>
+						<div class="product_name">1ST ALBUM HISPARK</div>
 						<div class="product_price">17,000원</div>
 					</div>
-					<div class="product">
-						<div class="product_img">
-							<img src="https://vlastshop.com/web/product/medium/202506/81c66a697d78d1a297d371e6a156a74d.jpg"/>
-						</div>
-						<div class="product_name">2025 BIRTHDAY KIT_BAMBY</div>
-						<div class="product_price">17,000원</div>
-					</div>
-					<div class="product">
-						<div class="product_img">
-							<img src="https://vlastshop.com/web/product/medium/202508/4d59846f54ba35daba7186fc5970839d.jpg"/>
-						</div>
-						<div class="product_name">2025 BIRTHDAY KIT_YEJUN</div>
-						<div class="product_price">17,000원</div>
-					</div>
-					<div class="product">
-						<div class="product_img">
-							<img src="https://vlastshop.com/web/product/medium/202506/81c66a697d78d1a297d371e6a156a74d.jpg"/>
-						</div>
-						<div class="product_name">2025 BIRTHDAY KIT_BAMBY</div>
-						<div class="product_price">17,000원</div>
-					</div>
-					<div class="product">
-						<div class="product_img">
-							<img src="https://vlastshop.com/web/product/medium/202508/4d59846f54ba35daba7186fc5970839d.jpg"/>
-						</div>
-						<div class="product_name">2025 BIRTHDAY KIT_YEJUN</div>
-						<div class="product_price">17,000원</div>
-					</div>
-					<div class="product">
-						<div class="product_img">
-							<img src="https://vlastshop.com/web/product/medium/202506/81c66a697d78d1a297d371e6a156a74d.jpg"/>
-						</div>
-						<div class="product_name">2025 BIRTHDAY KIT_BAMBY</div>
-						<div class="product_price">17,000원</div>
-					</div>
-					<div class="product">
-						<div class="product_img">
-							<img src="https://vlastshop.com/web/product/medium/202508/4d59846f54ba35daba7186fc5970839d.jpg"/>
-						</div>
-						<div class="product_name">2025 BIRTHDAY KIT_YEJUN</div>
-						<div class="product_price">17,000원</div>
-					</div>
-					<div class="product">
-						<div class="product_img">
-							<img src="https://vlastshop.com/web/product/medium/202506/81c66a697d78d1a297d371e6a156a74d.jpg"/>
-						</div>
-						<div class="product_name">2025 BIRTHDAY KIT_BAMBY</div>
-						<div class="product_price">17,000원</div>
-					</div>
+					
 					
 				</div>
 				<!-- <div class="paginator">

@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>주문완료</title>
-    <link rel="stylesheet" href="css/order.css" />
+    <link rel="stylesheet" href="../css/order.css" />
     <style>
         
     </style>
@@ -18,11 +18,14 @@
             
             <h1>SPARK SHOP</h1>
             <div class="hMenu hLeft">
-                <a href="order.html"><img src="images/left.png" style="width:28px;" /></a>
+                <a href="order.html"><img src="../images/shopping/left.png" style="width:28px;" /></a>
             </div>
             <div class="hMenu hRight">
-                <a href="cart.html"><img src="images/cart.png" style="width:29px;" /></a>
-                <a href="/"><img src="images/user.png" style="width:28px;" /></a>
+                <a href="/cart" class="cartWrapper">
+                    <img src="../images/cart.png" style="width:29px;" />
+                    <span class="cartBadge">3</span>
+                </a>
+                <a href="/mypage/shop"><img src="../images/user.png" style="width:28px;" /></a>
             </div>
         </div>
         <div class="ordertitle">
@@ -111,7 +114,7 @@
                     <summary>주문상품 <span>(3)</span></summary>
                     <!-- 상품 하나 -->
                     <div class="orderProduct_one">
-                        <img src="productimage/photocard.png" alt="상품1" />
+                        <img src="../images/productimage/photocard.png" alt="상품1" />
                         <div class="productInfo">
                             <p class="productName">HI-SRARK PHOTOCARD SET ver. 1 / 2</p>
                             <p class="productOption">옵션: ver.1</p>
@@ -121,20 +124,18 @@
                     </div>
                     <!-- 반복될 부분 -->
                     <div class="orderProduct_one">
-                        <img src="productimage/acrylic_keyring_YUHYUN.png" alt="상품2" />
+                        <img src="../images/productimage/acrylic_keyring_YUHYUN.png" alt="상품2" />
                         <div class="productInfo">
                             <p class="productName">YUHYUN ACRYLIC KEYRING</p>
-                            <p class="productOption">옵션: YUHYUN</p>
                             <p class="productQty">수량: 2</p>
                             <p class="productPrice">₩24,000</p>
                         </div>
                     </div>
                     <!-- 반복될 부분 -->
                     <div class="orderProduct_one">
-                        <img src="productimage/acrylic_keyring_JEONGHUN.png" alt="상품3" />
+                        <img src="../images/productimage/acrylic_keyring_JEONGHUN.png" alt="상품3" />
                         <div class="productInfo">
                             <p class="productName">JEONGHUN ACRYLIC KEYRING</p>
-                            <p class="productOption">옵션: JEONGHUN</p>
                             <p class="productQty">수량: 1</p>
                             <p class="productPrice">₩12,000</p>
                         </div>
@@ -170,8 +171,8 @@
 
         <!-- 쇼핑몰 이동 버튼 -->
         <div class="buttonBox">
-            <a href="/"><div class="orderDetailBtn">주문확인하기</div></a>
-            <a href="cart.html"><div class="MDShopBtn">쇼핑몰로 이동</div></a>
+            <a href="/mypage/shop"><div class="orderDetailBtn">주문확인하기</div></a>
+            <a href="/shop"><div class="MDShopBtn">쇼핑몰로 이동</div></a>
         </div>
     </div>
 

@@ -6,24 +6,74 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>주문/결제</title>
-    <link rel="stylesheet" href="css/order.css" />
+    <link rel="stylesheet" href="../css/order.css" />
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
 
 </head>
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script type="text/javascript">
+	function daumZipCode() {
+		 new daum.Postcode({
+	         oncomplete: function(data) {
+	             // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+	
+	             // 각 주소의 노출 규칙에 따라 주소를 조합한다.
+	             // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+	             var addr = ''; // 주소 변수
+	             var extraAddr = ''; // 참고항목 변수
+	
+	             //사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
+	             if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
+	                 addr = data.roadAddress;
+	             } else { // 사용자가 지번 주소를 선택했을 경우(J)
+	                 addr = data.jibunAddress;
+	             }
+	
+	             // 사용자가 선택한 주소가 도로명 타입일때 참고항목을 조합한다.
+	             if(data.userSelectedType === 'R'){
+	                 // 법정동명이 있을 경우 추가한다. (법정리는 제외)
+	                 // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+	                 if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
+	                     extraAddr += data.bname;
+	                 }
+	                 // 건물명이 있고, 공동주택일 경우 추가한다.
+	                 if(data.buildingName !== '' && data.apartment === 'Y'){
+	                     extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+	                 }
+	                 // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+	                 if(extraAddr !== ''){
+	                     extraAddr = ' (' + extraAddr + ')';
+	                 }
+	                 // 조합된 참고항목을 해당 필드에 넣는다.
+	                 document.getElementById("address1").value = extraAddr;
+	             
+	             } else {
+	                 document.getElementById("address2").value = '';
+	             }
+	
+	             // 우편번호와 주소 정보를 해당 필드에 넣는다.
+	             document.getElementById('zipcode').value = data.zonecode;
+	             document.getElementById("address1").value = addr;
+	             // 커서를 상세주소 필드로 이동한다.
+	             document.getElementById("address2").focus();
+	         }
+	     }).open();
+	 }
+</script>
 <body>
     <div class="mainBox">
         <div class="title">
             
             <h1>SPARK SHOP</h1>
             <div class="hMenu hLeft">
-                <a href="javascript:void(0);" id="backBtn"><img src="images/left.png" style="width:28px;" /></a>
+                <a href="javascript:void(0);" id="backBtn"><img src="../images/shopping/left.png" style="width:28px;" /></a>
             </div>
             <div class="hMenu hRight">
                 <a href="/cart" class="cartWrapper">
-                    <img src="images/cart.png" style="width:29px;" />
+                    <img src="../images/cart.png" style="width:29px;" />
                     <span class="cartBadge">3</span>
                 </a>
-                <a href="/"><img src="images/user.png" style="width:28px;" /></a>
+                <a href="/mypage/shop"><img src="../images/user.png" style="width:28px;" /></a>
             </div>
         </div>
 
@@ -32,7 +82,7 @@
         </div>
 
         <div class="contentWrap">
-            <form action="order_finish.html" class="orderFrm" method="get">  <!--post로바꾸기-->
+            <form action="/order/order_finish" class="orderFrm" method="post">  <!--post로바꾸기-->
                 <div class="addressBox">
                     <details open>
                         <summary>배송지</summary>
@@ -46,7 +96,7 @@
                                 <tbody>
                                     <tr>
                                         <td class="label">받는사람 <span class="required">*</span></td>
-                                        <td class="inputBox"><input type="text" id="acceptant" name="acceptant"/></td>
+                                        <td class="inputBox"><input type="text" id="receiver" name="acceptant"/></td>
                                     </tr>
                                     <tr>
                                         <td class="label">주소 <span class="required">*</span></td>
@@ -54,13 +104,19 @@
                                             <ul>
                                                 <li>
                                                     <div style="margin-bottom: 10px;">
-                                                        <input type="text" placeholder="우편번호" style="width: 160px;" name="zipcode" />
+                                                        <input type="text" placeholder="우편번호" style="width: 160px;" name="zipcode" id=zipcode readonly />
                                                         <button type="button" class="addressSearchBtn">주소검색</button>
                                                     </div>
+                                                    
+                                                    <script>
+                                                    	$(document).on("click",".addressSearchBtn",function(){
+                                                    		daumZipCode();
+                                                    	})
+                                                    </script>
                                                 </li>
                                                 <li>
                                                     <div style="margin-bottom: 10px;">
-                                                        <input type="text" placeholder="기본주소"  id="address2" name="address1" />
+                                                        <input type="text" placeholder="기본주소"  id="address1" name="address1" />
                                                     </div>
                                                 </li>
                                                 <li>
@@ -75,7 +131,7 @@
                                         <td class="label">휴대전화 <span class="required">*</span></td>
                                         <td class="inputBox">
                                             <div class="phone-group">
-                                                <select>
+                                                <select name="phone1">
                                                     <option>010</option>
                                                     <option>011</option>
                                                     <option>016</option>
@@ -84,9 +140,9 @@
                                                     <option>019</option>
                                                 </select>
                                                 <span>-</span>
-                                                <input type="text" class="phone-input" />
+                                                <input type="text" class="phone2" />
                                                 <span>-</span>
-                                                <input type="text" class="phone-input" />
+                                                <input type="text" class="phone3" />
                                             </div>
                                         </td>
                                     </tr>
@@ -137,7 +193,7 @@
                         <summary>주문상품 <span>(3)</span></summary>
                         <!-- 상품 하나 -->
                         <div class="orderProduct_one">
-                            <img src="productimage/photocard.png" alt="상품1" />
+                            <img src="../images/productimage/photocard.png" alt="상품1" />
                             <div class="productInfo">
                                 <p class="productName">HI-SRARK PHOTOCARD SET ver. 1 / 2</p>
                                 <p class="productOption">옵션: ver.1</p>
@@ -148,7 +204,7 @@
 
                         <!-- 반복될 부분 -->
                         <div class="orderProduct_one">
-                            <img src="productimage/acrylic_keyring_YUHYUN.png" alt="상품2" />
+                            <img src="../images/productimage/acrylic_keyring_YUHYUN.png" alt="상품2" />
                             <div class="productInfo">
                                 <p class="productName">YUHYUN ACRYLIC KEYRING</p>
                                 <p class="productOption">옵션: YUHYUN</p>
@@ -159,7 +215,7 @@
                         
                         <!-- 반복될 부분 -->
                         <div class="orderProduct_one">
-                            <img src="productimage/acrylic_keyring_JEONGHUN.png" alt="상품3" />
+                            <img src="../images/productimage/acrylic_keyring_JEONGHUN.png" alt="상품3" />
                             <div class="productInfo">
                                 <p class="productName">JEONGHUN ACRYLIC KEYRING</p>
                                 <p class="productOption">옵션: JEONGHUN</p>
@@ -219,7 +275,7 @@
                                     적립금 : 1,000,000 P
                                 </div>
                                 <div class="creditInputDiv">
-                                    결제 금액 : <input type="text" id="paidCreditValue" value="0" min="0" />
+                                    결제 금액 : <input type="text" id="paidCreditValue" value="0" min="0" readonly/>
                                     <button type="button">적용</button>
                                     <button type="button" id="payAll">전액 사용</button>
                                 </div>
@@ -252,7 +308,7 @@
                         <label id="thirdparty-details">[필수] 개인정보의 제3자 제공(업무제휴를 위한 제휴사 제공)</label>
                     </div>
                 </div>
-                
+
             </form>
         </div>
         
@@ -264,6 +320,5 @@
 
     
 </body>
+<script type="text/javascript" src="../js/order.js"></script>
 </html>
-
-<script type="text/javascript" src="js/order.js"></script>

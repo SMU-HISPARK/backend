@@ -29,8 +29,12 @@ $(document).ready(function(){
     
     //결제버튼
     $(document).on("click", "#payBtn", function() {
-        alert("결제 진행");
-        $(".orderFrm").submit();
+		if($("#allconfirm").is(':checked')){
+	        $(".orderFrm").submit();
+		}else{
+			alert("결제 약관에 동의하셔야 상품 구매가 가능합니다.");
+		  	return;
+		}
     });//payBtn
 
     // form submit 시 팝업들 닫기
