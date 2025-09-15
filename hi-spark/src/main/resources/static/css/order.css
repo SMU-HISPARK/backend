@@ -368,14 +368,14 @@ input[id="paidCreditValue"]{
     font-size: 12px;
 }
 
-.creditInputDiv #payAll{
+.creditInputDiv #creditConfirm{
     color:#fafafa;
     background-color: #a0a0a0;
-    border:1px solid #a0a0a0;;
+    border:1px solid #a0a0a0;
 }
 
 #paidCredit-detail span{
-    color:#636363
+    color:#636363;
 }
 
 

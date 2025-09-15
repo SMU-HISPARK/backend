@@ -85,8 +85,8 @@
             주문 / 결제
         </div>
 
+        <form action="/order/order_finish" id="purchaseFrm" method="post">  <!--post로바꾸기-->
         <div class="contentWrap">
-            <form action="/order/order_finish" class="purchaseFrm" method="post">  <!--post로바꾸기-->
                 <div class="addressBox">
                     <details open>
                         <summary>배송지</summary>
@@ -196,7 +196,7 @@
                         <summary>주문상품 <span>(3)</span></summary>
                         <c:forEach var="item" items="${cartItems}">
 	                        <!-- 상품 하나 -->
-	                        <div class="orderProduct_one" id="${item.cartitem_id}">
+	                        <div class="orderProduct_one" id="${item.cartitemId}">
 	                            <img src="../images/productimage/${item.product.productImg}" alt="상품1" />
 	                            <div class="productInfo">
 	                                <p class="productName">${item.product.productName}</p>
@@ -230,7 +230,7 @@
                                     </tr>
                                     <tr>
                                         <td class="label total">최종 결제 금액</td>
-                                        <td class="value total">
+                                        <td class="value total" id="totalAmount" data-total="${total+shipping}" >
                                         	₩<fmt:formatNumber value="${total+shipping}" pattern="#,###" />
                                         </td>
                                     </tr>
@@ -261,21 +261,27 @@
                             <div class="paymethod-detail" id="virtualAccount-detail" style="display:none">- 10/1까지 적립금 외 다른 수단의 결제가 중단됩니다.</div>
                             <div class="paymethod-detail" id="paidCredit-detail" style="display:none">
                                 <div>
-                                    적립금 : <span id="creditValue">1,000,000</span> P
+                                    적립금 : <span id="creditValue">
+									<fmt:formatNumber value="${member.getPoint()}" pattern="#,###" />
+								</span> P
                                 </div>
                                 <div class="creditInputDiv">
                                     결제 금액 : <input type="text" id="paidCreditValue" value="0" min="0"/>
-                                    <button type="button">적용</button>
                                     <button type="button" id="payAll">전액 사용</button>
+                                    <button type="button" id="creditConfirm">적용</button>
                                 </div>
                                 <div>
-                                    결제 후 잔액 : <span id="creditValueAfter">954,400</span> P
+                                    결제 후 잔액 : 
+                                    <span id="creditValueAfter">
+                                    <fmt:formatNumber value="${member.getPoint()}" pattern="#,###" />
+                                    </span> P
                                 </div>
+                                <div style="font-size:12px;color:#bbb">※ 적립금의 경우 전액 결제만 지원됩니다.</div>
                             </div>
-                        </div>
+    	               </div>
                         
-                    </details>
-                </div>
+	                </details>
+		         </div>
 
                 
                 <div class="paymentTermsBox">
@@ -298,16 +304,15 @@
                     </div>
                 </div>
 
-            </form>
-        </div>
-        
+        <input type="hidden" id="totalPrice" value="${total}" />
         <div class="payButtonBox"> 
-            <button type="button" id="payBtn">
-				<fmt:formatNumber value="${total+shipping}" pattern="#,###" /> 원 결제하기
-			</button>
+            <input type="submit" id="payBtn" value='<fmt:formatNumber value="${total+shipping}" pattern="#,###" /> 원 결제하기'>
+				
             <!-- 결제 클릭했는데 적립금 부족시 적립금이 부족합니다 alert -->
-        </div>
-    </div>
+        	</div>
+        	</div>
+    	</div>
+    </form>
 
     
 </body>

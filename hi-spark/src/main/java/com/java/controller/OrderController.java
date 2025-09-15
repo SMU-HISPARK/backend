@@ -1,7 +1,9 @@
 package com.java.controller;
 
 import java.sql.Timestamp;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,11 +48,15 @@ public class OrderController {
 
 	    // 선택한 카트아이템만 가져오기
 	    List<CartItem> cartItems = cartItemRepository.findAllById(cartItemIds);
-	    
-	    // 수량 업데이트
-	    for (int i = 0; i < cartItems.size(); i++) {
-	        CartItem ci = cartItems.get(i);
-	        ci.setQuantity(quantities.get(i));
+	    Map<Integer, Integer> qtyMap = new HashMap<>();
+	    for (int i = 0; i < cartItemIds.size(); i++) {
+	        qtyMap.put(cartItemIds.get(i), quantities.get(i));
+	    }
+
+	    for (CartItem ci : cartItems) {
+	        if (qtyMap.containsKey(ci.getCartitemId())) {
+	            ci.setQuantity(qtyMap.get(ci.getCartitemId()));
+	        }
 	    }
 	    cartItemRepository.saveAll(cartItems);
 

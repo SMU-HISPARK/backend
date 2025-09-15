@@ -66,45 +66,48 @@
                             <!--상품당 table 하나-->
                             <!--품절아님(가격표시) / 품절(가격 대신 품절 표시)로 나눠서 -->
                         	<c:forEach var="item" items="${cart.items}">
-                                <table class="product-container">
-                                    <tr>
-                                        <td rowspan="5" class="checkbox-cell">
-                                            <input type="checkbox" name="cartItemIds" value="${item.cartitem_id}">
-                                        </td>
-                                        <td class="pd_img">
-                                            <img src="../images/productimage/${item.product.productImg}" width="100px"/>
-                                        </td>
-                                        <td class="product">
-                                            <div class="description">
-                                                <strong>${item.product.productName}</strong>
-                                                <br>
-                                                <fmt:formatNumber value="${item.product.productPrice}" pattern="#,###" /> 원
-                                                <input type="hidden" class="unitPrice" value="${item.product.productPrice}">
-                                                <br><br>
-                                                <span>배송: 3,000원</span>
-                                            </div>
-                                            <div class="delete-btn"> <img src="../images/shopping/closebtn.png" width="20px"/> </div>
-                                        </td>
-                                    </tr>
-                                    <tr style="height:20px;"></tr>
-                                    <tr>
-                                        <td class="quantity-title">수량</td>
-                                        <td class="countselect">
-                                            <div class="quantity-control">
-                                                <button type="button" class="quantity-btn">-</button>
-                                                <input type="text" name="quantities" class="quantity-input" value="${item.quantity}" min="1"/>
-                                                <button type="button" class="quantity-btn">+</button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="titleTd">주문금액</td>
-                                        <td class="productprice">
-                                            <fmt:formatNumber value="${item.product.productPrice}" pattern="#,###" />원
-                                        </td>
-                                    </tr>
-                                </table>
-                            </c:forEach>
+							    <table class="product-container">
+							        <tr>
+							            <td rowspan="5" class="checkbox-cell">
+							                <!-- name 제거, data-cartitemid 추가 -->
+							                <input type="checkbox" class="cart-checkbox" value="${item.cartitemId}" data-cartitemid="${item.cartitemId}">
+							            </td>
+							            <td class="pd_img">
+							                <img src="../images/productimage/${item.product.productImg}" width="100px"/>
+							            </td>
+							            <td class="product">
+							                <div class="description">
+							                    <strong>${item.product.productName}</strong>
+							                    <br>
+							                    <fmt:formatNumber value="${item.product.productPrice}" pattern="#,###" /> 원
+							                    <input type="hidden" class="unitPrice" value="${item.product.productPrice}">
+							                    <br><br>
+							                    <span>배송: <span class="deliveryFee">3,000원</span></span>
+							                </div>
+							            </td>
+							        </tr>
+							        <tr style="height:20px;"></tr>
+							        <tr>
+							            <td class="quantity-title">수량</td>
+							            <td class="countselect">
+							                <div class="quantity-control">
+							                    <button type="button" class="quantity-btn">-</button>
+							                    <!-- name 제거, data-cartitemid 추가 -->
+							                    <input type="text" class="quantity-input" data-cartitemid="${item.cartitemId}" value="${item.quantity}" min="1"/>
+							                    <button type="button" class="quantity-btn">+</button>
+							                </div>
+							            </td>
+							        </tr>
+							        <tr>
+							            <td class="titleTd">주문금액</td>
+							            <td class="productprice">
+							                <fmt:formatNumber value="${item.product.productPrice*item.quantity}" pattern="#,###" />원
+							            </td>
+							        </tr>
+							    </table>
+							</c:forEach>
+
+
 
                             <!-- 전체 합계 (모든 상품 아래 하나만) -->
                             <table class="pricesum">
