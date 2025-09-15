@@ -1,13 +1,15 @@
 package com.java.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class GameController {
 	
 	@GetMapping("/game")
-	public String gamepage_start() {
+	public String gamepage_start(Model model) {
+		
 		
 		
 		return "game/gamepage_start";
@@ -19,4 +21,6 @@ public class GameController {
 		
 		return "game/gamepage_result";
 	}
+	
+	
 }

@@ -20,11 +20,11 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public MemberDto findByIdAndPassword(String id, String password) {
+	public MemberDto findByLoginIdAndPassword(String loginId, String password) {
 		
-		Member member = mRep.findByIdAndPassword(id, password).orElseGet(null);
+		Member member = mRep.findByLoginIdAndPassword(loginId, password).orElseGet(null);
 		if(member == null) return null;
-		MemberDto memfind = new MemberDto(member.getId(), member.getNickname());
+		MemberDto memfind = new MemberDto(member.getLoginId(), member.getNickname());
 		
 		return memfind;
 	}

@@ -1,7 +1,6 @@
 package com.java.entity.sourceData;
 
 import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.annotations.PartitionKey;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

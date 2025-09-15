@@ -31,11 +31,14 @@ import lombok.NoArgsConstructor;
 public class GameQuestion {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	@GeneratedValue(
+			strategy = GenerationType.SEQUENCE,
+			generator = "question_seq_gen"
+			)
 	private Integer question_id;
 	
 	@Lob
-	@Column(nullable = false, unique = true)
+	@Column(nullable = false)
 	private String text;
 	
 	@Column(length = 50)
@@ -51,11 +54,11 @@ public class GameQuestion {
 	// 읽기 전용 필드(컬럼 X)
 	
 	@OneToMany(
-			mappedBy = "question_id",
+			mappedBy = "question",
 			fetch = FetchType.LAZY,
 			cascade = CascadeType.ALL, 
 	        orphanRemoval = true)
 	@OrderBy("number ASC")
 	private List<GameOptions> options;
-	
+
 }

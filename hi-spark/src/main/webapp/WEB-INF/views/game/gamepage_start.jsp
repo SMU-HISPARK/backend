@@ -176,7 +176,7 @@
         /* background_img */
         .question_img {
             /*border:1px solid black;*/
-            background: url('/images/corridor_school01.png') no-repeat;
+            background: url('/images/game/corridor_school01.png') no-repeat;
             background-size: auto;
             position: fixed;
             bottom: 50%; left: 50%;
@@ -305,7 +305,7 @@
         let name = '';
         let AnswerMap = new Map(); // 질문 번호와 답변을 저장할 Map
         let test_num = 0;      // 현재 질문 번호
-        const total_questions = 3; // 총 질문 수 (임시로 3문제로 설정)
+        const total_questions = 6; // 총 질문 수 (임시 설정)
 
         /* 이벤트 리스너 */
 
@@ -428,9 +428,35 @@
         function processNextQuestion(selected_answer) {
 
             ///////// 여기에 다음 질문을 불러오는 로직 추가 /////////
-
             // 예: AJAX 요청을 통해 서버에서 다음 질문과 답변 태그를 받아와서 업데이트
+
+            $.ajax({
+                url: '/game/nextQuestion',
+                method: 'POST',
+                data: {
+                    question_id: $('.question_num').val(),
+                    option_no: AnswerMap.get($('.question_num').val())
+                },
+                dataType: 'json',
+                success: function(response) {
+                    // 서버에서 받은 데이터로 화면 업데이트
+                    $('.question_box h3').text(response.next_question);
+                    $('.answer_box .answer1').text(response.next_answer1);
+                    $('.answer_box .answer2').text(response.next_answer2);
+                    $('.question_num').val(response.next_question_num);
+                    $('.answer_box input[name="answer1"]').val(response.next_tag1); 
+                    $('.answer_box input[name="answer2"]').val(response.next_tag2);
+                },
+                error: function() {
+                    alert('다음 질문을 불러오는 데 실패했습니다.');
+                }
+            });
+
+
+
+            
             // 현재는 예시로 질문과 답변을 하드코딩
+
             let next_question = "다음 질문 예시입니다.";
             let next_answer1 = "다음 답변1 예시";
             let next_answer2 = "다음 답변2 예시";

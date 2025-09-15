@@ -27,21 +27,22 @@ public class QuestionResponse {
 	
 	@ManyToOne
 	@MapsId("run_id")
-	@JoinColumn(name = "run_id")
+	@JoinColumn(name = "run_id", nullable = false)
 	private GameRun gameRun;
 	
 	@ManyToOne
 	@MapsId("question_id")
-	@JoinColumn(name = "question_id")
+	@JoinColumn(name = "question_id", nullable = false)
 	private GameQuestion question;
 	
 	@ManyToOne
-	@JoinColumn(name = "option_id")
+	@JoinColumn(name = "option_id", nullable = false)
 	private GameOptions options;
 	
 	
 	// 필드
 	
+	/*
 	@Column(nullable = false)
 	private Long run_id;
 	
@@ -50,4 +51,5 @@ public class QuestionResponse {
 	
 	@Column(nullable = false)
 	private Integer option_id;
+	*/
 }

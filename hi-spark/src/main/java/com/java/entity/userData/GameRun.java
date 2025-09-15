@@ -7,7 +7,6 @@ import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 
 import com.java.entity.Member;
-import com.java.entity.sourceData.GameOptions;
 import com.java.entity.sourceData.GameResultClub;
 
 import jakarta.persistence.CascadeType;
@@ -20,7 +19,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.OrderBy;
 import jakarta.persistence.SequenceGenerator;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -41,34 +39,38 @@ public class GameRun {
 	
 	// FK 지정
 	@ManyToOne
-	@JoinColumn(name = "id")
+	@JoinColumn(name = "member_id", nullable = true)
 	private Member member;
 	
 	@ManyToOne
-	@JoinColumn(name = "session_id")
+	@JoinColumn(name = "session_id", nullable = true)
 	private GameSession gameSession;
 	
 	@ManyToOne
-	@JoinColumn(name = "club_id")
+	@JoinColumn(name = "club_id", nullable = false)
 	private GameResultClub resultClub;
 	
 	
 	// 컬럼
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	@GeneratedValue(
+			strategy = GenerationType.SEQUENCE,
+			generator = "run_seq_gen")
 	private Long run_id;
 	
 	@Column(length = 30, nullable = false, unique = false)
 	private String user_name;
 	
+	/*
 	@Column(nullable = true)
-	private String id;
+	private String memberId;
 	
 	@Column(nullable = true)
 	private String session_id;
 	
 	@Column(nullable = false)
 	private Integer club_id;
+	*/
 	
 	@CreationTimestamp
 	private Timestamp finished_at;
@@ -91,7 +93,7 @@ public class GameRun {
 	// 읽기 전용 필드 (컬럼 X)
 	
 	@OneToMany(
-			mappedBy = "run_id",
+			mappedBy = "gameRun",
 			fetch = FetchType.LAZY,
 			cascade = CascadeType.ALL, 
 	        orphanRemoval = true)

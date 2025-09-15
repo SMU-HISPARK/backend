@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class UnlockedId implements Serializable {
 
-	private String id;
+	private int memberId;
 	private Integer club_id;
 	
 	@Override
@@ -22,13 +22,13 @@ public class UnlockedId implements Serializable {
 		if (this == o) return true;
 		if (o == null | getClass() != o.getClass()) return false;
 		UnlockedId unlockedId = (UnlockedId) o;
-		return Objects.equals(id, unlockedId.id)
+		return Objects.equals(memberId, unlockedId.memberId)
 				&& Objects.equals(club_id, unlockedId.club_id);
 	}
 
     @Override
     public int hashCode() {
-    	return Objects.hash(id, club_id);
+    	return Objects.hash(memberId, club_id);
     }	
 	
 }

@@ -33,27 +33,32 @@ import lombok.NoArgsConstructor;
 		allocationSize = 1)
 @Table(
 		uniqueConstraints = {
-				@UniqueConstraint(columnNames = {"question_id", "number"})
+				@UniqueConstraint(columnNames = {"question_id", "option_no"})
 		})
 public class GameOptions {
 
 	
 	// FK 설정
 	@ManyToOne
-	@JoinColumn(name = "question_id")
+	@JoinColumn(name = "question_id", nullable = false)
 	private GameQuestion question;
 	
 	/// 필드
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	@GeneratedValue(
+			strategy = GenerationType.SEQUENCE,
+			generator = "option_seq_gen"
+			)
 	private Integer option_id;
 	
+	/*
 	@Column(nullable = false)
 	private Integer question_id;
+	*/
 	
 	@Column(nullable = false)
-	private Integer number;
+	private Integer option_no;
 	
 	@Lob
 	@Column(nullable = false)
@@ -63,9 +68,10 @@ public class GameOptions {
 	// 읽기 전용 필드(컬럼 X)
 	
 	@OneToMany(
-			mappedBy = "option_id",
+			mappedBy = "option",
 			fetch = FetchType.LAZY, 
 	        cascade = CascadeType.ALL, 
 	        orphanRemoval = true)
 	private List<ScoringRules> Scoring;
+	
 }

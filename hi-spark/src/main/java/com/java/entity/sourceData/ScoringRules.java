@@ -35,9 +35,11 @@ public class ScoringRules {
 	
 	/// 필드
 	
+	/*
 	private Integer option_id;
 	
 	private Integer club_id;
+	*/
 	
 	private Integer scoringDelta;
 	

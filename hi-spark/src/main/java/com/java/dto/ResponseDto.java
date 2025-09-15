@@ -5,12 +5,11 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
 @Builder
-public class MemberDto {
+public class ResponseDto {
 
-	private String loginId, nickname;
-	
+	private Integer question_id, option_no;
 }
