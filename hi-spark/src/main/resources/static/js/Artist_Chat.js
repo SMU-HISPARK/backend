@@ -51,6 +51,20 @@ function addChat(message, sender = "me") {
   middleDiv.scrollTop = middleDiv.scrollHeight;
 }
 
+// 팝업에서 URL 파라미터로 전달된 ano 읽기
+const urlParams = new URLSearchParams(window.location.search);
+const artistAno = urlParams.get('ano');
+
+let projectId;
+switch(artistAno) {
+  case '1': projectId = 's--ntkk'; break;
+  case '2': projectId = 'f--bnrd'; break;
+  case '3': projectId = 'k--kmfq'; break;
+  case '4': projectId = 'a--extt'; break;
+  case '5': projectId = 'u--dk9h'; break;
+}
+
+
 // 메시지 전송
 async function sendMessage() {
   const text = textarea.value.trim();
@@ -63,7 +77,9 @@ async function sendMessage() {
     const res = await fetch('/api/message', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ message: text, sessionId: 'session-1' })
+      body: JSON.stringify({ 
+		message: text, sessionId: 'session-'+artistAno, ano: artistAno, projectId 
+	  })
     });
     const json = await res.json();
 

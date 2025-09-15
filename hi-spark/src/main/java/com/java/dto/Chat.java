@@ -31,6 +31,10 @@ public class Chat {
    @JoinColumn(name="user_id")
    private Member member;
    
+   @ManyToOne
+   @JoinColumn(name="artist_id")
+   private Artist artist;
+   
     @Column(nullable = false)
    private int send;
    
@@ -39,6 +43,4 @@ public class Chat {
    
    @UpdateTimestamp
    private Timestamp created_at;
-   
-   
 }
