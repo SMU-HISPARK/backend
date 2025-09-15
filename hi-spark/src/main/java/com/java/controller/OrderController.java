@@ -2,6 +2,7 @@ package com.java.controller;
 
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,10 +14,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.java.entity.Cart;
 import com.java.entity.CartItem;
 import com.java.entity.Member;
+import com.java.entity.OrderItem;
 import com.java.entity.Orders;
+import com.java.repository.CartItemRepository;
+import com.java.repository.OrderRepository;
 import com.java.service.CartService;
 import com.java.service.MemberService;
 import com.java.service.OrderService;
+
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class OrderController {
@@ -24,18 +30,48 @@ public class OrderController {
 	@Autowired OrderService orderService;
 	@Autowired CartService cartService;
 	@Autowired MemberService memberService;
+	@Autowired CartItemRepository cartItemRepository;
+	@Autowired OrderRepository orderRepository;
 	
 	@PostMapping("/order/order_form")
-	public String orderform(@RequestParam List<Integer> cartItemIds, Model model) {
-		int memberId = 1;
-		Cart cart = cartService.getCartByMember_MemberId(memberId);
-        model.addAttribute("cart", cart);
-	    return "order/orderForm";
+	public String orderform(@RequestParam("cartItemIds") List<Integer> cartItemIds, 
+			@RequestParam("quantities") List<Integer> quantities,
+		HttpSession session, Model model) {
+		
+		
+		int memberId = (int) session.getAttribute("memberId"); // 로그인 세션
+		System.out.println(memberId);
+		
+		Member member = memberService.findById(memberId);
+
+	    // 선택한 카트아이템만 가져오기
+	    List<CartItem> cartItems = cartItemRepository.findAllById(cartItemIds);
+	    
+	    // 수량 업데이트
+	    for (int i = 0; i < cartItems.size(); i++) {
+	        CartItem ci = cartItems.get(i);
+	        ci.setQuantity(quantities.get(i));
+	    }
+	    cartItemRepository.saveAll(cartItems);
+
+	    // DB에 Orders 생성하지 않고, 주문서에 필요한 데이터만 모델에 전달
+	    model.addAttribute("member", member);
+	    model.addAttribute("cartItems", cartItems);
+	    
+
+	    // 계산용
+	    int total = cartItems.stream().mapToInt(i -> i.getProduct().getProductPrice() * i.getQuantity()).sum();
+	    int shipping = total >= 50000 ? 0 : 3000;
+	    model.addAttribute("total", total);
+	    model.addAttribute("shipping", shipping);
+	    model.addAttribute("grandTotal", total + shipping);
+
+	    return "shop/shop_order";
 	}
 	
 	@PostMapping("/order/order_finish")
 	public String orderfinish() {
-		
-		return "shop/shop_order_finish";
+	    
+	    return "shop/shop_order_finish";
 	}
 }

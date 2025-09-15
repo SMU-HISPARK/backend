@@ -1,5 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+    
     <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -96,7 +100,7 @@
                                 <tbody>
                                     <tr>
                                         <td class="label">받는사람 <span class="required">*</span></td>
-                                        <td class="inputBox"><input type="text" id="receiver" name="acceptant"/></td>
+                                        <td class="inputBox"><input type="text" id="receiver" name="acceptant" required /></td>
                                     </tr>
                                     <tr>
                                         <td class="label">주소 <span class="required">*</span></td>
@@ -104,7 +108,7 @@
                                             <ul>
                                                 <li>
                                                     <div style="margin-bottom: 10px;">
-                                                        <input type="text" placeholder="우편번호" style="width: 160px;" name="zipcode" id=zipcode readonly />
+                                                        <input type="text" placeholder="우편번호" style="width: 160px;" name="zipcode" id=zipcode readonly required />
                                                         <button type="button" class="addressSearchBtn">주소검색</button>
                                                     </div>
                                                     
@@ -116,7 +120,7 @@
                                                 </li>
                                                 <li>
                                                     <div style="margin-bottom: 10px;">
-                                                        <input type="text" placeholder="기본주소"  id="address1" name="address1" />
+                                                        <input type="text" placeholder="기본주소"  id="address1" name="address1" required />
                                                     </div>
                                                 </li>
                                                 <li>
@@ -140,9 +144,9 @@
                                                     <option>019</option>
                                                 </select>
                                                 <span>-</span>
-                                                <input type="text" class="phone2" />
+                                                <input type="text" class="phone2" required />
                                                 <span>-</span>
-                                                <input type="text" class="phone3" />
+                                                <input type="text" class="phone3" required />
                                             </div>
                                         </td>
                                     </tr>
@@ -150,10 +154,9 @@
                                         <td class="label">이메일 <span class="required">*</span></td>
                                         <td class="inputBox">
                                             <div class="email-group">
-                                                <input type="text" class="email-input" />
+                                                <input type="text" class="email-input" required />
                                                 <span>@</span>
                                                 <select class="domain-select">
-                                                    <option>직접입력</option>
                                                     <option>naver.com</option>
                                                     <option>gmail.com</option>
                                                     <option>daum.net</option>
@@ -191,38 +194,18 @@
                 <div class="orderProduct">
                     <details open>
                         <summary>주문상품 <span>(3)</span></summary>
-                        <!-- 상품 하나 -->
-                        <div class="orderProduct_one">
-                            <img src="../images/productimage/photocard.png" alt="상품1" />
-                            <div class="productInfo">
-                                <p class="productName">HI-SRARK PHOTOCARD SET ver. 1 / 2</p>
-                                <p class="productOption">옵션: ver.1</p>
-                                <p class="productQty">수량: 1</p>
-                                <p class="productPrice">₩6,600</p>
-                            </div>
-                        </div>
+                        <c:forEach var="item" items="${cartItems}">
+	                        <!-- 상품 하나 -->
+	                        <div class="orderProduct_one" id="${item.cartitem_id}">
+	                            <img src="../images/productimage/${item.product.productImg}" alt="상품1" />
+	                            <div class="productInfo">
+	                                <p class="productName">${item.product.productName}</p>
+	                                <p class="productQty">수량: ${item.quantity}</p>
+	                                <p class="productPrice">₩<fmt:formatNumber value="${item.product.productPrice*item.quantity}" pattern="#,###" /></p>
+	                            </div>
+	                        </div>
+                        </c:forEach>
 
-                        <!-- 반복될 부분 -->
-                        <div class="orderProduct_one">
-                            <img src="../images/productimage/acrylic_keyring_YUHYUN.png" alt="상품2" />
-                            <div class="productInfo">
-                                <p class="productName">YUHYUN ACRYLIC KEYRING</p>
-                                <p class="productOption">옵션: YUHYUN</p>
-                                <p class="productQty">수량: 2</p>
-                                <p class="productPrice">₩24,000</p>
-                            </div>
-                        </div>
-                        
-                        <!-- 반복될 부분 -->
-                        <div class="orderProduct_one">
-                            <img src="../images/productimage/acrylic_keyring_JEONGHUN.png" alt="상품3" />
-                            <div class="productInfo">
-                                <p class="productName">JEONGHUN ACRYLIC KEYRING</p>
-                                <p class="productOption">옵션: JEONGHUN</p>
-                                <p class="productQty">수량: 1</p>
-                                <p class="productPrice">₩12,000</p>
-                            </div>
-                        </div>
                     </details>
                 </div>
         
@@ -235,15 +218,21 @@
                                 <tbody>
                                     <tr>
                                         <td class="label">주문상품</td>
-                                        <td class="value">₩42,600</td>
+                                        <td class="value">
+                                        	₩<fmt:formatNumber value="${total}" pattern="#,###" />
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td class="label">배송비</td>
-                                        <td class="value">₩3,000</td>
+                                        <td class="value">
+                                        	₩<fmt:formatNumber value="${shipping}" pattern="#,###" />
+										</td>
                                     </tr>
                                     <tr>
                                         <td class="label total">최종 결제 금액</td>
-                                        <td class="value total">₩45,600</td>
+                                        <td class="value total">
+                                        	₩<fmt:formatNumber value="${total+shipping}" pattern="#,###" />
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -272,15 +261,15 @@
                             <div class="paymethod-detail" id="virtualAccount-detail" style="display:none">- 10/1까지 적립금 외 다른 수단의 결제가 중단됩니다.</div>
                             <div class="paymethod-detail" id="paidCredit-detail" style="display:none">
                                 <div>
-                                    적립금 : 1,000,000 P
+                                    적립금 : <span id="creditValue">1,000,000</span> P
                                 </div>
                                 <div class="creditInputDiv">
-                                    결제 금액 : <input type="text" id="paidCreditValue" value="0" min="0" readonly/>
+                                    결제 금액 : <input type="text" id="paidCreditValue" value="0" min="0"/>
                                     <button type="button">적용</button>
                                     <button type="button" id="payAll">전액 사용</button>
                                 </div>
                                 <div>
-                                    결제 후 잔액 : <span>954,400</span> P
+                                    결제 후 잔액 : <span id="creditValueAfter">954,400</span> P
                                 </div>
                             </div>
                         </div>
@@ -313,12 +302,14 @@
         </div>
         
         <div class="payButtonBox"> 
-            <button type="button" id="payBtn">45,600원 결제하기</button>
+            <button type="button" id="payBtn">
+				<fmt:formatNumber value="${total+shipping}" pattern="#,###" /> 원 결제하기
+			</button>
             <!-- 결제 클릭했는데 적립금 부족시 적립금이 부족합니다 alert -->
         </div>
     </div>
 
     
 </body>
-<script type="text/javascript" src="js/order.js"></script>
+<script type="text/javascript" src="../js/order.js"></script>
 </html>

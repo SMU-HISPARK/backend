@@ -1,10 +1,12 @@
 package com.java.entity;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -25,7 +27,8 @@ public class Orders {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int order_id;
+	@Column(name="order_id")
+	private int orderId;
 	
 	@Column(name="order_code", nullable = false,length=100)
 	private String orderCode;
@@ -33,6 +36,9 @@ public class Orders {
 	@ManyToOne
 	@JoinColumn(name="member_id")
 	private Member member;
+	
+    @OneToMany(mappedBy = "orders", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<OrderItem> orderitems;
 	
 	@Column(nullable=false, length=100)
 	private String receiver;
@@ -46,7 +52,7 @@ public class Orders {
 	@Column(name="address_main", nullable=false, length=100)
 	private String addressMain;
 	
-	@Column(name="adress_detail", nullable=false, length=100)
+	@Column(name="adress_detail", length=100)
 	private String addressDetail;
 	
 	@Column(name="order_state", nullable=false) //0: 상품준비중 1:배송중 2:배송완료 -1: 취소
@@ -61,7 +67,7 @@ public class Orders {
 	@Column(name="deliver_cost", nullable=false)
 	private int deliverCost;
 	
-	@Column(name="delivery_message", nullable=false, length=100)
+	@Column(name="delivery_message", length=100)
 	private String deliveryMessage;
 	
 	@CreationTimestamp

@@ -26,11 +26,33 @@ $(document).ready(function(){
         );
     });
 
+	
+	$('#orderForm').on('submit', function(e){
+		let isValid = true;
+
+		    // 필수 input 체크
+		    $(this).find('[required]').each(function(){
+				console.log(!$(this).val())
+				alert(!$(this).val());
+		        if(!$(this).val()){  // 있으면 true, 없으면 false
+		            alert("필수 요소를 입력해 주세요."); // 메시지 커스터마이징
+		            $(this).focus();
+		            isValid = false;
+		            return false; // each 루프 탈출
+		        }
+		    });
+
+		    if(!isValid){
+		        e.preventDefault(); // 제출 막기
+		    }
+	});// 필수요소 미입력시 alert
     
     //결제버튼
     $(document).on("click", "#payBtn", function() {
 		if($("#allconfirm").is(':checked')){
-	        $(".orderFrm").submit();
+			alert("결제를 진행합니다.");
+			$(".purchaseFrm").submit();
+			
 		}else{
 			alert("결제 약관에 동의하셔야 상품 구매가 가능합니다.");
 		  	return;
@@ -38,7 +60,7 @@ $(document).ready(function(){
     });//payBtn
 
     // form submit 시 팝업들 닫기
-    $(document).on("submit", "#orderFrm", function () {
+    $(document).on("submit", ".purchaseFrm", function () {
         popupWindows.forEach(function (w) {
             if (w && !w.closed) {
                 w.close();
@@ -92,5 +114,6 @@ $(document).ready(function(){
         alert("냥");
         $("#paidCreditValue").val("45600");
     });
+	
 
 });//jquery

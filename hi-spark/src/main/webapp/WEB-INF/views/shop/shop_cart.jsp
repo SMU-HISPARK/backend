@@ -92,7 +92,7 @@
                                         <td class="countselect">
                                             <div class="quantity-control">
                                                 <button type="button" class="quantity-btn">-</button>
-                                                <input type="text" class="quantity-input" value="${item.quantity}" min="1"/>
+                                                <input type="text" name="quantities" class="quantity-input" value="${item.quantity}" min="1"/>
                                                 <button type="button" class="quantity-btn">+</button>
                                             </div>
                                         </td>
@@ -120,7 +120,7 @@
                             </table>
                         </div>
                         <div class="action-buttons">
-                            <button type="button" class="btn selectAll">전체선택</button>
+                            <button type="button" class="btn selectAll">선택해제</button>
                             <button type="button" class="btn deleteSelected">선택삭제</button>
                         </div>
                     </div>
@@ -142,8 +142,10 @@
                         </div>
                         
                         <div class="order-buttons">
-                            <button type="button" class="btn order-btn">선택 주문하기</button>
-                            <button onclick="orderAllBtn()" class="btn order-btn orderAll">전체 주문하기</button>
+                            <!-- 선택 주문 버튼 -->
+							<button type="button" class="btn order-btn" id="selectOrderBtn">선택 주문하기</button>
+							<!-- 전체 주문 버튼 -->
+							<button type="button" class="btn order-btn orderAll" id="allOrderBtn">전체 주문하기</button>
                         </div>
                     </div>
                 </div>

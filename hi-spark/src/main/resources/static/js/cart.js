@@ -32,6 +32,9 @@ $(document).ready(function(){
         } else {
             $(this).text("선택해제");
         }
+		
+		updatePrice();// 가격 업데이트
+		
     });//selectall
 	
 	$(document).on("change", 'input[type="checkbox"]', function() {
@@ -50,11 +53,8 @@ $(document).ready(function(){
     
     //선택삭제
     $(document).on("click",".deleteSelected", function(){
-        var checkedBoxes = $('input[type="checkbox"]:checked');
-        checkedBoxes.each(function(){
-            $(this).closest('.product-container').remove();
-        });
-        
+        $('.basket input[type="checkbox"]:checked').closest('.product-container').remove();
+		
         checkCartEmpty();//장바구니가 비어있는지 확인
         updatePrice();// 가격 업데이트
 
@@ -172,6 +172,7 @@ $(document).ready(function(){
     function updatePrice() {
 		let total = 0;
 	    // 체크된 상품만 합산
+
 	    $(".basket input[type='checkbox']:checked").each(function() {
 	        const table = $(this).closest('table');
 	        const qty = parseInt(table.find('.quantity-input').val());
@@ -192,10 +193,30 @@ $(document).ready(function(){
 	    $("table.pricesum span:eq(2)").text((total + shipping).toLocaleString());
     }
 	
-	
-	$('form[name="orderFrm"]').on('submit', function(){
-	    $(this).find('input[type="checkbox"]').not(':checked').remove();
+
+	const orderFrm = $('form[name="orderFrm"]');
+
+	// 선택 주문 버튼
+	$('#selectOrderBtn').click(function() {
+	    const checkedItems = orderFrm.find('input[type="checkbox"]:checked');
+	    if (checkedItems.length == 0) {
+	        alert("주문하실 상품을 선택해 주세요.");
+	        return;
+	    }
+	    // 체크된 것만 hidden input으로 추가
+	    // 이미 체크박스가 value로 cartItemId를 갖고 있으므로 그대로 submit 가능
+	    orderFrm.submit();
 	});
+
+	// 전체 주문 버튼
+	$('#allOrderBtn').click(function() {
+	    // 모든 체크박스 체크
+	    orderFrm.find('input[type="checkbox"]').prop('checked', true);
+	    orderFrm.submit();
+	});
+	
+	
+	
 	
 
 	function updateCartBadge() {
@@ -207,7 +228,7 @@ $(document).ready(function(){
 	        $(".cartBadge").hide();
 	    }
 
-	}
+	}// 카트 뱃지 업테이트
 	
 	
 	

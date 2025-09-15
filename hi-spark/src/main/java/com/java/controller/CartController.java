@@ -14,7 +14,9 @@ import com.java.service.MemberService;
 import com.java.service.CartService;
 
 import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class CartController {
@@ -33,8 +35,13 @@ public class CartController {
 	}
 	
 	@GetMapping("/shop/cart")
-	public String cart(Model model) {
+	public String cart(
+			
+			HttpServletRequest request,
+			Model model) {
+		HttpSession session = request.getSession();
 		int memberId = 1;
+		session.setAttribute("memberId",memberId);
 		
 		Member member = memberService.findById(memberId);
 		if ( member == null ) {  
@@ -47,6 +54,12 @@ public class CartController {
 		Cart cart = cartService.getCartByMember(member);
 
 		model.addAttribute("cart", cart);
+		
+		
 		return "shop/shop_cart";
 	}
+	
+	
+	
+	
 }
