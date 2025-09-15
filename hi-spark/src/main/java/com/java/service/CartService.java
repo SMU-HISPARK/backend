@@ -1,12 +1,19 @@
-//package com.java.service;
-//
-//import java.util.Optional;
-//
-//import com.java.entity.Cart;
-//import com.java.entity.Member;
-//
-//public interface CartService {
-//
-//	Cart findByMember(Member member);
-//
-//}
+package com.java.service;
+
+import java.util.Optional;
+
+import com.java.entity.Cart;
+import com.java.entity.CartItem;
+import com.java.entity.Member;
+
+public interface CartService {
+
+	Cart getCartByMember(Member member);
+
+	Cart getCartByMember_MemberId(int memberId);
+	CartItem save(CartItem cartItem);
+
+	Cart getOrCreateCart(Member member);
+
+
+}

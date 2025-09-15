@@ -30,7 +30,7 @@
 
 					<!-- 우측 아이콘 -->
 					<div class="hMenu hRight">
-					<a href="/cart" class="cartWrapper">
+					<a href="/shop/cart" class="cartWrapper">
 						<img src="images/cart.png" style="width:29px;" /> <!--여기부터 다음줄까지-->
 						<span class="cartBadge">3</span> <!-- 스프링에서 c:if 활용 커뮤니티에선 display:none -->
 					</a>

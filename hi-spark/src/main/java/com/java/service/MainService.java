@@ -10,7 +10,13 @@ import com.java.entity.Product;
 public interface MainService {
 	// 상품리스트 가져오기
 	List<Product> findAll();
+	
+	
+	
 	// 상품 상세보기
 	Product findByID(int productId);
 
+
+
+	Product findById(int productId);
 }

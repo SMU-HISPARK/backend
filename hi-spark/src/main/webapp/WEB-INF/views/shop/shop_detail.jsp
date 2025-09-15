@@ -117,43 +117,16 @@
 	                           <button type="button" disable style="background: #ccc; cursor:not-allowed;" class="basket">장바구니</button>
 	                        </c:if>
 	                        <c:if test="${product.productQuantity > 0}">
-	                           <button type="button" class="basket" onclick="addToCart(${product.productId})">장바구니</button>
-	                        </c:if>
+							   <form action="/shop/cart/add" method="post" id="cartFrm">
+							       <input type="hidden" name="productId" value="${product.productId}">
+							       <input type="hidden" id="hiddenQuantity" name="quantity" value="1">
+							       <button type="submit" class="basket">장바구니</button>
+							   </form>
+							</c:if>
 	                            <button type="button" class="buy">바로구매</button>
 	                        </div>
                     	</div>
 				</div>
-				
-				
-				<!-- 상품추가 스크립트 장바구니  -->
-				<script>
-				
-				function addToCart(productId){
-				    let quantity = document.getElementById("quantityInput").value;
-				    let form = document.createElement("form");
-				    form.method = "post";
-				    form.action = "/cart/add";
-				
-				    let idInput = document.createElement("input");
-				    idInput.type = "hidden";
-				    idInput.name = "productId";
-				    idInput.value = productId;
-				
-				    let qtyInput = document.createElement("input");
-				    qtyInput.type = "hidden";
-				    qtyInput.name = "quantity";
-				    qtyInput.value = quantity;
-				
-				    form.appendChild(idInput);
-				    form.appendChild(qtyInput);
-				    document.body.appendChild(form);
-				    form.submit();
-				}
-				</script>
-				
-				
-				
-				
                 <div class="Information">
                     <p>상세정보</p>
 					<br>
@@ -161,9 +134,7 @@
                 </div>
 				
 			</div>
-                    <script>
-						
-						
+            <script>
 						$(document).ready(function () {
 							//sold out일때 js update total 실행안하기
 							
@@ -246,15 +217,21 @@
 						
 												    
 						    // 장바구니로 전송 
-						    $(".basket").click(function(){
-						        let productId = "${product.productId}";
-						        let quantity = $(".quantity-input").val();
-						        window.location.href = "/cart/add?productId=" + productId + "&quantity=" + quantity;
-						    });
-
 						    function formatNumber(num) {
 							    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 							}
+						    
+						    
+						    
+						    
+						    // 수량이 바뀔 때 hidden input 값도 업데이트
+							$(".quantity-input").on("input", function () {
+							    $("#hiddenQuantity").val($(this).val());
+							});
+							$(".quantity-btn-plus, .quantity-btn-minus, .quantity-input").on("input click", function () {
+							    syncQuantity();
+							});
+
 						});
 						
 						</script>

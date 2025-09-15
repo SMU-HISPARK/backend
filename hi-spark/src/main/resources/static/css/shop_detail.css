@@ -155,12 +155,23 @@
 
 
 .basket {
+    width: 100%;
+    height:100%;
+    border:none;
+    background-color: #fafafa;
+    color: #1a1a1a;
+    font-size: 15px;
+    font-weight: 700px;
+}
+#cartFrm {
     width: 50%;
     border:1px solid #ccc;
     background-color: #fafafa;
     color: #1a1a1a;
     font-size: 15px;
     font-weight: 700px;
+    display: flex;
+    align-items: center;
 }
 .buy {
     /* width: 160px; */

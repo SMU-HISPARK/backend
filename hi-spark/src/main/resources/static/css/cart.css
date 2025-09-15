@@ -298,7 +298,7 @@ input[type="checkbox"]:checked{
     cursor:pointer;
 }
 
-.productprice-sum{
+.productprice-sum,.productprice-delivery{
     display:flex;
     justify-content: space-between;
     margin-bottom:20px;
