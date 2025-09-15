@@ -21,7 +21,7 @@
 			<!-- header -->
 			<div id="header">
 				<div id="snbBox">
-					<a href="shop_main.html"><h1><img src="/images/hispark_crop.png" alt="(로고)" /></h1></a>
+					<a href="/shop"><h1><img src="/images/hispark_crop.png" alt="(로고)" /></h1></a>
 					<div id="snb">
 						<ul>
 							<li><a href="#">로그인</a></li>
@@ -64,7 +64,7 @@
                                 </tr>
                                 <tr>
                                     <th>배송비</th>
-                                    <td>${product.productName}</td>
+                                    <td>${product.delfee}</td>
                                 </tr>
                            <!--     <tr class="product_option">
                                     <th>옵션</th>
@@ -84,28 +84,76 @@
                                     <td class="quantity-title">수량</td>
                                     <td class="countselect">
                                         <div class="quantity-control">
-                                            <button type="button" class="quantity-btn">-</button>
-                                            <input type="text" class="quantity-input" value="1" min="1" />
-                                            <button type="button" class="quantity-btn">+</button>
+                                            <button type="button" class="quantity-btn-minus">-</button>
+                                            <input type="text" id="quantityInput"  class="quantity-input" value="1" min="1" max="${product.productQuantity}" />
+                                           <button type="button" class="quantity-btn-plus" >+</button>
                                         </div>
                                     </td>
                                 </tr>
                                 <tr class="product_total">
                                     <th>TOTAL</th>
                                    <td>
-                                   	<fmt:formatNumber value="${product.productprice}" pattern="#,###" />
+                                   <c:choose>
+									<c:when test="${product.productQuantity==0}">
+										<div class="sold out">
+											<p class="product_price">sold out</p>
+										</div>
+									</c:when>
+										<c:otherwise>
+											<div class="product_price">
+												<fmt:formatNumber value="${product.productprice}" pattern="#,###" />
+											</div>
+										</c:otherwise>									
+									</c:choose>
                                    </td>
                                 </tr>
                                 
                             </table>
+                      
 
                         </div>
 	                        <div class="product_button">
-	                           <button type="button"  class="basket">장바구니</button>
+	                        <c:if test="${product.productQuantity == 0}">
+	                           <button type="button" disable style="background: #ccc; cursor:not-allowed;" class="basket">장바구니</button>
+	                        </c:if>
+	                        <c:if test="${product.productQuantity > 0}">
+	                           <button type="button" class="basket" onclick="addToCart(${product.productId})">장바구니</button>
+	                        </c:if>
 	                            <button type="button" class="buy">바로구매</button>
 	                        </div>
                     	</div>
 				</div>
+				
+				
+				<!-- 상품추가 스크립트 장바구니  -->
+				<script>
+				
+				function addToCart(productId){
+				    let quantity = document.getElementById("quantityInput").value;
+				    let form = document.createElement("form");
+				    form.method = "post";
+				    form.action = "/cart/add";
+				
+				    let idInput = document.createElement("input");
+				    idInput.type = "hidden";
+				    idInput.name = "productId";
+				    idInput.value = productId;
+				
+				    let qtyInput = document.createElement("input");
+				    qtyInput.type = "hidden";
+				    qtyInput.name = "quantity";
+				    qtyInput.value = quantity;
+				
+				    form.appendChild(idInput);
+				    form.appendChild(qtyInput);
+				    document.body.appendChild(form);
+				    form.submit();
+				}
+				</script>
+				
+				
+				
+				
                 <div class="Information">
                     <p>상세정보</p>
 					<br>
@@ -114,11 +162,18 @@
 				
 			</div>
                     <script>
-						function formatNumber(num) {
-						    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-						}
+						
 						
 						$(document).ready(function () {
+							//sold out일때 js update total 실행안하기
+							
+							let stock = parseInt("${product.productQuantity}", 10);
+
+						  //  if (stock === 0) {
+						  //      $(".product_price").html("<p class="product_price">sold out</p>");
+						 //       return; // 더 이상 실행 안 함
+						  //  }
+						    
 						    let unitPrice = parseInt("${product.productprice}", 10); // 숫자 그대로 받음
 						
 						    function updateTotal(quantity) {
@@ -127,42 +182,79 @@
 						    }
 						
 						    // + 버튼
-						    $(".quantity-btn:last").click(function () {
-						        let input = $(".quantity-input");
+						    $(".quantity-btn-plus").click(function () {
+						        let input = $("#quantityInput");
 						        let quantity = parseInt(input.val()) || 1;
-						        quantity++;
-						        input.val(quantity);
-						        updateTotal(quantity);
+
+						        if (stock === 0) {
+						            alert("품절입니다 😢");
+						            input.val(1);                  // ✅ 품절이면 강제로 1 고정
+						           return;
+						        }
+						        if (quantity < stock) {
+						            input.val(quantity + 1);
+						            updateTotal(quantity + 1);
+						        } else {
+						            alert("재고를 초과할 수 없습니다 😢");
+						            input.val(stock); // 재고 이상 못 올라가게 고정
+						        }
 						    });
 						
 						    // - 버튼
-						    $(".quantity-btn:first").click(function () {
-						        let input = $(".quantity-input");
+						    $(".quantity-btn-minus").click(function () {
+						        let input = $("#quantityInput");
 						        let quantity = parseInt(input.val()) || 1;
-						        if (quantity > 1) quantity--;
-						        input.val(quantity);
-						        updateTotal(quantity);
+						        
+						        if(quantity > 1){
+							        input.val(quantity - 1);
+							        updateTotal(quantity -1);
+						        }else{
+						        	alert("최소 수량은 1개입니다.");
+						            input.val(1); // 최소 1로 고정
+						        }
 						    });
 						
+
 						    // 직접 입력
 						    $(".quantity-input").on("input", function () {
 						        let quantity = parseInt($(this).val()) || 1;
-						        if (quantity < 1) quantity = 1;
+
+						        if (stock === 0) {
+						            alert("품절입니다");
+						            $(this).val(1);
+						            return;
+						        }
+						        if (quantity < 1) {
+						            alert("최소 수량은 1개입니다.");
+						            quantity = 1;
+						        }
+						        if (quantity > stock) {
+						            alert("재고를 초과할 수 없습니다");
+						            quantity = stock;
+						        }
+
 						        $(this).val(quantity);
 						        updateTotal(quantity);
 						    });
-						
+
 						    // 초기 TOTAL
-						    updateTotal(1);
-						    
-						    
+						    if (stock > 0) {
+						        updateTotal(1);
+						    } else {
+						        $(".product_total .product_price").html("<span class='product_price'>sold out</span>");
+						    }
+						
+												    
+						    // 장바구니로 전송 
 						    $(".basket").click(function(){
 						        let productId = "${product.productId}";
 						        let quantity = $(".quantity-input").val();
 						        window.location.href = "/cart/add?productId=" + productId + "&quantity=" + quantity;
 						    });
 
-                    	
+						    function formatNumber(num) {
+							    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+							}
 						});
 						
 						</script>

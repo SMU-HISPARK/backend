@@ -34,7 +34,7 @@
 						<img src="images/cart.png" style="width:29px;" /> <!--여기부터 다음줄까지-->
 						<span class="cartBadge">3</span> <!-- 스프링에서 c:if 활용 커뮤니티에선 display:none -->
 					</a>
-					<a href="/"><img src="images/user.png" style="width:28px;" /></a>
+					<a href="/mypage/shop"><img src="images/user.png" style="width:28px;" /></a>
 				</div>
 				</div>
 			</div>
@@ -57,9 +57,22 @@
 									</a>
 								</div>
 								<div class="product_name">${product.productName}</div>
-								<div class="product_price">
-									<fmt:formatNumber value="${product.productprice}" pattern="#,###" />
-								</div>
+								
+								
+								<!-- 재고가 0일때 -->
+								<c:choose>
+									<c:when test="${product.productQuantity==0}">
+										<div class="sold out">
+											<p class="product_price">sold out</p>
+										</div>
+									</c:when>
+									<c:otherwise>
+										<div class="product_price">
+											<fmt:formatNumber value="${product.productprice}" pattern="#,###" />
+										</div>
+									</c:otherwise>									
+								</c:choose>
+							
 							</div>
 						</c:forEach>
 					
