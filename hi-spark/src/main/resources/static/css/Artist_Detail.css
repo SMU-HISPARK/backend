@@ -291,7 +291,12 @@
     .chatBtn:active {
         transform: scale(0.95) rotate(2deg);
     }
-
+	.phone .ment{
+        font-family: 'SchoolSafetyKid', sans-serif;
+		font-size: 14px;
+		margin-top: 12px; 
+		color: #A0A0A0;
+	} 
     /* 모달 배경 */
     .modal {
         display: none; 

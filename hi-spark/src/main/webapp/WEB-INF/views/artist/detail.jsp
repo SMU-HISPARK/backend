@@ -35,6 +35,28 @@
             }
         });
     });
+    document.addEventListener("DOMContentLoaded", function(){
+        const modal = document.getElementById("imgModal");
+        const modalImg = document.getElementById("modalImg");
+        const closeBtn = document.querySelector(".close");
+
+        document.querySelectorAll(".profile_image img").forEach(img => {
+            img.addEventListener("click", function() {
+                modal.style.display = "block";
+                modalImg.src = this.src;
+            });
+        });
+
+        closeBtn.addEventListener("click", function() {
+            modal.style.display = "none";
+        });
+
+        modal.addEventListener("click", function(e) {
+            if (e.target === modal) {
+                modal.style.display = "none";
+            }
+        });
+    });
 
 </script>
 <body>
@@ -42,7 +64,7 @@
         
         <div class="name">
             <h3>TEAM MEMBER</h2>
-                <h1>${artist.eng_name}</h1>
+                <h1>${artist.engname}</h1>
             </div>
         <div class="content">
             <div class="total">
@@ -60,7 +82,7 @@
                     </tr>
                     <tr class="profile_info">
                         <th>생년월일</th>
-                        <td>${artist.birth}</td>
+                        <td>${artist.birth}.</td>
                     </tr>
                     <tr class="profile_info">
                         <th>MBTI</th>
@@ -68,11 +90,11 @@
                     </tr>
                     <tr class="profile_info">
                         <th>키</th>
-                        <td>${artist.height}</td>
+                        <td>${artist.height}cm</td>
                     </tr>
                     <tr class="profile_info">
                         <th>몸무게</th>
-                        <td>${artist.weight}</td>
+                        <td>${artist.weight}kg</td>
                     </tr>
                     <tr class="profile_info">
                         <th>동아리</th>
@@ -93,12 +115,15 @@
                         <th class="photo"><p style="text-align: center; width: 96%;">활동사진</p></th>
                     </tr>
                     <tr>
-	                    <td class="phone">
-     						<button class="chatBtn" onclick="showPopup(${artist.ano})">
-				                <p>${artist.phone}</p>
-				            </button>
-						</td>
-
+                        <td class="phone">
+                            <button class="chatBtn" onclick="showPopup()">
+                                <p>${artist.phone}<br>
+                                
+                            </p>
+                            </button>
+                            <p class="ment">연락처를 클릭하면<br>
+                             멤버와 대화를 할 수 있어요!</p>
+                        </td>
                         <td class="photo">
                         <img src="${artist.clubimage_01}">
                         <img src="${artist.clubimage_02}">
@@ -115,7 +140,7 @@
                     <tr>
                         <td class="phone">
                             <div class="phone_sticker">
-                               <p>${artist.comment_text}
+                               <p>${artist.acomment}
                                 
                             </p>
                             </div>
