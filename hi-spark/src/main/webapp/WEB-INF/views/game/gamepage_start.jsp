@@ -307,6 +307,8 @@
         let test_num = 0;      // 현재 질문 번호
         const total_questions = 6; // 총 질문 수 (임시 설정)
 
+        // const total_day = 4;    // 총 day 수 >> 필요없을듯?
+
         /* 이벤트 리스너 */
 
 
@@ -328,7 +330,7 @@
             test_num = 1;
             $('.question_box h4').text(test_num + '/' + total_questions);
             progressBarUpdate(test_num - 1); // 진행 바 업데이트 함수 호출
-            processNextQuestion(null);   // 첫 질문 처리 함수 호출 (답변 없음)
+            processNextQuestion();   // 첫 질문 처리 함수 호출 (답변 없음)
 
         }); // form submit
 
@@ -425,7 +427,7 @@
         }
 
         // 다음 질문 처리 함수
-        function processNextQuestion(selected_answer) {
+        function processNextQuestion() {
 
             ///////// 여기에 다음 질문을 불러오는 로직 추가 /////////
             // 예: AJAX 요청을 통해 서버에서 다음 질문과 답변 태그를 받아와서 업데이트
@@ -437,15 +439,19 @@
                     question_id: $('.question_num').val(),
                     option_no: AnswerMap.get($('.question_num').val())
                 },
+                contentType: 'application/json',
                 dataType: 'json',
                 success: function(response) {
+                    console.log(response);
                     // 서버에서 받은 데이터로 화면 업데이트
+                    /*
                     $('.question_box h3').text(response.next_question);
                     $('.answer_box .answer1').text(response.next_answer1);
                     $('.answer_box .answer2').text(response.next_answer2);
                     $('.question_num').val(response.next_question_num);
                     $('.answer_box input[name="answer1"]').val(response.next_tag1); 
                     $('.answer_box input[name="answer2"]').val(response.next_tag2);
+                    */
                 },
                 error: function() {
                     alert('다음 질문을 불러오는 데 실패했습니다.');
@@ -454,7 +460,7 @@
 
 
 
-            
+            /*
             // 현재는 예시로 질문과 답변을 하드코딩
 
             let next_question = "다음 질문 예시입니다.";
@@ -471,6 +477,7 @@
             $('.question_num').val(next_question_num);
             $('.answer_box input[name="answer1"]').val(next_tag1); 
             $('.answer_box input[name="answer2"]').val(next_tag2);
+            */
         }
 
     </script>

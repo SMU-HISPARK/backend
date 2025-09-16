@@ -6,4 +6,6 @@ public interface GameService {
 
 	GameQuestion findById(Integer question_id);
 
+	GameQuestion findByDayAndTime(Integer nextDay, Integer nextTime);
+
 }

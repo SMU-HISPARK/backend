@@ -14,25 +14,40 @@ public class GameQuestionController {
 
 	@Autowired GameService gServ;
 	
+	// 초기 질문의 question_id
+	private final int initalQNum = 3;
+	
+	public int getInitalQNum() {
+		return initalQNum;
+	}
+
+	
 	
 	@PostMapping("/game/nextQuestion")
 	public GameQuestion nextQuestion(@RequestBody ResponseDto dto) {
 		
-		GameQuestion questionInit = gServ.findById(3);
+		GameQuestion questionInit = gServ.findById(getInitalQNum());
+		Integer nextTime = 0;
+		Integer nextDay = 0;
 		
 		// 첫 번째 질문 리턴
 		if(dto.getQuestion_id() == null) {
 			return questionInit;
 		}
 		
+		GameQuestion qSubmitted = gServ.findById(dto.getQuestion_id());
 		
-		// 고른 선택지를 받아와서 해당 GameQuestion 객체를 찾음 
-		//GameQuestion QuestionInput =  gServ.findById(dto.getQuestion_id());
+		if(qSubmitted.getTime() == 3) {
+			nextTime = 1;
+			nextDay = qSubmitted.getDay() + 1;
+		}else {
+			nextTime = qSubmitted.getTime() + 1;
+			nextDay = qSubmitted.getDay();
+		}
 		
+		GameQuestion nextGameQ = gServ.findByDayAndTime(nextDay, nextTime);
 		
-		
-		
-		return null;
+		return nextGameQ;
 	}
 	
 }

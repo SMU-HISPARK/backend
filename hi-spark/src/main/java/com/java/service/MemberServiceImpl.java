@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 
 import com.java.dto.MemberDto;
 import com.java.entity.Member;
-import com.java.respository.MemberRepository;
+import com.java.repository.MemberRepository;
 
 @Service
 public class MemberServiceImpl implements MemberService {
