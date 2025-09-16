@@ -139,7 +139,7 @@
     }
   </style>
   <script>
-  	if(${notFound} == "1")){
+  	if("${notFound}" == "1"){
   		alert("아이디 또는 비밀번호가 다릅니다.");
   	}
   </script>
@@ -150,12 +150,11 @@
       <i class="fas fa-user"></i>
       <i class="fas fa-shopping-bag"></i>
     </div>
-  </div>
   <div class="container">
     <div class="login-box">
       <h1>로그인</h1>
       <form action="/member/login" method="post">
-        <input type="text" name="id" placeholder="아이디" class="input-box" required>
+        <input type="text" name="loginId" placeholder="아이디" class="input-box" required>
         <input type="password" name="password" placeholder="비밀번호" class="input-box" required>
         <button type="submit" class="btn btn-login">로그인</button>
       </form>

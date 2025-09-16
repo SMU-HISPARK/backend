@@ -18,14 +18,16 @@ public class GameQuestionController {
 	@PostMapping("/game/nextQuestion")
 	public GameQuestion nextQuestion(@RequestBody ResponseDto dto) {
 		
+		GameQuestion questionInit = gServ.findById(3);
+		
 		// 첫 번째 질문 리턴
-		if(dto.getQuestion_id().equals("")) {
-			return gServ.findById(3);
+		if(dto.getQuestion_id() == null) {
+			return questionInit;
 		}
 		
 		
 		// 고른 선택지를 받아와서 해당 GameQuestion 객체를 찾음 
-		GameQuestion QuestionInput =  gServ.findById(dto.getQuestion_id());
+		//GameQuestion QuestionInput =  gServ.findById(dto.getQuestion_id());
 		
 		
 		

@@ -76,19 +76,29 @@ public class GameRun {
 	private Timestamp finished_at;
 	
 	@ColumnDefault("0")
-	private Integer score1;
+	@Column(nullable = false)
+	@Builder.Default
+	private Integer score1 = 0;
 	
 	@ColumnDefault("0")
-	private Integer score2;
+	@Column(nullable = false)
+	@Builder.Default
+	private Integer score2 = 0;
 	
 	@ColumnDefault("0")
-	private Integer score3;
+	@Column(nullable = false)
+	@Builder.Default
+	private Integer score3 = 0;
 	
 	@ColumnDefault("0")
-	private Integer score4;
+	@Column(nullable = false)
+	@Builder.Default
+	private Integer score4 = 0;
 	
 	@ColumnDefault("0")
-	private Integer score5;
+	@Column(nullable = false)
+	@Builder.Default
+	private Integer score5 = 0;
 	
 	// 읽기 전용 필드 (컬럼 X)
 	

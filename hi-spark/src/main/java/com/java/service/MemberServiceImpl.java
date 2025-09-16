@@ -22,7 +22,7 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public MemberDto findByLoginIdAndPassword(String loginId, String password) {
 		
-		Member member = mRep.findByLoginIdAndPassword(loginId, password).orElseGet(null);
+		Member member = mRep.findByLoginIdAndPassword(loginId, password).orElse(null);
 		if(member == null) return null;
 		MemberDto memfind = new MemberDto(member.getLoginId(), member.getNickname());
 		

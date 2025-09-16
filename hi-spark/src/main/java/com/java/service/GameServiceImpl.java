@@ -14,7 +14,7 @@ public class GameServiceImpl implements GameService {
 	@Override
 	public GameQuestion findById(Integer question_id) {
 
-		GameQuestion gq = gqRep.findById(question_id).orElseGet(null);
+		GameQuestion gq = gqRep.findById(question_id).orElse(null);
 		
 		return gq;
 	}

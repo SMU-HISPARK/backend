@@ -13,7 +13,7 @@
 			<a href="/member/step01"><button>회원가입</button></a>
 		</c:if>
 		<c:if test="${session_id != null}">
-			<a href="member/logout"><button>로그아웃</button></a>
+			<a href="/member/logout"><button>로그아웃</button></a>
 		</c:if>
 		<a href="/game"><button>테스트 페이지</button></a>
 	</body>

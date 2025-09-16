@@ -51,7 +51,7 @@ public class MemberController {
 	@PostMapping("/member/login")
 	public String login(
 			@RequestParam(name="redirectTo",required=false) String redirectURL,
-			@RequestParam("id") String loginId,
+			@RequestParam("loginId") String loginId,
 			@RequestParam("password") String password,
 			Model model
 			) {
