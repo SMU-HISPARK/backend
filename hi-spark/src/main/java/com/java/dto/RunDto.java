@@ -9,8 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ResponseDto {
+public class RunDto {
 
-	private Integer question_id;
-	private String tag;
+	private Integer question_id, option_id;
 }

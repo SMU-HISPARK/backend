@@ -6,6 +6,7 @@ import java.util.List;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.java.entity.Member;
 import com.java.entity.sourceData.GameResultClub;
 
@@ -24,6 +25,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Builder
 @AllArgsConstructor
@@ -107,6 +109,8 @@ public class GameRun {
 			fetch = FetchType.LAZY,
 			cascade = CascadeType.ALL, 
 	        orphanRemoval = true)
+	@ToString.Exclude
+	@JsonIgnoreProperties({"gameRun"})
 	private List<QuestionResponse> responses;
 	
 	

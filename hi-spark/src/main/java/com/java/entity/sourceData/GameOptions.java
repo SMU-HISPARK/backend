@@ -2,6 +2,8 @@ package com.java.entity.sourceData;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -20,6 +22,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Entity
 @Data
@@ -64,6 +67,8 @@ public class GameOptions {
 	@Column(nullable = false)
 	private String text;
 	
+	@Column(length = 50)
+	private String tag;
 	
 	// 읽기 전용 필드(컬럼 X)
 	
@@ -72,6 +77,8 @@ public class GameOptions {
 			fetch = FetchType.LAZY, 
 	        cascade = CascadeType.ALL, 
 	        orphanRemoval = true)
+	@ToString.Exclude
+	@JsonIgnoreProperties({"option"})
 	private List<ScoringRules> Scoring;
 	
 }

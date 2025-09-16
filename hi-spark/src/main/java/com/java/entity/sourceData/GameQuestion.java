@@ -2,6 +2,9 @@ package com.java.entity.sourceData;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -17,6 +20,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Entity
 @Data
@@ -58,7 +62,9 @@ public class GameQuestion {
 			fetch = FetchType.LAZY,
 			cascade = CascadeType.ALL, 
 	        orphanRemoval = true)
-	@OrderBy("number ASC")
+	@OrderBy("option_no ASC")
+	@ToString.Exclude
+	@JsonIgnoreProperties({"question"})
 	private List<GameOptions> options;
 
 }

@@ -176,7 +176,8 @@
         /* background_img */
         .question_img {
             /*border:1px solid black;*/
-            background: url('/images/game/corridor_school01.png') no-repeat;
+            background-repeat: no-repeat;
+            background-image: url('/images/game/corridor_school01.png');
             background-size: auto;
             position: fixed;
             bottom: 50%; left: 50%;
@@ -268,11 +269,11 @@
         </div>
         <form>
             <div class="answer_box box">
-                <input type="hidden" class="question_num" value=""/>       <!-- DB에 저장된 질문번호 -->
+                <input type="hidden" class="question_id" value=""/>       <!-- DB에 저장된 질문번호 -->
                 <button type="button" class="answer1">친구들과 수다</button>
-                <input type="hidden" name="answer1" value=""/>             <!-- DB에 저장된 답변태그1 -->
+                <input type="hidden" name="answer1" class="" value=""/>             <!-- DB에 저장된 답변태그1 -->
                 <button type="button" class="answer2">혼자서 책 읽기</button>
-                <input type="hidden" name="answer2" value=""/>             <!-- DB에 저장된 답변태그2 -->
+                <input type="hidden" name="answer2" class="" value=""/>             <!-- DB에 저장된 답변태그2 -->
                 <div class="next_box">
                     <button type="submit" class="next_button" disabled>다음으로</button>
                 </div>
@@ -330,7 +331,8 @@
             test_num = 1;
             $('.question_box h4').text(test_num + '/' + total_questions);
             progressBarUpdate(test_num - 1); // 진행 바 업데이트 함수 호출
-            processNextQuestion();   // 첫 질문 처리 함수 호출 (답변 없음)
+            let selected_answer = null;
+            processNextQuestion(selected_answer);   // 첫 질문 처리 함수 호출 (답변 없음)
 
         }); // form submit
 
@@ -378,6 +380,8 @@
             $('.answer_box button').removeClass('selected');                // 선택 스타일 초기화
             $('.next_button').prop('disabled', true); // 다음 버튼 비활성화
 
+            console.log('질문 번호:', $('.question_box h4').text().split('/')[0]);
+
             // 다음 질문으로 넘어가기
             test_num = parseInt($('.question_box h4').text().split('/')[0]);
             if(test_num < total_questions) {     // 임시로 3문제까지
@@ -388,16 +392,31 @@
             }else{
                 progressBarUpdate(total_questions); // 진행 바 100%로 업데이트
                 
-                alert('테스트가 완료되었습니다.');
                 console.log('최종 답변 맵:', AnswerMap);
+                alert('테스트가 완료되었습니다.');
                 
+                const AnswerArr = Array.from(map, ([k,v]) => ({ question_id: k, option_id: v}));
                 ////////// 여기서 서버로 답변 맵 전송하는 코드 추가 가능 //////////
                 // 예: AJAX 요청을 통해 서버에 AnswerMap 전송
+                
+                $.ajax({
+                    url: '/game/saveRun',
+                    method: 'POST',
+                    contentType: 'application/json'
+                    dataType: 'json',
+                    data: JSON.stringify(AnswerArr),
+                    success: function(response){
+                        console.log(response);
+                    },
+                    error: function(){
+                        alert("run 데이터 전송/로드 실패");
+                    }
+                });
+                
 
                 location.href = '/game/result'; // 결과 페이지로 이동
             }
 
-            console.log('질문 번호:', $('.question_box h4').text().split('/')[0]);
             console.log('선택한 답변:', selected_answer);
             console.log('답변 맵:', AnswerMap);
 
@@ -415,9 +434,9 @@
 
         // 답변 저장 함수
         function saveAnswer(selected_answer) {
-            let question_num = $('.question_num').val();
-            let answer_tag = $(`.answer_box input[name="${selected_answer}"]`).val();
-            AnswerMap.set(question_num, answer_tag);
+            let question_id = $('.question_id').val();
+            let option_id = $(".answer_box input[name=" + selected_answer +"]").val();
+            AnswerMap.set(question_id, option_id);
         }
 
         // 진행 바 업데이트 함수
@@ -427,7 +446,7 @@
         }
 
         // 다음 질문 처리 함수
-        function processNextQuestion() {
+        function processNextQuestion(selected_answer) {
 
             ///////// 여기에 다음 질문을 불러오는 로직 추가 /////////
             // 예: AJAX 요청을 통해 서버에서 다음 질문과 답변 태그를 받아와서 업데이트
@@ -435,26 +454,34 @@
             $.ajax({
                 url: '/game/nextQuestion',
                 method: 'POST',
-                data: {
-                    question_id: $('.question_num').val(),
-                    option_no: AnswerMap.get($('.question_num').val())
-                },
+                data: JSON.stringify({
+                    question_id: $('.question_id').val() ?? null,
+                    answer_tag: $(".answer_box input[name=" + selected_answer + "]").attr('class') ?? null
+                }),
                 contentType: 'application/json',
                 dataType: 'json',
                 success: function(response) {
                     console.log(response);
+                    // console.log(response.image);
                     // 서버에서 받은 데이터로 화면 업데이트
-                    /*
-                    $('.question_box h3').text(response.next_question);
-                    $('.answer_box .answer1').text(response.next_answer1);
-                    $('.answer_box .answer2').text(response.next_answer2);
-                    $('.question_num').val(response.next_question_num);
-                    $('.answer_box input[name="answer1"]').val(response.next_tag1); 
-                    $('.answer_box input[name="answer2"]').val(response.next_tag2);
-                    */
+                    
+                    $('.question_box h3').text(response.text);
+                    $('.answer_box .answer1').text(response.options[0].text);
+                    $('.answer_box .answer2').text(response.options[1].text);
+                    $('.question_id').val(response.question_id);
+                    $('.answer_box input[name="answer1"]').addClass(response.options[0].tag);
+                    $('.answer_box input[name="answer2"]').addClass(response.options[1].tag);
+                    $('.answer_box input[name="answer1"]').val(response.options[0].option_id); 
+                    $('.answer_box input[name="answer2"]').val(response.options[1].option_id);
+                    $('.question_img').css({"background-image":"url('/images/game/" + response.image + "')"});
+                    // background: url('/images/game/corridor_school01.png') no-repeat;
                 },
-                error: function() {
+                error: function(xhr, status, err) {
                     alert('다음 질문을 불러오는 데 실패했습니다.');
+                    console.log('status:', status);
+                    console.log('xhr.status:', xhr.status);
+                    console.log('content-type:', xhr.getResponseHeader('content-type'));
+                    console.log('responseText:', xhr.responseText);
                 }
             });
 
@@ -466,7 +493,7 @@
             let next_question = "다음 질문 예시입니다.";
             let next_answer1 = "다음 답변1 예시";
             let next_answer2 = "다음 답변2 예시";
-            let next_question_num = 3;          // 다음 질문 번호
+            let next_question_id = 3;          // 다음 질문 번호
             let next_tag1 = "next_tag1";       // 다음 답변 태그1
             let next_tag2 = "next_tag2";       // 다음 답변 태그2
 
@@ -474,7 +501,7 @@
             $('.question_box h3').text(next_question);
             $('.answer_box .answer1').text(next_answer1);
             $('.answer_box .answer2').text(next_answer2);
-            $('.question_num').val(next_question_num);
+            $('.question_id').val(next_question_id);
             $('.answer_box input[name="answer1"]').val(next_tag1); 
             $('.answer_box input[name="answer2"]').val(next_tag2);
             */
