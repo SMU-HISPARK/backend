@@ -57,19 +57,19 @@ public class CartController {
         Member member = memberService.findById(memberId);
         Cart cart = cartService.getOrCreateCart(member);
 
-        // 👉 장바구니에 이미 있는지 먼저 확인
+        // 장바구니에 이미 있는지 먼저 확인
         Optional<CartItem> existingItemOpt = cartItemRepository.findByCartAndProduct(
                 cart,
                 mainService.findById(productId)
         );
 
-        // 👉 실제 저장 (수량 증가 or 신규 추가)
+        // 실제 저장 (수량 증가 or 신규 추가)
         cartItemService.addCartItem(cart, productId, quantity);
 
-        // 👉 JSP에서 forEach 돌릴 수 있도록 담기
+        // JSP에서 forEach 돌릴 수 있도록 담기
         model.addAttribute("cart", cartService.getCartByMember(member));
 
-        // 👉 메시지 분기
+        // 메시지 분기
         if (existingItemOpt.isPresent()) {
             redirectAttributes.addFlashAttribute("msg", "이미 장바구니에 있는 상품입니다. 수량이 증가되었습니다.");
         } else {

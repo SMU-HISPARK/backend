@@ -22,5 +22,7 @@ public interface CartService {
 	// 장바구니 가져오기
 	Cart getOrCreateCart(Member member);
 
+	CartItem save(CartItem cartItem);
+
 
 }
