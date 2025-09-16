@@ -1,5 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+    
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -40,11 +44,11 @@
             <div class="orderInfo">
                 <div>
                     <span>주문번호</span>
-                    <span>20250908-001234</span>
+                    <span>${order.orderCode}</span>
                 </div>
                 <div>
                     <span>주문금액</span>
-                    <span>₩45,600</span>
+                    <span>₩<fmt:formatNumber value="${order.totalAmount}" pattern="#,###" /></span>
                 </div>
             </div>
         </div>
@@ -60,7 +64,7 @@
                             <tbody>
                                 <tr>
                                     <td class="label">결제방법</td>
-                                    <td class="value paymentMethod">적립금</td>
+                                    <td class="value paymentMethod">${order.paymentMethod}</td>
                                 </tr>
                                 <tr>
                                     <td class="label">결제상태</td>
@@ -81,26 +85,22 @@
                             <tbody>
                                 <tr>
                                     <td class="label">받는사람</td>
-                                    <td class="value">스파크</td>
+                                    <td class="value">${order.receiver}</td>
                                 </tr>
                                 <tr>
                                     <td class="label">주소</td>
                                     <td class="value">
-                                        (06234) 서울특별시 강남구 테헤란로 123<br>
-                                        스파크빌딩 101호
+                                        ${order.addressMain}<br>
+                                        ${order.addressDetail}
                                     </td>
                                 </tr>
                                 <tr>
                                     <td class="label">휴대전화</td>
-                                    <td class="value">010-1234-5678</td>
-                                </tr>
-                                <tr>
-                                    <td class="label">이메일</td>
-                                    <td class="value">spark@gmail.com</td>
+                                    <td class="value">${order.phone}</td>
                                 </tr>
                                 <tr>
                                     <td class="label">배송메시지</td>
-                                    <td class="value">부재 시 경비실에 맡겨주세요</td>
+                                    <td class="value">${order.deliveryMessage}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -111,35 +111,18 @@
             <!-- 주문상품 -->
             <div class="orderProduct">
                 <details open>
-                    <summary>주문상품 <span>(3)</span></summary>
+                    <summary>주문상품 <span>(${selectedCount})</span></summary>
                     <!-- 상품 하나 -->
-                    <div class="orderProduct_one">
-                        <img src="../images/productimage/photocard.png" alt="상품1" />
-                        <div class="productInfo">
-                            <p class="productName">HI-SRARK PHOTOCARD SET ver. 1 / 2</p>
-                            <p class="productOption">옵션: ver.1</p>
-                            <p class="productQty">수량: 1</p>
-                            <p class="productPrice">₩6,600</p>
-                        </div>
-                    </div>
-                    <!-- 반복될 부분 -->
-                    <div class="orderProduct_one">
-                        <img src="../images/productimage/acrylic_keyring_YUHYUN.png" alt="상품2" />
-                        <div class="productInfo">
-                            <p class="productName">YUHYUN ACRYLIC KEYRING</p>
-                            <p class="productQty">수량: 2</p>
-                            <p class="productPrice">₩24,000</p>
-                        </div>
-                    </div>
-                    <!-- 반복될 부분 -->
-                    <div class="orderProduct_one">
-                        <img src="../images/productimage/acrylic_keyring_JEONGHUN.png" alt="상품3" />
-                        <div class="productInfo">
-                            <p class="productName">JEONGHUN ACRYLIC KEYRING</p>
-                            <p class="productQty">수량: 1</p>
-                            <p class="productPrice">₩12,000</p>
-                        </div>
-                    </div>
+                    <c:forEach var="item" items="${order.orderitems}" >
+	                    <div class="orderProduct_one">
+	                        <img src="../${item.product.productImg}" alt="상품 사진" />
+	                        <div class="productInfo">
+	                            <p class="productName">${item.product.productName}</p>
+	                            <p class="productQty">수량: ${item.quantity}</p>
+	                            <p class="productPrice">₩<fmt:formatNumber value="${item.price}" pattern="#,###" /></p>
+	                        </div>
+	                    </div>
+                    </c:forEach>
                 </details>
             </div>
 
@@ -152,15 +135,15 @@
                             <tbody>
                                 <tr>
                                     <td class="label">주문상품</td>
-                                    <td class="value">₩42,600</td>
+                                    <td class="value">₩<fmt:formatNumber value="${order.totalAmount}" pattern="#,###" /></td>
                                 </tr>
                                 <tr>
                                     <td class="label">배송비</td>
-                                    <td class="value">₩3,000</td>
+                                    <td class="value">₩<fmt:formatNumber value="${order.deliverCost}" pattern="#,###" /></td>
                                 </tr>
                                 <tr>
                                     <td class="label total">최종 결제 금액</td>
-                                    <td class="value total">₩45,600</td>
+                                    <td class="value total">₩<fmt:formatNumber value="${order.totalAmount+order.deliverCost}" pattern="#,###" /></td>
                                 </tr>
                             </tbody>
                         </table>

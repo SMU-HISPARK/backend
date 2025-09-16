@@ -30,10 +30,13 @@ public class Product {
 	
 	@Column(name="product_price",nullable=false)
 	private int productPrice;
+
+	@Column(name="delivery_fee",nullable=false)
+	private int delfee;
 	
 	@Column(name="product_quantity", nullable=false)
 	private int productQuantity;  //수량
 	
-	@Column(name="product_content",length=1000)
+	@Column(name="product_content",length=12000)
 	private String productContent;  //상품설명
 }

@@ -144,9 +144,9 @@
                                                     <option value="019">019</option>
                                                 </select>
                                                 <span>-</span>
-                                                <input type="text" class="phone2" name="phone2" required />
+                                                <input type="text" class="phone2" name="phone2" maxlength="4" pattern="[0-9]+" required />
                                                 <span>-</span>
-                                                <input type="text" class="phone3" name="phone3" required />
+                                                <input type="text" class="phone3" name="phone3" maxlength="4" pattern="[0-9]+" required />
                                             </div>
                                         </td>
                                     </tr>
@@ -176,11 +176,11 @@
         
                 <div class="orderProduct">
                     <details open>
-                        <summary>주문상품 <span>(3)</span></summary>
+                        <summary>주문상품 <span>(${selectedCount})</span></summary>
                         <c:forEach var="item" items="${cartItems}">
 	                        <!-- 상품 하나 -->
 	                        <div class="orderProduct_one" id="${item.cartitemId}">
-	                            <img src="../images/productimage/${item.product.productImg}" alt="상품1" />
+	                            <img src="../${item.product.productImg}" alt="상품1" />
 	                            <div class="productInfo">
 	                                <p class="productName">${item.product.productName}</p>
 	                                <p class="productQty">수량: ${item.quantity}</p>
@@ -229,16 +229,16 @@
                     <details open>
                         <summary>결제수단</summary>
                         <div class="paymethodradio">
-                            <input type="radio" name="paymethod" id="creditcard" value="creditcard" checked>
+                            <input type="radio" name="paymethod" id="creditcard" value="신용카드" checked>
                             <label for="creditcard" class="paymethod">신용카드</label>
                             
-                            <input type="radio" name="paymethod" id="transfer" value="transfer">
+                            <input type="radio" name="paymethod" id="transfer" value="계좌이체">
                             <label for="transfer" class="paymethod">계좌이체</label>
                             
-                            <input type="radio" name="paymethod" id="virtualAccount" value="virtualAccount">
+                            <input type="radio" name="paymethod" id="virtualAccount" value="가상계좌">
                             <label for="virtualAccount" class="paymethod">가상계좌</label>
                             
-                            <input type="radio" name="paymethod" id="paidCredit" value="paidCredit">
+                            <input type="radio" name="paymethod" id="paidCredit" value="적립금">
                             <label for="paidCredit" class="paymethod">적립금</label>
                             
                             <div class="paymethod-detail" id="creditcard-detail" style="display:none">- 10/1까지 적립금 외 다른 수단의 결제가 중단됩니다.</div>
@@ -251,7 +251,7 @@
 								</span> P
                                 </div>
                                 <div class="creditInputDiv">
-                                    결제 금액 : <input type="text" id="paidCreditValue" value="0" min="0"/>
+                                    결제 금액 : <input type="text" id="paidCreditValue" name="paidCreditValue" value="0" min="0"/>
                                     <button type="button" id="payAll">전액 사용</button>
                                     <button type="button" id="creditConfirm">적용</button>
                                 </div>

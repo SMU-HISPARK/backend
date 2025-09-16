@@ -6,4 +6,6 @@ import com.java.entity.Orders;
 
 public interface OrderRepository extends JpaRepository<Orders,Integer> {
 
+	boolean existsByOrderCode(String orderCode);
+
 }

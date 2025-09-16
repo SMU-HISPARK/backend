@@ -73,7 +73,7 @@
 							                <input type="checkbox" class="cart-checkbox" value="${item.cartitemId}" data-cartitemid="${item.cartitemId}">
 							            </td>
 							            <td class="pd_img">
-							                <img src="../images/productimage/${item.product.productImg}" width="100px"/>
+							                <img src="../${item.product.productImg}" width="100px"/>
 							            </td>
 							            <td class="product">
 							                <div class="description">
