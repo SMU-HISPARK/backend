@@ -55,8 +55,8 @@
                         <div class="product_text">
                             <table>
                                 <tr>
-                                    <th class="product_price">판매가</th>
-                                    <td class="product_price">${product.productprice}</td>
+                                    <th id="product_text_01">판매가</th>
+                                    <td id="product_text_01"><fmt:formatNumber value="${product.productprice}" pattern="#,###" /></td>
                                 </tr>
                                 <tr>
                                     <th>배송방법</th>
@@ -64,7 +64,7 @@
                                 </tr>
                                 <tr>
                                     <th>배송비</th>
-                                    <td>${product.delfee}</td>
+                                    <td><fmt:formatNumber value="${product.delfee}" pattern="#,###" /></td>
                                 </tr>
                            <!--     <tr class="product_option">
                                     <th>옵션</th>
@@ -123,7 +123,7 @@
 							       <button type="submit" class="basket">장바구니</button>
 							   </form>
 							</c:if>
-	                            <button type="button" class="buy">바로구매</button>
+	                          <!--    <button type="button" class="buy">바로구매</button>-->
 	                        </div>
                     	</div>
 				</div>
@@ -158,7 +158,7 @@
 						        let quantity = parseInt(input.val()) || 1;
 
 						        if (stock === 0) {
-						            alert("품절입니다 😢");
+						            alert("품절입니다.");
 						            input.val(1);                  // ✅ 품절이면 강제로 1 고정
 						           return;
 						        }
@@ -166,7 +166,7 @@
 						            input.val(quantity + 1);
 						            updateTotal(quantity + 1);
 						        } else {
-						            alert("재고를 초과할 수 없습니다 😢");
+						            alert("재고를 초과할 수 없습니다.");
 						            input.val(stock); // 재고 이상 못 올라가게 고정
 						        }
 						    });

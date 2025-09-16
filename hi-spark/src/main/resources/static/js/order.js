@@ -1,3 +1,4 @@
+var popupWindows = []; //팝업창 연결(결제완료시 팝업창 제거용)
 $(document).ready(function(){
 
     //좌측상단 이전페이지로 이동
@@ -6,46 +7,25 @@ $(document).ready(function(){
     });// backBtn
 
     //팝업창 오픈
-    let popupWindows = []; //팝업창 연결(결제완료시 팝업창 제거용)
     
     $(document).on("click", "#shoppingterms-details", function () {
         popupWindows.push(
-            window.open("shoppingterms.html", "shoppingterms", "width=400,height=600,left=100,top=50")
+            window.open("../shop/terms_shoppingterms.jsp", "shoppingterms", "width=400,height=600,left=100,top=50")
         );
     });
     
     $(document).on("click", "#personalinfo-details", function () {
         popupWindows.push(
-            window.open("personalinfo.html", "personalinfo", "width=400,height=600,left=120,top=70")
+            window.open("../shop/terms_personalinfo.jsp", "personalinfo", "width=400,height=600,left=120,top=70")
         );
     });
     
     $(document).on("click", "#thirdparty-details", function () {
         popupWindows.push(
-            window.open("thirdparty.html", "thirdparty", "width=400,height=600,left=140,top=90")
+            window.open("../shop/terms_thirdparty.jsp", "thirdparty", "width=400,height=600,left=140,top=90")
         );
     });
-
-    
-    //결제버튼
-    $(document).on("click", "#payBtn", function() {
-		if($("#allconfirm").is(':checked')){
-	        $(".orderFrm").submit();
-		}else{
-			alert("결제 약관에 동의하셔야 상품 구매가 가능합니다.");
-		  	return;
-		}
-    });//payBtn
-
-    // form submit 시 팝업들 닫기
-    $(document).on("submit", "#orderFrm", function () {
-        popupWindows.forEach(function (w) {
-            if (w && !w.closed) {
-                w.close();
-            }
-        });
-        popupWindows = []; // 초기화
-    });
+	
     
     
     //배송메모
@@ -88,9 +68,85 @@ $(document).ready(function(){
         $('#allconfirm').prop('checked', totalCheckboxes === checkedCheckboxes);
     });//allconfirm
 
+	
+	//합계 금액
+    let total = parseInt($("#totalAmount").data("total"));
+	let paid = 0;
+	
+	//전액 사용 버튼 (input total금액으로 변경)
     $(document).on("click","#payAll",function(){
-        alert("냥");
-        $("#paidCreditValue").val("45600");
-    });
+	    $("#paidCreditValue").val(total);
+    }); 
+	
+	// 적용 버튼 (상황에 따른 alert)
+	$(document).on("click", "#creditConfirm",function() {
+		if (paid==1) {
+		        alert("결제 완료된 건입니다.");
+		        return;
+		}
+		
+	    let credit = parseInt($("#creditValue").text().replace(/,/g, ''));
+	    let useAmount = parseInt($("#paidCreditValue").val());
+
+	    if (isNaN(useAmount) || useAmount <= 0) {
+	        alert("적용할 금액을 입력하세요.");
+	        return;
+	    }
+	    if (useAmount > credit) {
+	        alert("보유 적립금보다 많이 사용할 수 없습니다.");
+			$("#paidCreditValue").val(0);
+			if(confirm("충전하시겠습니까?")){
+				location.href="/mypage/point";
+			}
+	        return;
+	    }else if(useAmount >= total){
+			if(confirm(total+" P를 차감하시겠습니까?")){
+			    $("#paidCreditValue").val(total);
+			    let remain = credit - total;
+			    $("#creditValueAfter").text(remain.toLocaleString());
+				paid = 1;
+			}
+		}
+		
+	});
+	
+	
+
+	$(document).on("click", "#payBtn", function(e) {
+	    let isValid = true;
+
+	    // 필수 입력값 체크
+	    $('[required]').each(function() {
+	        if ($(this).val().trim() === "") {
+	            isValid = false;
+	            return false; // each 중단
+	        }
+	    });
+
+	    if (!isValid) {
+	        alert("필수 사항을 입력하셔야 상품 구매가 가능합니다.");
+			window.scrollTo({ top: 0, behavior: 'smooth' });
+			e.preventDefault();
+	        return;
+	    }
+
+	    // 약관 체크
+	    if (!$("#allconfirm").prop('checked')) {
+	        alert("필수 약관에 모두 동의하셔야 상품 구매가 가능합니다.");
+			e.preventDefault();
+	        return;
+	    }
+		
+		if (paid == 0){
+			alert("결제 수단을 선택해 주세요. (적립금의 경우 적용 버튼 클릭)");
+			e.preventDefault();
+			return;
+		}
+
+
+	});
+
+	
+
 
 });//jquery

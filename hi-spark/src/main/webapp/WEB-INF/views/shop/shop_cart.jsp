@@ -15,6 +15,12 @@
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
 </head>
 <body>
+	<c:if test="${not empty msg}">
+	    <script>
+	        alert("${msg}");
+	    </script>
+	</c:if>
+
 	<div id="header">
 		
 		<div id="snbBox">
@@ -161,7 +167,7 @@
 		<div id="footer">
 			
 			<div id="finfo">
-				<div id="flogo"><img src="../images/hispark.png" alt="하이스파크 로고" /></div>
+				<div id="flogo"><img src="/images/hispark.png" alt="하이스파크 로고" /></div>
 				<address>
 					<ul>
 						<li>㈜스파크</li>
@@ -185,5 +191,5 @@
 	</div>
 
 </body>
-<script type="text/javascript" src="../js/cart.js"></script>
+<script type="text/javascript" src="/js/cart.js"></script>
 </html>

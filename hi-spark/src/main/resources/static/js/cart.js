@@ -1,6 +1,7 @@
 $(document).ready(function(){
 	
 	updateCartBadge();
+	checkCartEmpty()
 	
     //전체주문버튼
     function orderAllBtn(){
@@ -8,17 +9,26 @@ $(document).ready(function(){
     }
 
     // 품목 삭제 버튼
-    $(document).on("click",".delete-btn",function(){
-        
-        //가장 가까운 product-container 위치 변수 선언
-        var productContainer = $(this).closest('.product-container');
-        
-        productContainer.remove(); //해당 컨테이너 삭제
-        checkCartEmpty();//장바구니가 비어있는지 확인
-        updatePrice();// 가격 업데이트
-		updateCartBadge();
-		checkCartEmpty()
-    });//delete-btn
+	$(document).on("click",".delete-btn",function(){
+	    var productContainer = $(this).closest('.product-container');
+	    var cartItemId = productContainer.find(".cart-checkbox").data("cartitemid");
+
+	    $.ajax({
+	        url: "/cart/delete",
+	        type: "DELETE",
+	        data: { cartItemId: cartItemId },
+	        success: function(response) {
+	            // DB 삭제 성공하면 화면에서도 삭제
+	            productContainer.remove();
+	            checkCartEmpty();
+	            updatePrice();
+	            updateCartBadge();
+	        },
+	        error: function() {
+	            alert("삭제 중 오류가 발생했습니다.");
+	        }
+	    });
+	});
     
     
     // 전체선택 버튼
@@ -140,6 +150,8 @@ $(document).ready(function(){
 	
 	    // 배송비: 체크된 상품이 있으면 3000원, 없으면 0원
 	    const shipping = total >= 50000 ? 0 : (total > 0 ? 3000 : 0);
+		var shippingtext = total >= 50000 ? "무료배송" : "3,000원";
+		$(".deliveryFee").text(shippingtext);
 
 	    // 기존 우측 영역 업데이트
 	    $(".productprice-sum div:last-child").text(total.toLocaleString() + "원");
@@ -151,6 +163,9 @@ $(document).ready(function(){
 	    basicDeliveryRow.find("span").eq(0).text(total.toLocaleString());       // 상품구매금액
 	    basicDeliveryRow.find("span").eq(1).text(shipping.toLocaleString());    // 배송비
 	    basicDeliveryRow.find("span").eq(2).text((total+shipping).toLocaleString());
+		
+		
+		
 	}
 	
 	
@@ -181,15 +196,17 @@ $(document).ready(function(){
 	    });
 
 	    const shipping = total >= 50000 ? 0 : (total > 0 ? 3000 : 0);
-
+		var shippingtext = total >= 50000 ? "무료배송" : "3,000원";
+		$(".deliveryFee").text(shippingtext);
+		
 	    // 오른쪽 가격 영역 업데이트
 	    $(".productprice-sum div:last").text(total.toLocaleString() + "원");
 	    $(".productprice-delivery div:last").text(shipping.toLocaleString() + "원");
 	    $(".productprice-total div:last").text((total + shipping).toLocaleString() + "원");
 
 	    // 상단 [기본배송] 영역도 업데이트
-	    $("table.pricesum span:eq(0)").text(total.toLocaleString() + "원");
-	    $("table.pricesum span:eq(1)").text(shipping.toLocaleString() + "원");
+	    $("table.pricesum span:eq(0)").text(total.toLocaleString());
+	    $("table.pricesum span:eq(1)").text(shipping.toLocaleString());
 	    $("table.pricesum span:eq(2)").text((total + shipping).toLocaleString());
     }
 	
@@ -197,17 +214,75 @@ $(document).ready(function(){
 	const orderFrm = $('form[name="orderFrm"]');
 
 	// 선택 주문 버튼
-	$('#selectOrderBtn').click(function() {
-	    const checkedItems = orderFrm.find('input[type="checkbox"]:checked');
-	    if (checkedItems.length == 0) {
-	        alert("주문하실 상품을 선택해 주세요.");
+	// 선택 주문 버튼
+	$(document).on("click", "#selectOrderBtn", function(e){
+	    e.preventDefault();
+
+	    var $form = $("form[name='orderFrm']");
+
+	    // 기존 hidden input 제거
+	    $form.find("input[name='cartItemIds']").remove();
+	    $form.find("input[name='quantities']").remove();
+
+	    var hasSelected = false;
+
+	    $(".product-container").each(function(){
+	        var $row = $(this);
+	        var $checkbox = $row.find(".cart-checkbox");
+	        var $qtyInput = $row.find(".quantity-input");
+
+	        if($checkbox.is(":checked")){
+	            hasSelected = true;
+
+	            // hidden input 생성
+	            $form.append($("<input>", {
+	                type: "hidden",
+	                name: "cartItemIds",
+	                value: $checkbox.val()
+	            }));
+	            $form.append($("<input>", {
+	                type: "hidden",
+	                name: "quantities",
+	                value: $qtyInput.val()
+	            }));
+	        }
+	    });
+
+	    if(!hasSelected){
+	        alert("선택한 상품이 없습니다.");
 	        return;
 	    }
-	    // 체크된 것만 hidden input으로 추가
-	    // 이미 체크박스가 value로 cartItemId를 갖고 있으므로 그대로 submit 가능
-	    orderFrm.submit();
+
+	    $form.submit();
 	});
 
+	// 전체 주문 버튼
+	$(document).on("click", "#allOrderBtn", function(e){
+	    e.preventDefault();
+	    var $form = $("form[name='orderFrm']");
+
+	    $form.find("input[name='cartItemIds']").remove();
+	    $form.find("input[name='quantities']").remove();
+
+	    $(".product-container").each(function(){
+	        var $row = $(this);
+	        var $checkbox = $row.find(".cart-checkbox");
+	        var $qtyInput = $row.find(".quantity-input");
+
+	        $form.append($("<input>", {
+	            type: "hidden",
+	            name: "cartItemIds",
+	            value: $checkbox.val()
+	        }));
+	        $form.append($("<input>", {
+	            type: "hidden",
+	            name: "quantities",
+	            value: $qtyInput.val()
+	        }));
+	    });
+
+	    $form.submit();
+	});
 	// 전체 주문 버튼
 	$('#allOrderBtn').click(function() {
 	    // 모든 체크박스 체크

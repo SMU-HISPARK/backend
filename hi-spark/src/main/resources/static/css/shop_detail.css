@@ -64,9 +64,18 @@
     vertical-align: middle;
     width:100px
 }
-.product_text .product_price {
+#product_text_01{
     font-weight: 700;
     color: #035fe0;
+    padding: 5px 8px 5px 0;
+    font-size: 15px;
+    font-weight: 400px;
+    vertical-align: middle;
+    width:100px
+}
+.product_price{
+    font-weight: 700;
+	
 }
 .product_option th,
 .product_option td {
@@ -155,16 +164,16 @@
 
 
 .basket {
+    background-color: #1a1a1a;
+    color: #fafafa;
     width: 100%;
     height:100%;
     border:none;
-    background-color: #fafafa;
-    color: #1a1a1a;
     font-size: 15px;
     font-weight: 700px;
 }
 #cartFrm {
-    width: 50%;
+    width: 100%;
     border:1px solid #ccc;
     background-color: #fafafa;
     color: #1a1a1a;
