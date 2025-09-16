@@ -1,7 +1,12 @@
 package com.java.service;
 
-import com.java.dto.Member;
+import com.java.dto.MemberDto;
+import com.java.entity.Member;
 
 public interface MemberService {
-    Member findById(int id);
+
+	void save(Member member);
+
+	MemberDto findByLoginIdAndPassword(String loginId, String password);
+
 }
