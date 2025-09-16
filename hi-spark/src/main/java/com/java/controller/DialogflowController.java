@@ -24,10 +24,12 @@ import com.google.cloud.dialogflow.v2.TextInput;
 import com.google.protobuf.Value;
 import com.java.dto.Artist;
 import com.java.dto.Chat;
-import com.java.dto.Member;
+import com.java.entity.Member;
 import com.java.service.ArtistService;
 import com.java.service.ChatService;
 import com.java.service.MemberService;
+
+import jakarta.servlet.http.HttpSession;
 
 @RestController
 @RequestMapping("/api")
@@ -36,6 +38,7 @@ public class DialogflowController {
     @Autowired MemberService memberService;
     @Autowired ChatService chatService;
     @Autowired ArtistService artistService;
+    @Autowired HttpSession httpSession;
 
     @PostMapping("/message")
     public ResponseEntity<?> detectIntent(@RequestBody Map<String, String> body) {
@@ -88,10 +91,22 @@ public class DialogflowController {
 
                 // DB 저장
                 Artist artist = artistService.findById(ano);
-                Member member = memberService.findById(1); // 테스트용, 실제는 로그인 정보 활용
+                String loginId = (String) httpSession.getAttribute("session_id");
+                Member member = memberService.findById(loginId);
 
-                chatService.save(Chat.builder().member(member).artist(artist).send(1).message(message).build());
-                chatService.save(Chat.builder().member(member).artist(artist).send(0).message(botReply).build());
+                chatService.save(Chat.builder()
+                        .member(member)
+                        .artist(artist)
+                        .send(1)
+                        .message(message)
+                        .build());
+
+                chatService.save(Chat.builder()
+                        .member(member)
+                        .artist(artist)
+                        .send(0)
+                        .message(botReply)
+                        .build());
 
                 return ResponseEntity.ok(Map.of(
                     "success", true,

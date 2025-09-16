@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 
 import com.java.dto.MemberDto;
 import com.java.entity.Member;
-import com.java.respository.MemberRepository;
+import com.java.repository.MemberRepository;
 
 @Service
 public class MemberServiceImpl implements MemberService {
@@ -27,6 +27,11 @@ public class MemberServiceImpl implements MemberService {
 		MemberDto memfind = new MemberDto(member.getLoginId(), member.getNickname());
 		
 		return memfind;
+	}
+
+	@Override
+	public Member findById(String loginId) {
+	    return mRep.findByLoginId(loginId).orElse(null);
 	}
 
 	

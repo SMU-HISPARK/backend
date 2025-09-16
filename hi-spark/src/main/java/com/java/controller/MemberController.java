@@ -63,6 +63,8 @@ public class MemberController {
 			return "member/login";
 		}
 		
+		Member member = mServ.findById(loginId);
+		
 		// 로그인 세션 설정
 		session.setAttribute("session_id", memfind.getLoginId());
 		session.setAttribute("session_name", memfind.getNickname());
