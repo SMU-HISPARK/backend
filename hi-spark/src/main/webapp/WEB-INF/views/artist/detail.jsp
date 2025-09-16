@@ -3,14 +3,16 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="../css/Artist_Detail.css">
+    <script src="https://kit.fontawesome.com/e674411d10.js" crossorigin="anonymous"></script>
     <script src="../js/Artist_Detail.js"></script>
-    <title>Artist_detail</title>
+    <title>아티스트 상세</title>
 </head>
 <script>
     document.addEventListener("DOMContentLoaded", function(){
@@ -61,9 +63,23 @@
 </script>
 <body>
      <div class="background" >
-        
+     
+		<a href="/artist" class="backBtn">
+		    <i class="fa-solid fa-chevron-left"></i>
+		</a>
+		
+		<div id="snbBox">
+			<div id="snb">
+			   <ul>
+			      <li><a href="#">로그인</a></li>
+			      <li><a href="#">회원가입</a></li>
+			      <li><a href="/">메인으로</a></li>
+			   </ul>
+			</div>
+		</div>
+
         <div class="name">
-            <h3>TEAM MEMBER</h2>
+            <h3><a href="/artist">TEAM MEMBER</a></h3>
                 <h1>${artist.engname}</h1>
             </div>
         <div class="content">

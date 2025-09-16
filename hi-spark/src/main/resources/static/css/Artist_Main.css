@@ -13,6 +13,30 @@ body {
     z-index: -1;
 }
 
+   /* 뒤로 가기 버튼 */
+.backBtn {
+    position: absolute;
+    top: 65px; 
+    left: 50px; 
+    background: none;
+    border: none;
+    cursor: pointer;
+    z-index: 1000;
+}
+
+/* 버튼 아이콘 */
+.fa-chevron-left {
+    font-size: 43px;
+    color: white; 
+}
+
+*{margin: 0; padding:0; list-style: none;}
+#snbBox #snb{position: absolute; top: 30px; right: 20px; margin:0 50px 0 0;}
+#snbBox #snb ul{width:100%;}
+#snbBox #snb ul li{float:left; padding:8px 2px 0 18px;}
+#snbBox #snb ul li a{text-decoration : none; color:white; font-size:11px; font-weight:600;}
+
+
 /* 폴라 + 스티커 */
 .member {
     position: relative;

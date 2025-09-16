@@ -9,9 +9,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Artist_chat</title>
     <script src="https://kit.fontawesome.com/e674411d10.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="../css/Artist_chat.css">
+    <title>아티스트 챗봇</title>
 </head>
 <body>
     <div class="top_div">

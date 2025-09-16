@@ -47,7 +47,7 @@
 
 
         margin: 0;
-       padding: 0;
+        padding: 0;
         content: "";
         position: fixed;
         top: 0; left: 0;
@@ -56,11 +56,40 @@
         background: url('../images/artistimage/칠판.jpg') no-repeat top center/ cover;
         z-index: -1; /* 뒤로 보내기 */
     }
+    
+    a {
+	    color: white;
+	    text-decoration: none;
+	}
 
     .background{
+        position: relative;
         padding-top: 68px;
     }
     
+    /* 뒤로 가기 버튼 */
+	.backBtn {
+	    position: absolute;
+	    top: 65px; 
+	    left: 50px; 
+	    background: none;
+	    border: none;
+	    cursor: pointer;
+	    z-index: 1000;
+	}
+	
+	/* 버튼 아이콘 */
+	.fa-chevron-left {
+	    font-size: 43px;
+	    color: white; 
+	}
+	
+	*{margin: 0; padding:0; list-style: none;}
+	#snbBox #snb{position: absolute; top: 30px; right: 20px; margin:0 50px 0 0;}
+	#snbBox #snb ul{width:100%;}
+	#snbBox #snb ul li{float:left; padding:8px 2px 0 18px;}
+	#snbBox #snb ul li a{text-decoration : none; color:white; font-size:11px; font-weight:600;}
+	
     /* 이름 예전 글씨체
     @font-face {
         font-family: 'SandollSamlipHobbangOutline';
@@ -69,9 +98,11 @@
         font-display: swap;
     }*/
     
+    
     .name{
         text-align: center;
     }
+    
     .content {
         position: relative;
         z-index: 1;
