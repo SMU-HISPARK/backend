@@ -51,9 +51,31 @@
 		</c:if>
     </div>
 
-    <div class="middle_div">
+	<div class="middle_div">
+		<c:forEach var="chat" items="${history}">
+			<c:choose>
+				<c:when test="${chat.send == 1}">
+					<div class="chat ch2">
+						<div class="textbox">${chat.message}</div>
+						<p class="chat_time"><fmt:formatDate value="${chat.created_at}" pattern="HH:mm"/></p>
+					</div>
+				</c:when>
 
-    </div>
+				<c:otherwise>
+					<div class="chat ch1">
+						<div class="icon">
+							<img class="profile_img" src="../images/artistimage/${artist.ano}_셀카.png" style="border-radius:50%;">
+						</div>
+						<div class="chat_col">
+							<p class="chat_name">${artist.name}</p>
+							<div class="textbox">${chat.message}</div>
+						</div>
+						<p class="chat_time"><fmt:formatDate value="${chat.createdAt}" pattern="HH:mm"/></p>
+					</div>
+				</c:otherwise>
+			</c:choose>
+		</c:forEach>
+	</div>
 
 
     <div class="bottom_div">

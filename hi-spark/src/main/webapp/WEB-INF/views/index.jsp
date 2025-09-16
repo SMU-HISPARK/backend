@@ -15,6 +15,6 @@
 		<c:if test="${session_id != null}">
 			<a href="/member/logout"><button>로그아웃</button></a>
 		</c:if>
-		<a href="/game"><button>테스트 페이지</button></a>
+		<a href="/artist"><button>테스트 페이지</button></a>
 	</body>
 </html>

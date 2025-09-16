@@ -1,8 +1,12 @@
 package com.java.dto;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+
+import com.java.entity.Member;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -34,13 +38,16 @@ public class Chat {
    @ManyToOne
    @JoinColumn(name="artist_id")
    private Artist artist;
-   
-    @Column(nullable = false)
+  
+   @Column(nullable = false)
    private int send;
    
    @Column(nullable = false, length = 2000)
    private String message;
    
-   @UpdateTimestamp
-   private Timestamp created_at;
+   @Column(name = "created_at")
+   @CreationTimestamp
+   private Timestamp createdAt;
+   
+   
 }

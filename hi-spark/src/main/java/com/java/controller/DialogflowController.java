@@ -8,9 +8,12 @@ import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.google.api.gax.core.FixedCredentialsProvider;
@@ -94,19 +97,19 @@ public class DialogflowController {
                 String loginId = (String) httpSession.getAttribute("session_id");
                 Member member = memberService.findById(loginId);
 
-                chatService.save(Chat.builder()
-                        .member(member)
-                        .artist(artist)
-                        .send(1)
-                        .message(message)
-                        .build());
-
-                chatService.save(Chat.builder()
-                        .member(member)
-                        .artist(artist)
-                        .send(0)
-                        .message(botReply)
-                        .build());
+//                chatService.save(Chat.builder()
+//                        .member(member)
+//                        .artist(artist)
+//                        .send(1)
+//                        .message(message)
+//                        .build());
+//
+//                chatService.save(Chat.builder()
+//                        .member(member)
+//                        .artist(artist)
+//                        .send(0)
+//                        .message(botReply)
+//                        .build());
 
                 return ResponseEntity.ok(Map.of(
                     "success", true,
@@ -141,4 +144,7 @@ public class DialogflowController {
             default: return null;
         }
     }
+
+    
 }
+
