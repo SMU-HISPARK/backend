@@ -149,9 +149,9 @@
   <div class="container">
     <div class="login-box">
       <h1>로그인</h1>
-      <form>
-        <input type="text" placeholder="아이디" class="input-box" required>
-        <input type="password" placeholder="비밀번호" class="input-box" required>
+      <form action="/login" method="post">
+        <input type="text" name="id" placeholder="아이디" class="input-box" required>
+        <input type="password" name="pw" placeholder="비밀번호" class="input-box" required>
         <button type="submit" class="btn btn-login">로그인</button>
       </form>
       <div class="links">
