@@ -8,7 +8,12 @@ import com.java.entity.Orders;
 
 public interface OrderService {
 
-	Orders createOrder(Orders order, List<CartItem> cartItems);
+
+	//주문 저장
+	void save(Orders order);
+	
+	//주문번호 생성
+	String generateOrderCode();
 
 
 }

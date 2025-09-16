@@ -84,6 +84,7 @@
 							                    <br><br>
 							                    <span>배송: <span class="deliveryFee">3,000원</span></span>
 							                </div>
+							                <div class="delete-btn"> <img src="/images/shopping/closebtn.png" width="20px"/> </div>
 							            </td>
 							        </tr>
 							        <tr style="height:20px;"></tr>

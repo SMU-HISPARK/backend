@@ -16,11 +16,21 @@ import java.util.stream.Collectors;
 @Service
 public class OrderServiceImpl implements OrderService {
 
+	@Autowired OrderRepository orderRepository;
+
 	@Override
-	public Orders createOrder(Orders order, List<CartItem> cartItems) {
-		// TODO Auto-generated method stub
-		return null;
+	public void save(Orders order) {
+		orderRepository.save(order);
+		
 	}
+	    
+    public String generateOrderCode() {
+        // O20250915-00001, 날짜 + 순번
+        String dateStr = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+        // 00001~99999 (앞자리 0 포함 5자리)
+        String randomStr = String.format("%05d", (int)(Math.random() * 99999) + 1);
+        return "O" + dateStr + "-" + randomStr;
+    }
     
 
 }

@@ -2,6 +2,7 @@ package com.java.entity;
 
 import java.sql.Timestamp;
 
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 
 import jakarta.persistence.Column;
@@ -9,7 +10,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.SequenceGenerator;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -26,7 +26,7 @@ public class Member {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="member_id")
-	private int memberId;
+	private Integer memberId;
 	
 	@Pattern(regexp = "[a-z0-9_]{4,16}$",
 			message = "영문 소문자, 숫자, 언더바_만 허용됩니다.")
@@ -40,17 +40,19 @@ public class Member {
 	@Column(length = 50, nullable = false)
 	private String name;
 	
-	@Column(length = 30, unique = true)
+	@Column(length = 30, unique = true, nullable = false)
 	private String nickname;
 	
-	@Column(length = 20, unique = true)
+	@Column(length = 20, unique = true, nullable = false)
 	private String phone;
 	
-	@Column(length = 100, unique = true)
+	@Column(length = 100, unique = true, nullable = false)
 	private String email;
 	
-	@Column(nullable=false)
-	private int point;
+	@ColumnDefault("0")
+	@Column(nullable = false)
+	@Builder.Default
+	private Integer point = 0;
 	
 	@CreationTimestamp
 	@Column(name="created_at")

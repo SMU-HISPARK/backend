@@ -9,17 +9,26 @@ $(document).ready(function(){
     }
 
     // 품목 삭제 버튼
-    $(document).on("click",".delete-btn",function(){
-        
-        //가장 가까운 product-container 위치 변수 선언
-        var productContainer = $(this).closest('.product-container');
-        
-        productContainer.remove(); //해당 컨테이너 삭제
-        checkCartEmpty();//장바구니가 비어있는지 확인
-        updatePrice();// 가격 업데이트
-		updateCartBadge();
-        
-    });//delete-btn
+	$(document).on("click",".delete-btn",function(){
+	    var productContainer = $(this).closest('.product-container');
+	    var cartItemId = productContainer.find(".cart-checkbox").data("cartitemid");
+
+	    $.ajax({
+	        url: "/cart/delete",
+	        type: "DELETE",
+	        data: { cartItemId: cartItemId },
+	        success: function(response) {
+	            // DB 삭제 성공하면 화면에서도 삭제
+	            productContainer.remove();
+	            checkCartEmpty();
+	            updatePrice();
+	            updateCartBadge();
+	        },
+	        error: function() {
+	            alert("삭제 중 오류가 발생했습니다.");
+	        }
+	    });
+	});
     
     
     // 전체선택 버튼

@@ -6,11 +6,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.java.entity.Cart;
 import com.java.entity.Member;
 import com.java.service.MemberService;
+import com.java.service.CartItemService;
 import com.java.service.CartService;
 
 import jakarta.servlet.http.Cookie;
@@ -19,9 +24,11 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
+
 public class CartController {
 	
 	@Autowired CartService cartService;
+	@Autowired CartItemService cartItemService;
 	@Autowired MemberService memberService;
 	
 	@GetMapping("/shop")
@@ -60,6 +67,11 @@ public class CartController {
 	}
 	
 	
-	
+	@DeleteMapping("/cart/delete")
+	@ResponseBody
+	public String deleteCartItem(@RequestParam("cartItemId") int CartItemId) {
+		cartItemService.deleteById(CartItemId);
+		return "success";
+	}
 	
 }

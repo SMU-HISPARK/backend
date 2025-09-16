@@ -1,6 +1,7 @@
 package com.java.controller;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,6 +21,7 @@ import com.java.entity.OrderItem;
 import com.java.entity.Orders;
 import com.java.repository.CartItemRepository;
 import com.java.repository.OrderRepository;
+import com.java.service.CartItemService;
 import com.java.service.CartService;
 import com.java.service.MemberService;
 import com.java.service.OrderService;
@@ -32,8 +34,7 @@ public class OrderController {
 	@Autowired OrderService orderService;
 	@Autowired CartService cartService;
 	@Autowired MemberService memberService;
-	@Autowired CartItemRepository cartItemRepository;
-	@Autowired OrderRepository orderRepository;
+	@Autowired CartItemService cartItemService;
 	
 	@PostMapping("/order/order_form")
 	public String orderform(@RequestParam("cartItemIds") List<Integer> cartItemIds, 
@@ -47,7 +48,7 @@ public class OrderController {
 		Member member = memberService.findById(memberId);
 
 	    // 선택한 카트아이템만 가져오기
-	    List<CartItem> cartItems = cartItemRepository.findAllById(cartItemIds);
+	    List<CartItem> cartItems = cartItemService.findAllById(cartItemIds);
 	    Map<Integer, Integer> qtyMap = new HashMap<>();
 	    for (int i = 0; i < cartItemIds.size(); i++) {
 	        qtyMap.put(cartItemIds.get(i), quantities.get(i));
@@ -58,7 +59,7 @@ public class OrderController {
 	            ci.setQuantity(qtyMap.get(ci.getCartitemId()));
 	        }
 	    }
-	    cartItemRepository.saveAll(cartItems);
+	    cartItemService.saveAll(cartItems);
 
 	    // DB에 Orders 생성하지 않고, 주문서에 필요한 데이터만 모델에 전달
 	    model.addAttribute("member", member);
@@ -76,33 +77,70 @@ public class OrderController {
 	}
 	
 	@PostMapping("/order/order_finish")
-	public String orderfinish(@RequestParam Map<String, String> params, HttpSession session) {
-		    
-	    //휴대전화
-	    String phone = params.get("phone1") + "-" + params.get("phone2") + "-" + params.get("phone3");
-	    //이메일
-	    String email = params.get("email") + "@" + params.get("domain");
-	    //주소
-	    String addressMain = params.get("address1");
-	    String addressDetail = params.get("address2");
-	    //배송메시지
+	public String orderfinish(@RequestParam("selectedItems") List<Integer> selectedItemIds,
+	                          @RequestParam Map<String,String> params,
+	                          HttpSession session) {
+
+	    // 1. 회원 조회
+	    int memberId = (int) session.getAttribute("memberId");
+	    Member member = memberService.findById(memberId);
+	    if(member == null) return "redirect:/login";
+	    
+
 	    String deliveryMessage = "selfText".equals(params.get("deliveryMessage")) 
-	        ? params.get("deliveryText") 
-	        : params.get("deliveryMessage");
-	    // 로그인된 회원 정보
-	    Member member = (Member) session.getAttribute("member");
-	    if (member == null) {
-	        return "redirect:/login";
-	    }
-	    // 장바구니 정보 (주문할 상품들)
-	    List<CartItem> cartItems = (List<CartItem>) session.getAttribute("cartItems");
+                ? params.get("deliveryText") 
+                : params.get("deliveryMessage");
 	    
+	    String phone = params.get("phone1")+"-"+params.get("phone2")+"-"+params.get("phone3");
 	    
+	    String orderCode = orderService.generateOrderCode();
 	    
+	    // 2. 주문 객체 생성
+	    Orders order = new Orders();
 	    
+	    order.setOrderCode(orderCode);
+	    order.setMember(member);
+	    order.setReceiver(params.get("acceptant"));
+	    order.setPhone(phone);
+	    order.setZipcode(params.get("zipcode"));
+	    order.setAddressMain(params.get("address1"));
+	    order.setAddressDetail(params.get("address2"));
+	    order.setOrderState(0); // 상품 준비중
+	    order.setPaymentMethod(params.get("paymethod"));
+	    order.setDeliveryMessage(deliveryMessage);
 	    
-		
+	    int totalAmount = 0;
+	    int deliverCost = Integer.parseInt(params.get("shipping")); // JSP에서 shipping 가져오던 변수
+	    order.setDeliverCost(deliverCost);
+
+	    List<OrderItem> orderItems = new ArrayList<>();
+
+	    // 3. 선택된 cartItem 처리
+	    for(int cartItemId : selectedItemIds) {
+	        CartItem cartItem = cartItemService.findById(cartItemId); // DB에서 가져오기
+	        if(cartItem == null) continue;
+
+	        OrderItem orderItem = new OrderItem();
+	        orderItem.setOrders(order);
+	        orderItem.setProduct(cartItem.getProduct());
+	        orderItem.setQuantity(cartItem.getQuantity());
+	        orderItem.setPrice(cartItem.getProduct().getProductPrice() * cartItem.getQuantity());
+
+	        totalAmount += orderItem.getPrice();
+	        orderItems.add(orderItem);
+
+	        // 4. cartItem 삭제
+	        cartItemService.deleteById(cartItemId);
+	    } 
+
+	    order.setTotalAmount(totalAmount);
+	    order.setOrderitems(orderItems);
+
+	    // 5. 주문 저장
+	    orderService.save(order);
 	    
+	    System.out.println(order);
+
 	    return "shop/shop_order_finish";
 	}
 	

@@ -80,7 +80,7 @@ $(document).ready(function(){
 	
 	// 적용 버튼 (상황에 따른 alert)
 	$(document).on("click", "#creditConfirm",function() {
-		if (paid) {
+		if (paid==1) {
 		        alert("결제 완료된 건입니다.");
 		        return;
 		}
@@ -99,12 +99,10 @@ $(document).ready(function(){
 				location.href="/mypage/point";
 			}
 	        return;
-	    }
-		if(useAmount>total){
+	    }else if(useAmount >= total){
 			if(confirm(total+" P를 차감하시겠습니까?")){
-				
-				alert(total+" P 차감 예정입니다.");
-			    let remain = credit - useAmount;
+			    $("#paidCreditValue").val(total);
+			    let remain = credit - total;
 			    $("#creditValueAfter").text(remain.toLocaleString());
 				paid = 1;
 			}

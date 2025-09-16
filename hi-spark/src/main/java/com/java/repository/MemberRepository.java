@@ -10,5 +10,6 @@ public interface MemberRepository extends JpaRepository<Member, Integer> {
 
 	Optional<Member> findByLoginId(String loginId);
 
-	
+	Optional<Member> findByLoginIdAndPassword(String loginId, String password);
+
 }

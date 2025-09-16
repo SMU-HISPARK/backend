@@ -154,7 +154,7 @@
                                         <td class="label">배송메세지</td>
                                         <td class="inputBox">
                                             <div class="messageBox">
-                                                <select class="deliveryMessage">
+                                                <select class="deliveryMessage" name="deliveryMessage">
                                                     <option value="" selected>배송메모를 선택해주세요</option>
                                                     <option value="배송 전 연락 바랍니다">배송 전 연락 바랍니다</option>
                                                     <option value="부재 시 경비실에 맡겨주세요">부재 시 경비실에 맡겨주세요</option>
@@ -187,6 +187,7 @@
 	                                <p class="productPrice">₩<fmt:formatNumber value="${item.product.productPrice*item.quantity}" pattern="#,###" /></p>
 	                            </div>
 	                        </div>
+	                        <input type="hidden" name="selectedItems" value="${item.cartitemId}" />
                         </c:forEach>
 
                     </details>
@@ -209,6 +210,7 @@
                                         <td class="label">배송비</td>
                                         <td class="value">
                                         	₩<fmt:formatNumber value="${shipping}" pattern="#,###" />
+                                        	<input type="hidden" name="shipping" value="${shipping}" />
 										</td>
                                     </tr>
                                     <tr>
