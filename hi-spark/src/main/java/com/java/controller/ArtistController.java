@@ -35,7 +35,10 @@ public class ArtistController {
 	
 	
 	@GetMapping("/artist/chat")
-	public String chat() {
+	public String chat(
+			@RequestParam("ano") int ano, Model model) {
+		Artist artist = artistService.findById(ano);
+		model.addAttribute("artist",artist);
 		return "artist/chat";
 	}
 }

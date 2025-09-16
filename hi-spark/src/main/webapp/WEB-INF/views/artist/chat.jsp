@@ -1,5 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,10 +19,36 @@
             <i class="fa-solid fa-chevron-left" style="color: #035fe0;"></i>
         </button>
 
-        <div class="profile_div">
-            <img class="profile_img" src="../images/artistimage/지온_셀카.png" style="border-radius: 50%;">
-            <p class="profile_name">박지온</p>
-        </div>
+		<c:if test="${artist.ano == 1}">
+	        <div class="profile_div">
+            	<img class="profile_img" src="../images/artistimage/승민_셀카.png" style="border-radius: 50%;">
+            	<p class="profile_name">이승민</p>
+        	</div>
+		</c:if>
+		<c:if test="${artist.ano == 2}">
+	        <div class="profile_div">
+            	<img class="profile_img" src="../images/artistimage/유현_셀카.png" style="border-radius: 50%;">
+            	<p class="profile_name">공유현</p>
+        	</div>
+		</c:if>
+		<c:if test="${artist.ano == 3}">
+	        <div class="profile_div">
+            	<img class="profile_img" src="../images/artistimage/경_셀카.png" style="border-radius: 50%;">
+            	<p class="profile_name">윤경</p>
+        	</div>
+		</c:if>
+		<c:if test="${artist.ano == 4}">
+	        <div class="profile_div">
+            	<img class="profile_img" src="../images/artistimage/지온_셀카.png" style="border-radius: 50%;">
+            	<p class="profile_name">박지온</p>
+        	</div>
+		</c:if>
+		<c:if test="${artist.ano == 5}">
+	        <div class="profile_div">
+            	<img class="profile_img" src="../images/artistimage/정훈_셀카.png" style="border-radius: 50%;">
+            	<p class="profile_name">한정훈</p>
+        	</div>
+		</c:if>
     </div>
 
     <div class="middle_div">
