@@ -120,7 +120,7 @@
                                                 </li>
                                                 <li>
                                                     <div style="margin-bottom: 10px;">
-                                                        <input type="text" placeholder="기본주소"  id="address1" name="address1" required />
+                                                        <input type="text" placeholder="기본주소"  id="address1" name="address1" readonly required />
                                                     </div>
                                                 </li>
                                                 <li>
@@ -136,34 +136,17 @@
                                         <td class="inputBox">
                                             <div class="phone-group">
                                                 <select name="phone1">
-                                                    <option>010</option>
-                                                    <option>011</option>
-                                                    <option>016</option>
-                                                    <option>017</option>
-                                                    <option>018</option>
-                                                    <option>019</option>
+                                                    <option value="010" selected>010</option>
+                                                    <option value="011">011</option>
+                                                    <option value="016">016</option>
+                                                    <option value="017">017</option>
+                                                    <option value="018">018</option>
+                                                    <option value="019">019</option>
                                                 </select>
                                                 <span>-</span>
-                                                <input type="text" class="phone2" required />
+                                                <input type="text" class="phone2" name="phone2" required />
                                                 <span>-</span>
-                                                <input type="text" class="phone3" required />
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="label">이메일 <span class="required">*</span></td>
-                                        <td class="inputBox">
-                                            <div class="email-group">
-                                                <input type="text" class="email-input" required />
-                                                <span>@</span>
-                                                <select class="domain-select">
-                                                    <option>naver.com</option>
-                                                    <option>gmail.com</option>
-                                                    <option>daum.net</option>
-                                                    <option>hotmail.com</option>
-                                                    <option>yahoo.co.kr</option>
-                                                </select>
-
+                                                <input type="text" class="phone3" name="phone3" required />
                                             </div>
                                         </td>
                                     </tr>
@@ -172,15 +155,15 @@
                                         <td class="inputBox">
                                             <div class="messageBox">
                                                 <select class="deliveryMessage">
-                                                    <option>배송메모를 선택해주세요</option>
-                                                    <option>배송 전 연락 바랍니다</option>
-                                                    <option>부재 시 경비실에 맡겨주세요</option>
-                                                    <option>부재 시 문 앞에 놓아주세요</option>
-                                                    <option>파손의 위험이 있는 상품입니다. 배송 시 주의해 주세요</option>
+                                                    <option value="" selected>배송메모를 선택해주세요</option>
+                                                    <option value="배송 전 연락 바랍니다">배송 전 연락 바랍니다</option>
+                                                    <option value="부재 시 경비실에 맡겨주세요">부재 시 경비실에 맡겨주세요</option>
+                                                    <option value="부재 시 문 앞에 놓아주세요">부재 시 문 앞에 놓아주세요</option>
+                                                    <option value="파손의 위험이 있으니 배송 시 유의해 주세요">파손의 위험이 있으니 배송 시 유의해 주세요</option>
                                                     <option value="selfText">직접입력</option>
                                                 </select>
                                             </div>
-                                            <input type="text" id="deliveryText" placeholder="배송메모 직접 입력" style="display:none;" />
+                                            <input type="text" id="deliveryText" name="deliveryText" placeholder="배송메모 직접 입력" style="display:none;" />
                                         </td>
                                     </tr>
                                 </tbody>

@@ -36,7 +36,4 @@ public class OrderItem {
 	@Column(nullable = false)
 	private int price;
 	
-	//@Column(nullable = false, length=100)
-	//private String option_name;
-	
 }

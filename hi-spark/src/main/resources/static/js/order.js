@@ -100,11 +100,14 @@ $(document).ready(function(){
 			}
 	        return;
 	    }
-		if(confirm(total+" P를 차감하시겠습니까?")){
-			alert(total+" P 차감 예정입니다.");
-		    let remain = credit - useAmount;
-		    $("#creditValueAfter").text(remain.toLocaleString());
-			paid = 1;
+		if(useAmount>total){
+			if(confirm(total+" P를 차감하시겠습니까?")){
+				
+				alert(total+" P 차감 예정입니다.");
+			    let remain = credit - useAmount;
+			    $("#creditValueAfter").text(remain.toLocaleString());
+				paid = 1;
+			}
 		}
 		
 	});

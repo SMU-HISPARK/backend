@@ -196,8 +196,8 @@ $(document).ready(function(){
 	    $(".productprice-total div:last").text((total + shipping).toLocaleString() + "원");
 
 	    // 상단 [기본배송] 영역도 업데이트
-	    $("table.pricesum span:eq(0)").text(total.toLocaleString() + "원");
-	    $("table.pricesum span:eq(1)").text(shipping.toLocaleString() + "원");
+	    $("table.pricesum span:eq(0)").text(total.toLocaleString());
+	    $("table.pricesum span:eq(1)").text(shipping.toLocaleString());
 	    $("table.pricesum span:eq(2)").text((total + shipping).toLocaleString());
     }
 	

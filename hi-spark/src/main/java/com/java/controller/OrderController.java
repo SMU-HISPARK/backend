@@ -76,8 +76,35 @@ public class OrderController {
 	}
 	
 	@PostMapping("/order/order_finish")
-	public String orderfinish() {
+	public String orderfinish(@RequestParam Map<String, String> params, HttpSession session) {
+		    
+	    //휴대전화
+	    String phone = params.get("phone1") + "-" + params.get("phone2") + "-" + params.get("phone3");
+	    //이메일
+	    String email = params.get("email") + "@" + params.get("domain");
+	    //주소
+	    String addressMain = params.get("address1");
+	    String addressDetail = params.get("address2");
+	    //배송메시지
+	    String deliveryMessage = "selfText".equals(params.get("deliveryMessage")) 
+	        ? params.get("deliveryText") 
+	        : params.get("deliveryMessage");
+	    // 로그인된 회원 정보
+	    Member member = (Member) session.getAttribute("member");
+	    if (member == null) {
+	        return "redirect:/login";
+	    }
+	    // 장바구니 정보 (주문할 상품들)
+	    List<CartItem> cartItems = (List<CartItem>) session.getAttribute("cartItems");
+	    
+	    
+	    
+	    
+	    
+		
 	    
 	    return "shop/shop_order_finish";
 	}
+	
+	
 }
