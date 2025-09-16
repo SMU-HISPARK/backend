@@ -29,7 +29,7 @@ public class Product {
    private String productImg;
    
    @Column(name="product_price",nullable=false)
-   private int productprice;
+   private int productPrice;
    
    @Column(name="delivery_fee",nullable=false)
    private int delfee;

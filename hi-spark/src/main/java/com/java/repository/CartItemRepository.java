@@ -7,17 +7,12 @@ import org.springframework.stereotype.Repository;
 
 import com.java.entity.Cart;
 import com.java.entity.CartItem;
+import com.java.entity.Product;
 
 @Repository
 public interface CartItemRepository extends JpaRepository<CartItem, Integer> {
 
-	static void addCartItem(Cart cart, int productId, int quantity) {
-		
-	}
-	
-	// 이미 있는 카트 아이템
-	Optional<CartItem> findByCart_CartIdAndProduct_ProductId(int cartId, int productId);
+    // 카트와 상품을 기준으로 조회 (객체 기준)
+    Optional<CartItem> findByCartAndProduct(Cart cart, Product product);
 
-	
-	
 }

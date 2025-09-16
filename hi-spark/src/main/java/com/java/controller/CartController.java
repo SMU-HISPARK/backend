@@ -48,20 +48,14 @@ public class CartController {
                             @RequestParam("quantity") int quantity,
                             HttpServletRequest request,
                             Model model) {
-
         HttpSession session = request.getSession();
         int memberId = 1; // 로그인 구현 전 테스트용
         session.setAttribute("memberId", memberId);
-
         Member member = memberService.findById(memberId);
-        Product product = mainService.findById(productId);
-        
         Cart cart = cartService.getOrCreateCart(member);
 
-        
-        
-        
-        // 무조건 새로운 아이템으로 저장하는 로직
+//         무조건 새로운 아이템으로 저장하는 로직
+//        Product product = mainService.findById(productId);
 //        CartItem cartItem = CartItem.builder()
 //                .cart(cart)
 //                .product(product)
@@ -69,8 +63,7 @@ public class CartController {
 //                .build();
 //        cartItemService.save(cartItem);
         
-        
-        //이미 있는 상품이면 수량만 증가시키는 로직 호출
+//        이미 있는 상품이면 수량만 증가시키는 로직 호출
         CartItem existingItem = cartItemService.addCartItem(cart, productId, quantity);
         
         // 이미 담긴 상품 메시지 전달
@@ -82,11 +75,9 @@ public class CartController {
         
         // JSP에서 forEach 돌릴 수 있도록 담기
         model.addAttribute("cart", cartService.getCartByMember(member));
-
         return "shop/shop_cart"; // forward
     }
-	
-	
+    
 	//상품디테일에 전송받은 후 장바구니 화면 
 	@GetMapping("/cart")
 	public String cart(HttpServletRequest request, Model model) {

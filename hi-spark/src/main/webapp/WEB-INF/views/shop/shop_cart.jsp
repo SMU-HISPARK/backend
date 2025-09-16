@@ -84,8 +84,8 @@
                                             <div class="description">
                                                 <strong>${item.product.productName}</strong>
                                                 <br>
-                                                <fmt:formatNumber value="${item.product.productprice}" pattern="#,###" /> 원
-                                                <input type="hidden" class="unitPrice" value="${item.product.productprice}">
+                                                <fmt:formatNumber value="${item.product.productPrice}" pattern="#,###" /> 원
+                                                <input type="hidden" class="unitPrice" value="${item.product.productPrice}">
                                                 <br><br>
                                                 <span>배송: 3,000원</span>
                                             </div>
@@ -106,7 +106,7 @@
                                     <tr>
                                         <td class="titleTd">주문금액</td>
                                         <td class="productprice">
-                                            <fmt:formatNumber value="${item.product.productprice}" pattern="#,###" />원
+                                            <fmt:formatNumber value="${item.product.productPrice * item.quantity}" pattern="#,###" />원
                                         </td>
                                     </tr>
                                 </table>

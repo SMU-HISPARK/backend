@@ -56,7 +56,7 @@
                             <table>
                                 <tr>
                                     <th id="product_text_01">판매가</th>
-                                    <td id="product_text_01"><fmt:formatNumber value="${product.productprice}" pattern="#,###" /></td>
+                                    <td id="product_text_01"><fmt:formatNumber value="${product.productPrice}" pattern="#,###" /></td>
                                 </tr>
                                 <tr>
                                     <th>배송방법</th>
@@ -80,16 +80,19 @@
                                         </select>
                                     </td>
                                 </tr>-->
-                                 <tr>
-                                    <td class="quantity-title">수량</td>
-                                    <td class="countselect">
-                                        <div class="quantity-control">
-                                            <button type="button" class="quantity-btn-minus">-</button>
-                                            <input type="text" id="quantityInput"  class="quantity-input" value="1" min="1" max="${product.productQuantity}" />
-                                           <button type="button" class="quantity-btn-plus" >+</button>
-                                        </div>
-                                    </td>
-                                </tr>
+                                <form action="/shop/cart/add" method="post" id="cartFrm">
+                                  <td class="quantity-title">수량</td>
+									    <td class="countselect">
+									        <div class="quantity-control">
+									            <button type="button" class="quantity-btn-minus">-</button>
+									            <!-- 수량 입력 input (폼에서 전송됨) -->
+									            <input type="text" id="quantityInput" name="quantity"
+									                   class="quantity-input" value="1"
+									                   min="1" max="${product.productQuantity}" />
+									            <button type="button" class="quantity-btn-plus">+</button>
+									        </div>
+									    </td>
+									</tr>
                                 <tr class="product_total">
                                     <th>TOTAL</th>
                                    <td>
@@ -101,7 +104,7 @@
 									</c:when>
 										<c:otherwise>
 											<div class="product_price">
-												<fmt:formatNumber value="${product.productprice}" pattern="#,###" />
+												<fmt:formatNumber value="${product.productPrice}" pattern="#,###" />
 											</div>
 										</c:otherwise>									
 									</c:choose>
@@ -117,9 +120,8 @@
 	                           <button type="button" disable style="background: #ccc; cursor:not-allowed;" class="basket">장바구니</button>
 	                        </c:if>
 	                        <c:if test="${product.productQuantity > 0}">
-							   <form action="/shop/cart/add" method="post" id="cartFrm">
+							   
 							       <input type="hidden" name="productId" value="${product.productId}">
-							       <input type="hidden" id="hiddenQuantity" name="quantity" value="1">
 							       <button type="submit" class="basket">장바구니</button>
 							   </form>
 							</c:if>
@@ -145,7 +147,7 @@
 						 //       return; // 더 이상 실행 안 함
 						  //  }
 						    
-						    let unitPrice = parseInt("${product.productprice}", 10); // 숫자 그대로 받음
+						    let unitPrice = parseInt("${product.productPrice}", 10); // 숫자 그대로 받음
 						
 						    function updateTotal(quantity) {
 						        let total = unitPrice * quantity;

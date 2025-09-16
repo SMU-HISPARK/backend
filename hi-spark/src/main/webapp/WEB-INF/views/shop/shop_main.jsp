@@ -68,7 +68,7 @@
 									</c:when>
 									<c:otherwise>
 										<div class="product_price">
-											<fmt:formatNumber value="${product.productprice}" pattern="#,###" />
+											<fmt:formatNumber value="${product.productPrice}" pattern="#,###" />
 										</div>
 									</c:otherwise>									
 								</c:choose>

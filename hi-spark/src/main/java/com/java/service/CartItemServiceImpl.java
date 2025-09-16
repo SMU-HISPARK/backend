@@ -1,6 +1,5 @@
 package com.java.service;
 
-import org.hibernate.mapping.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,13 +25,14 @@ public class CartItemServiceImpl implements CartItemService {
     // cartId로 찾는 버전
     @Override
     public CartItem addCartItem(int cartId, int productId, int quantity) {
-        Cart cart = cartRepository.findById(cartId).orElseThrow();
-        Product product = productRepository.findById(productId).orElseThrow();
+        Cart cart = cartRepository.findById(cartId)
+                .orElseThrow(() -> new IllegalArgumentException("Cart not found"));
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new IllegalArgumentException("Product not found"));
 
-        // 이미있는 카트 아이템 있는지 확인
-        return cartItemRepository.findByCart_CartIdAndProduct_ProductId(cartId,productId)
+        return cartItemRepository.findByCartAndProduct(cart, product)
                 .map(item -> {
-                    item.setQuantity(item.getQuantity() + quantity); // 수량 증가
+                    item.setQuantity(item.getQuantity() + quantity); // 이미 있으면 수량 증가
                     return cartItemRepository.save(item);
                 })
                 .orElseGet(() -> {
@@ -44,59 +44,37 @@ public class CartItemServiceImpl implements CartItemService {
                             .build();
                     return cartItemRepository.save(cartItem);
                 });
-        		
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-//        CartItem cartItem = CartItem.builder()
-//                .cart(cart)
-//                .product(product)
-//                .quantity(quantity)
-//                .build();
-//
-//        return cartItemRepository.save(cartItem);
     }
 
     // Cart 객체로 받는 버전
     @Override
     public CartItem addCartItem(Cart cart, int productId, int quantity) {
-        Product product = productRepository.findById(productId).orElseThrow();
-        
-        return cartItemRepository.findByCart_CartIdAndProduct_ProductId(cart.getCartId(),productId)
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new IllegalArgumentException("Product not found"));
+
+        return cartItemRepository.findByCartAndProduct(cart, product)
                 .map(item -> {
-                    item.setQuantity(item.getQuantity() + quantity); // 수량 증가
+                    item.setQuantity(item.getQuantity() + quantity); // 이미 있으면 수량 증가
                     return cartItemRepository.save(item);
-                }).orElseGet(()->{
+                })
+                .orElseGet(() -> {
+                    // 없으면 새로 생성
                     CartItem cartItem = CartItem.builder()
                             .cart(cart)
                             .product(product)
                             .quantity(quantity)
                             .build();
-                    
-                    
                     return cartItemRepository.save(cartItem);
                 });
-        
-        
-        
-   
-
     }
 
     @Override
     public CartItem save(CartItem cartItem) {
-        return cartItemRepository.save(cartItem);   
+        return cartItemRepository.save(cartItem);
     }
 
-	@Override
-	public void deleteById(int cartItemId) {
-		cartItemRepository.deleteById(cartItemId);
-	}
+    @Override
+    public void deleteById(int cartItemId) {
+        cartItemRepository.deleteById(cartItemId);
+    }
 }
