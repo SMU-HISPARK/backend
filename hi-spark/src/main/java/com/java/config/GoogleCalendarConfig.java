@@ -14,7 +14,7 @@ import java.util.Collections;
 @Component
 public class GoogleCalendarConfig {
 
-    private static final String APPLICATION_NAME = "hi-spark";
+    private static final String APPLICATION_NAME = "hispark";
     private static final JsonFactory JSON_FACTORY = GsonFactory.getDefaultInstance();
 
     public Calendar getCalendarService() throws Exception {

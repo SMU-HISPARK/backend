@@ -12,11 +12,16 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/", "/login**", "/error").permitAll()
+                .requestMatchers("/", "/login**", "/error", "/schedule.html", "/css/**", "/js/**").permitAll()
                 .anyRequest().authenticated()
             )
-            .oauth2Login(); // <-- 구글 OAuth2 로그인 사용
-
+            .oauth2Login(oauth2 -> oauth2
+            	    .defaultSuccessUrl("/schedule.html", true)
+            	     // 로그인 성공 시 이동할 URL
+            	    
+            	    
+            	    
+            	    );
         return http.build();
     }
 }
