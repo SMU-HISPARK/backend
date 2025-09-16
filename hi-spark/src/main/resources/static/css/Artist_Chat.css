@@ -108,7 +108,7 @@ body, html {
 /* 스크롤 div */
 .middle_div{
     flex: 1;
-    margin-top: 70px;
+    margin-top: 85px;
     margin-bottom: 90px;
     overflow-y: auto;
 }

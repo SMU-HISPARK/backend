@@ -39,6 +39,6 @@ public class ChatViewController {
         System.out.println("history : " + history);
         System.out.println("history size: " + history.size());
 
-        return "Artist_chat"; // JSP 이름 (Artist_chat.jsp)
+        return "Artist_chat";
     }
 }
