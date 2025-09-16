@@ -42,6 +42,7 @@ out/
 .env.local
 .env.development
 .env.production
+google_id.env
 
 # Google credentials
 service-account.json
@@ -59,7 +60,7 @@ config/secrets.json
 # application-prod.properties
 
 
-.env
-service-account.json
-*service-account*.json
-*.json
+#.env
+#service-account.json
+# *service-account*.json
+#*.json
