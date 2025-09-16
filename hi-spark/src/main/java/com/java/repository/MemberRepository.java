@@ -3,14 +3,13 @@ package com.java.repository;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
 
 import com.java.entity.Member;
 
-@Repository
-public interface MemberRepository extends JpaRepository<Member, Integer>{
+public interface MemberRepository extends JpaRepository<Member, Integer> {
+
+	Optional<Member> findByLoginId(String loginId);
 
 	Optional<Member> findByLoginIdAndPassword(String loginId, String password);
 
-	
 }

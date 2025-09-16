@@ -1,5 +1,7 @@
 package com.java.service;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,6 +12,7 @@ import com.java.repository.MemberRepository;
 @Service
 public class MemberServiceImpl implements MemberService {
 
+	@Autowired MemberRepository memberRepository;
 	@Autowired MemberRepository mRep;
 	
 	@Override
@@ -30,4 +33,14 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	
+	
+	@Override
+	public Member findById(int memberId) {
+		Member member = memberRepository.findById(memberId).orElseGet(
+				()-> {return(new Member());}
+				);
+		
+		return member;
+	}
+
 }
