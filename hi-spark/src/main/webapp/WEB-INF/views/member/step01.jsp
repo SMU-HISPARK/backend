@@ -1,10 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ include file="../layout/header.jsp" %>
-<script  src="http://code.jquery.com/jquery-latest.min.js"></script>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+  <script src="http://code.jquery.com/jquery-latest.min.js"></script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>회원 가입 - 약관동의</title>
@@ -193,7 +193,7 @@
       </div>
       <div class="agreement-item">
         <h3>
-          <label><input type="checkbox" class="agree-checkbox"> 이용약관 동의 <span>(필수)</span></label>
+          <label><input type="checkbox" class="agree-checkbox required"> 이용약관 동의 <span>(필수)</span></label>
         </h3>
         <div class="agreement-content">
           [이용약관] 제1조 (목적) 본 약관은 [회사명] (이하 "회사")가 제공하는 모든 서비스의 이용과 관련하여 회원의 권리, 의무 및 책임사항, 기타 필요한 사항을 규정함을 목적으로 합니다.
@@ -202,7 +202,7 @@
       </div>
       <div class="agreement-item">
         <h3>
-          <label><input type="checkbox" class="agree-checkbox"> 개인정보 수집 및 이용 동의 <span>(필수)</span></label>
+          <label><input type="checkbox" class="agree-checkbox required"> 개인정보 수집 및 이용 동의 <span>(필수)</span></label>
         </h3>
         <div class="agreement-content">
           [개인정보 수집 및 이용 동의] 수집항목: 이름, 아이디, 비밀번호, 휴대전화, 이메일 주소.
@@ -227,11 +227,12 @@
       </div>
       <div class="btn-box">
         <button class="btn cancel">취소</button>
-        <button class="btn submit">다음</button>
+        <button class="btn submit" onclick="nextBtn()">다음</button>
       </div>
     </div>
   </div>
   <script>
+    // 전체 동의 버튼 누를 시, 모든 체크박스 체크
     const allAgreeCheckbox = document.getElementById('all-agree-checkbox');
     const agreeCheckboxes = document.querySelectorAll('.agree-checkbox');
     allAgreeCheckbox.addEventListener('change', (event) => {
@@ -240,6 +241,27 @@
         checkbox.checked = isChecked;
       });
     });
+    // 개별 체크박스 상태에 따라 전체 동의 체크박스 상태 변경
+    agreeCheckboxes.forEach((checkbox) => {
+      checkbox.addEventListener('change', () => {
+        const allChecked = Array.from(agreeCheckboxes).every(cb => cb.checked);
+        allAgreeCheckbox.checked = allChecked;
+      });
+    });
+    // 취소 버튼 클릭 시 이전 페이지로 이동
+    $('.btn.cancel').click(function() {
+        history.back();
+    });
+
+    // 다음 버튼 클릭 시 동의 체크 (추후 구현)
+    function nextBtn(){
+      if($('.agree-checkbox.required').length !== $('.agree-checkbox.required:checked').length){
+        alert('필수 약관에 모두 동의해 주세요.');
+        return;
+      }
+      // 모든 필수 약관에 동의했을 경우 다음 단계로 이동
+    	location.href = "/member/step02";
+    }
   </script>
 </body>
 </html>
