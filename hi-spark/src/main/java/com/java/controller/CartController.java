@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.java.entity.Cart;
 import com.java.entity.CartItem;
@@ -47,37 +48,36 @@ public class CartController {
     public String addToCart(@RequestParam("productId") int productId,
                             @RequestParam("quantity") int quantity,
                             HttpServletRequest request,
+                            RedirectAttributes redirectAttributes,
                             Model model) {
+
         HttpSession session = request.getSession();
         int memberId = 1; // 로그인 구현 전 테스트용
         session.setAttribute("memberId", memberId);
         Member member = memberService.findById(memberId);
         Cart cart = cartService.getOrCreateCart(member);
 
-//         무조건 새로운 아이템으로 저장하는 로직
-//        Product product = mainService.findById(productId);
-//        CartItem cartItem = CartItem.builder()
-//                .cart(cart)
-//                .product(product)
-//                .quantity(quantity)
-//                .build();
-//        cartItemService.save(cartItem);
-        
-//        이미 있는 상품이면 수량만 증가시키는 로직 호출
-        CartItem existingItem = cartItemService.addCartItem(cart, productId, quantity);
-        
-        // 이미 담긴 상품 메시지 전달
-        if(existingItem.getQuantity() > quantity) {
-        	model.addAttribute("msg", "이미 장바구니에 있는 상품입니다.");
-        }else {
-        	model.addAttribute("msg","장바구니에 상품을 추가했습니다.");
-        }
-        
-        // JSP에서 forEach 돌릴 수 있도록 담기
+        // 👉 장바구니에 이미 있는지 먼저 확인
+        Optional<CartItem> existingItemOpt = cartItemRepository.findByCartAndProduct(
+                cart,
+                mainService.findById(productId)
+        );
+
+        // 👉 실제 저장 (수량 증가 or 신규 추가)
+        cartItemService.addCartItem(cart, productId, quantity);
+
+        // 👉 JSP에서 forEach 돌릴 수 있도록 담기
         model.addAttribute("cart", cartService.getCartByMember(member));
-        return "shop/shop_cart"; // forward
+
+        // 👉 메시지 분기
+        if (existingItemOpt.isPresent()) {
+            redirectAttributes.addFlashAttribute("msg", "이미 장바구니에 있는 상품입니다. 수량이 증가되었습니다.");
+        } else {
+            redirectAttributes.addFlashAttribute("msg", "장바구니에 상품을 추가했습니다.");
+        }
+
+        return "redirect:/shop/cart";
     }
-    
 	//상품디테일에 전송받은 후 장바구니 화면 
 	@GetMapping("/cart")
 	public String cart(HttpServletRequest request, Model model) {

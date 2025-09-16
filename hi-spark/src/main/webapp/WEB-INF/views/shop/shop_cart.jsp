@@ -15,11 +15,11 @@
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
 </head>
 <body>
-	<c:if test="${not empty msg}">
-	    <script>
-	        alert("${msg}");
-	    </script>
-	</c:if>
+		<c:if test="${not empty msg}">
+		    <script>
+		        alert("${msg}");
+		    </script>
+		</c:if>
 
 	<div id="header">
 		
@@ -78,7 +78,7 @@
                                             <input type="checkbox" name="cartItemIds" value="${item.cartitemId}">
                                         </td>
                                         <td class="pd_img">
-                                            <img src="${item.product.productImg}" width="100px"/>
+                               ㄴ             <img src="${item.product.productImg}" width="100px"/>
                                         </td>
                                         <td class="product">
                                             <div class="description">
