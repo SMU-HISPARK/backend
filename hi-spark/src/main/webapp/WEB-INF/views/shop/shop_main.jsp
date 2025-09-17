@@ -8,9 +8,9 @@
 	<head>
 		<meta charset="UTF-8">
 		<title>Hi-Spark Shop</title>
-		<link rel="stylesheet" type="text/css" href="css/shop.css">
-		<link rel="stylesheet" type="text/css" href="css/base.css">
-		<link rel="icon" href="../images/hispark_crop.png">
+		<link rel="stylesheet" type="text/css" href="/css/shop.css">
+		<link rel="stylesheet" type="text/css" href="/css/base.css">
+		<link rel="icon" href="/images/hispark_crop.png">
 	</head>
 	<body>
 		<div class="wrap">
@@ -18,12 +18,17 @@
 			<div id="header">
 				
 				<div id="snbBox">
-					<a href="/shop"><h1><img src="images/hispark_crop.png" alt="(로고)" /></h1></a>
+					<a href="/shop"><h1><img src="/images/hispark_crop.png" alt="(로고)" /></h1></a>
 					<div id="snb">
 						<ul>
-							<li><a href="#">로그인</a></li>
-							<li><a href="#">회원가입</a></li>
-							<li><a href="main.html">메인으로</a></li>
+							<c:if test="${session_id == null}">
+								<li><a href="/member/login">로그인</a></li>
+								<li><a href="/member/step01">회원가입</a></li>
+							</c:if>
+							<c:if test="${session_id != null}">
+								<li><a href="/member/logout">로그아웃</a></li>
+							</c:if>
+							<li><a href="/">메인으로</a></li>
 						</ul>
 
 					</div>
@@ -31,7 +36,7 @@
 					<!-- 우측 아이콘 -->
 					<div class="hMenu hRight">
 					<a href="/shop/cart" class="cartWrapper">
-						<img src="images/cart.png" style="width:29px;" /> <!--여기부터 다음줄까지-->
+						<img src="/images/cart.png" style="width:29px;" /> <!--여기부터 다음줄까지-->
 						<span class="cartBadge">3</span> <!-- 스프링에서 c:if 활용 커뮤니티에선 display:none -->
 					</a>
 					<a href="/mypage/shop"><img src="images/user.png" style="width:28px;" /></a>
@@ -42,7 +47,7 @@
 			<!-- container -->
 			<div class="container">
 				<div class="banner">
-					<img src="https://file.cafe24cos.com/banner-admin-live/upload/vlastshop/0656f217-1310-4a55-f6d8-060104815bee.jpeg">
+					<img src="/images/banner.png" style="width:100%;"/>
 				</div>
 				<div class="list_text">
 					<p>All Products</p>

@@ -51,11 +51,19 @@ public class CartController {
                             RedirectAttributes redirectAttributes,
                             Model model) {
 
-        HttpSession session = request.getSession();
-        int memberId = 1; // 로그인 구현 전 테스트용
-        session.setAttribute("memberId", memberId);
+        HttpSession session = request.getSession(false);
+        
+        Integer memberId = (Integer) session.getAttribute("memberId");
+        // 로그인이 안된경우 장바구니 방어 코드
+        if(memberId == null) {
+        	// 로그인 안됨 -> 로그인페이지로 이동
+        	redirectAttributes.addFlashAttribute("msg", "로그인을 해야 장바구니를 이용하실 수 있습니다.");
+        	return "redirect:/member/login";
+        }
+        //로그인된 경우 
         Member member = memberService.findById(memberId);
         Cart cart = cartService.getOrCreateCart(member);
+
 
         // 장바구니에 이미 있는지 먼저 확인
         Optional<CartItem> existingItemOpt = cartItemService.findByCartAndProduct(cart,mainService.findById(productId));
@@ -80,14 +88,17 @@ public class CartController {
 	//상품디테일에 전송받은 후 장바구니 화면 
 	@GetMapping("/shop/cart")
 	public String cart(HttpServletRequest request, Model model) {
-	    HttpSession session = request.getSession();
-	    int memberId = 1; // 로그인 붙이기 전 테스트용
-	    session.setAttribute("memberId", memberId);
+	   // int memberId = 1; // 로그인 붙이기 전 테스트용
+	    
+		HttpSession session = request.getSession(false);
 
+	    if (session == null || session.getAttribute("memberId") == null) {
+	        return "redirect:/member/login";
+	    }
+	    Integer memberId = (Integer) session.getAttribute("memberId");
 	    Member member = memberService.findById(memberId);
 	    if (member == null) {
-	        model.addAttribute("error", "member not found");
-	        return "shop/shop_cart";
+	    	return "redirect:/member/login";
 	    }
 
 	    Cart cart = cartService.getCartByMember(member);

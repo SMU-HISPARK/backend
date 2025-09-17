@@ -24,8 +24,13 @@
 					<a href="/shop"><h1><img src="/images/hispark_crop.png" alt="(로고)" /></h1></a>
 					<div id="snb">
 						<ul>
-							<li><a href="#">로그인</a></li>
-							<li><a href="#">회원가입</a></li>
+							<c:if test="${empty sessionScope.memberId}">
+								<li><a href="/member/login">로그인</a></li>
+								<li><a href="/member/step01">회원가입</a></li>
+							</c:if>
+							<c:if test="${not empty sessionScope.memberId}">
+								<li><a href="/member/logout">로그아웃</a></li>
+							</c:if>
 							<li><a href="/">메인으로</a></li>
 						</ul>
 
@@ -80,7 +85,7 @@
                                         </select>
                                     </td>
                                 </tr>-->
-                                <form action="/shop/cart/add" method="post" id="cartFrm">
+                                <tr>
                                   <td class="quantity-title">수량</td>
 									    <td class="countselect">
 									        <div class="quantity-control">
@@ -112,23 +117,47 @@
                                 </tr>
                                 
                             </table>
-                      
+                     
 
                         </div>
 	                        <div class="product_button">
 	                        <c:if test="${product.productQuantity == 0}">
-	                           <button type="button" disable style="background: #ccc; cursor:not-allowed;" class="basket">장바구니</button>
+	                           <button type="button" disabled style="background: #ccc; cursor:not-allowed;" class="basket">장바구니</button>
 	                        </c:if>
 	                        <c:if test="${product.productQuantity > 0}">
-							   
-							       <input type="hidden" name="productId" value="${product.productId}">
-							       <button type="submit" class="basket">장바구니</button>
-							   </form>
+	                        
+	                        
+	                        
+	                        <c:choose>
+
+							   <c:when test="${empty sessionScope.memberId}">
+							       <button type="submit" class="basket" onclick="checkLogin()">장바구니</button>
+							   </c:when>
+							   <c:otherwise>
+								   	<form action="/shop/cart/add" method="post" id="cartFrm">
+									   	<input type="hidden" id="hiddenQuantity" name="quantity"
+											                   class="quantity-input" value="1"
+											                   min="1" max="${product.productQuantity}" />
+								       <input type="hidden" name="productId" value="${product.productId}">
+								       <button type="submit" class="basket">장바구니</button>
+							       </form>
+							   </c:otherwise>   
+	                        </c:choose>
 							</c:if>
 	                          <!--    <button type="button" class="buy">바로구매</button>-->
 	                        </div>
                     	</div>
 				</div>
+				
+				
+				<script>
+					function checkLogin(){
+						if(confirm("로그인이 필요한 서비스입니다. 로그인 하시겠습니까? ")){
+							window.location.href="/member/login";
+						}
+					}
+				
+				</script>
                 <div class="Information">
                     <p>상세정보</p>
 					<br>
@@ -141,14 +170,15 @@
 							//sold out일때 js update total 실행안하기
 							
 							let stock = parseInt("${product.productQuantity}", 10);
-
-						  //  if (stock === 0) {
-						  //      $(".product_price").html("<p class="product_price">sold out</p>");
-						 //       return; // 더 이상 실행 안 함
-						  //  }
-						    
 						    let unitPrice = parseInt("${product.productPrice}", 10); // 숫자 그대로 받음
-						
+							
+						    // 수량 동기화 함수 
+						    function syncQuantity() {
+						    	let quantity = $("#quantityInput").val();
+						    	$("#hiddenQuantity").val(quantity);
+						    }
+						    
+						    
 						    function updateTotal(quantity) {
 						        let total = unitPrice * quantity;
 						        $(".product_total td").text(formatNumber(total) + " 원");
@@ -161,15 +191,18 @@
 
 						        if (stock === 0) {
 						            alert("품절입니다.");
-						            input.val(1);                  // ✅ 품절이면 강제로 1 고정
+						            input.val(1);  // ✅ 품절이면 강제로 1 고정
+						            syncQuantity();
 						           return;
 						        }
 						        if (quantity < stock) {
 						            input.val(quantity + 1);
 						            updateTotal(quantity + 1);
+						            syncQuantity();
 						        } else {
 						            alert("재고를 초과할 수 없습니다.");
 						            input.val(stock); // 재고 이상 못 올라가게 고정
+						            syncQuantity();
 						        }
 						    });
 						
@@ -181,9 +214,11 @@
 						        if(quantity > 1){
 							        input.val(quantity - 1);
 							        updateTotal(quantity -1);
+							        syncQuantity();
 						        }else{
 						        	alert("최소 수량은 1개입니다.");
 						            input.val(1); // 최소 1로 고정
+						            syncQuantity();
 						        }
 						    });
 						
@@ -195,6 +230,7 @@
 						        if (stock === 0) {
 						            alert("품절입니다");
 						            $(this).val(1);
+						            syncQuantity();
 						            return;
 						        }
 						        if (quantity < 1) {
@@ -208,22 +244,24 @@
 
 						        $(this).val(quantity);
 						        updateTotal(quantity);
+						        syncQuantity();
 						    });
 
 						    // 초기 TOTAL
 						    if (stock > 0) {
 						        updateTotal(1);
 						    } else {
-						        $(".product_total .product_price").html("<span class='product_price'>sold out</span>");
+						        $(".product_total .product_price").html("<span class='product_price'>SOLD OUT</span>");
 						    }
+						    
+						    // 초기수량 동기화
+						    syncQuantity();
 						
 												    
 						    // 장바구니로 전송 
 						    function formatNumber(num) {
 							    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 							}
-						    
-						    
 						    
 						    
 						    // 수량이 바뀔 때 hidden input 값도 업데이트
