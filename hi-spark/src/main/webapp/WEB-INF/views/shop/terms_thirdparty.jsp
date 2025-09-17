@@ -5,9 +5,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>개인정보의 제3자 제공(업무제휴를 위한 제휴사 제공) 약관</title>
+    <title>개인정보 수집 및 이용 약관</title>
 </head>
 <body>
-    
+    <div></div>
 </body>
 </html>

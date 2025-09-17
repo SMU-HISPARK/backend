@@ -3,6 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -37,7 +38,9 @@
 					<div class="hMenu hRight">
 					<a href="/shop/cart" class="cartWrapper">
 						<img src="/images/cart.png" style="width:29px;" /> <!--여기부터 다음줄까지-->
-						<span class="cartBadge">3</span> <!-- 스프링에서 c:if 활용 커뮤니티에선 display:none -->
+						<span class="cartBadge" style="display:none;" data-count="${sessionScope.cart_count != null ? sessionScope.cart_count : 0}">
+					    	${sessionScope.cart_count != null ? sessionScope.cart_count : 0}
+					    </span>
 					</a>
 					<a href="/mypage/shop"><img src="/images/user.png" style="width:28px;" /></a>
 				</div>
@@ -203,4 +206,5 @@
 		</div>
 	</div>
 </body>
+<script type="text/javascript" src="/js/shop.js"></script>
 </html>

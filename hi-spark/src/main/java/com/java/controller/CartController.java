@@ -3,6 +3,7 @@ package com.java.controller;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
@@ -103,7 +104,9 @@ public class CartController {
 
 	    Cart cart = cartService.getCartByMember(member);
 	    model.addAttribute("cart", cart);
-
+	    int cartCount = (cart != null && cart.getItems() != null) ? cart.getItems().size() : 0;
+	    session.setAttribute("cart_count", cartCount);
+	    
 	    return "shop/shop_cart"; // JSP
 	}
 
@@ -121,14 +124,29 @@ public class CartController {
 	
 	
 	
-	// 카트아이템 삭제
-	@DeleteMapping("/cart/delete")
-	@ResponseBody
-	public String deleteCartItem(@RequestParam("cartItemId") int CartItemId) {
-		cartItemService.deleteById(CartItemId);
-		return "success";
-	}
-	
+	//카트아이템 삭제
+		@DeleteMapping("/cart/delete")
+		@ResponseBody
+		public ResponseEntity<Void> deleteCartItem(@RequestParam("cartItemId") int CartItemId, HttpSession session) {
+			cartItemService.deleteById(CartItemId);
+			
+			
+			//Integer memberId = (Integer) session.getAttribute("member_id");
+			Integer memberId = (Integer) session.getAttribute("memberId");
+		    Cart cart = cartService.getCartByMember_MemberId(memberId);
+		    int cartCount = (cart != null && cart.getItems() != null) ? cart.getItems().size() : 0;
+		    session.setAttribute("cart_count", cartCount); //카트저장
+
+		    return ResponseEntity.ok().build();
+		}
+		
+		
+		@GetMapping({"/cart/delete","/shop/cart/add"})
+		public String alert(Model model) {
+			model.addAttribute("msg", "권한이 없습니다.");
+	        model.addAttribute("url", "/shop");
+	        return "alert"; // alert.jsp
+		}
 	
 	
 	

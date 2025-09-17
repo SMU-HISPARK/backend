@@ -64,6 +64,7 @@
     vertical-align: middle;
     width:100px
 }
+
 #product_text_01{
     font-weight: 700;
     color: #035fe0;
@@ -117,7 +118,7 @@
 .quantity-control {
     display: flex;
     align-items: center;
-    justify-content: flex-end;
+ /*   justify-content: flex-end;*/
 }
 .quantity-btn {
     padding: 2px 6px;

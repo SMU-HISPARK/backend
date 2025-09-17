@@ -38,9 +38,11 @@
 
 					<!-- 우측 아이콘 -->
 					<div class="hMenu hRight">
-					<a href="/cart" class="cartWrapper">
+					<a href="/shop/cart" class="cartWrapper">
 						<img src="/images/cart.png" style="width:29px;" /> <!--여기부터 다음줄까지-->
-						<span class="cartBadge">3</span> <!-- 스프링에서 c:if 활용 커뮤니티에선 display:none -->
+						<span class="cartBadge" style="display:none;" data-count="${sessionScope.cart_count != null ? sessionScope.cart_count : 0}">
+					    	${sessionScope.cart_count != null ? sessionScope.cart_count : 0}
+					    </span>
 					</a>
 					<a href="/"><img src="/images/user.png" style="width:28px;" /></a>
 				</div>
@@ -61,7 +63,7 @@
                             <table>
                                 <tr>
                                     <th id="product_text_01">판매가</th>
-                                    <td id="product_text_01"><fmt:formatNumber value="${product.productPrice}" pattern="#,###" /></td>
+                                    <td id="product_text_01"><fmt:formatNumber value="${product.productPrice}" pattern="#,###" /> 원</td>
                                 </tr>
                                 <tr>
                                     <th>배송방법</th>
@@ -69,7 +71,15 @@
                                 </tr>
                                 <tr>
                                     <th>배송비</th>
-                                    <td><fmt:formatNumber value="${product.delfee}" pattern="#,###" /></td>
+                                    <td>
+                                    <fmt:formatNumber value="${product.delfee}" pattern="#,###" /> 원
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th></th>
+                                    <td>
+                                    <div style="width: 200px;">(5만원이상 구매시 무료배송)</div>
+                                    </td>
                                 </tr>
                            <!--     <tr class="product_option">
                                     <th>옵션</th>

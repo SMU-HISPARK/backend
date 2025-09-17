@@ -39,16 +39,16 @@ $(document).ready(function(){
 
     //결제수단
     $("input:radio[name=paymethod]").change(function(){
-        if(this.value == 'creditcard'){
+        if(this.value == '신용카드'){
             $(".paymethod-detail").css("display","none");
             $("#creditcard-detail").css("display","block");
-        }else if(this.value == 'transfer'){
+        }else if(this.value == '계좌이체'){
             $(".paymethod-detail").css("display","none");
             $("#transfer-detail").css("display","block");
-        }else if(this.value == 'virtualAccount'){
+        }else if(this.value == '가상계좌'){
             $(".paymethod-detail").css("display","none");
             $("#virtualAccount-detail").css("display","block");
-        }else if(this.value == 'paidCredit'){
+        }else if(this.value == '적립금'){
             $(".paymethod-detail").css("display","none");
             $("#paidCredit-detail").css("display","block");
         }
@@ -105,6 +105,7 @@ $(document).ready(function(){
 			    let remain = credit - total;
 			    $("#creditValueAfter").text(remain.toLocaleString());
 				paid = 1;
+				
 			}
 		}
 		
@@ -142,7 +143,6 @@ $(document).ready(function(){
 			e.preventDefault();
 			return;
 		}
-
 
 	});
 

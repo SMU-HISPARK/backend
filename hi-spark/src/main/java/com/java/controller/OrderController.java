@@ -46,8 +46,8 @@ public class OrderController {
 			@RequestParam("quantities") List<Integer> quantities,
 		HttpSession session, Model model) {
 		
-		
-		int memberId = (int) session.getAttribute("member_id"); // 로그인 세션
+		 Integer memberId = (Integer) session.getAttribute("memberId");
+		//int memberId = (int) session.getAttribute("member_id"); // 로그인 세션
 		Member member = memberService.findById(memberId);
 
 	    // 선택한 카트아이템만 가져오기
@@ -86,8 +86,8 @@ public class OrderController {
 	public String orderfinish(@RequestParam("selectedItems") List<Integer> selectedItemIds,
 	                          @RequestParam Map<String,String> params,
 	                          HttpSession session, Model model) {
-
-	    int memberId = (int) session.getAttribute("member_id");
+		 Integer memberId = (Integer) session.getAttribute("memberId");
+	    //int memberId = (int) session.getAttribute("member_id");
 
 	    Orders order = orderService.placeOrder(memberId, selectedItemIds, params);
 	    
@@ -101,7 +101,9 @@ public class OrderController {
 	
 	@GetMapping("/order/finish-view")
 	public String orderFinishView(@RequestParam("orderCode") String orderCode, HttpSession session, Model model) {
-		int memberId = (int) session.getAttribute("member_id");
+		 Integer memberId = (Integer) session.getAttribute("memberId");
+		
+		//int memberId = (int) session.getAttribute("member_id");
 		Member member = memberService.findById(memberId);
 
 		Orders order = orderService.findByOrderCode(orderCode); // DB 조회

@@ -1,12 +1,16 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+    
     <!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>주문/결제</title>
-    <link rel="stylesheet" href="../css/order.css" />
+    <link rel="stylesheet" href="/css/order.css" />
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
 
 </head>
@@ -66,14 +70,14 @@
             
             <h1>SPARK SHOP</h1>
             <div class="hMenu hLeft">
-                <a href="javascript:void(0);" id="backBtn"><img src="../images/shopping/left.png" style="width:28px;" /></a>
+                <a href="/shop/cart" id="backBtn"><img src="/images/shopping/left.png" style="width:28px;" /></a>
             </div>
             <div class="hMenu hRight">
-                <a href="/cart" class="cartWrapper">
-                    <img src="../images/cart.png" style="width:29px;" />
-                    <span class="cartBadge">3</span>
+                <a href="/shop/cart" class="cartWrapper">
+                    <img src="/images/cart.png" style="width:29px;" />
+                    <span class="cartBadge">${sessionScope.cart_count}</span>
                 </a>
-                <a href="/mypage/shop"><img src="../images/user.png" style="width:28px;" /></a>
+                <a href="/mypage/shop"><img src="/images/user.png" style="width:28px;" /></a>
             </div>
         </div>
 
@@ -81,8 +85,8 @@
             주문 / 결제
         </div>
 
+        <form action="/order/order_finish" id="purchaseFrm" method="post">  <!--post로바꾸기-->
         <div class="contentWrap">
-            <form action="/order/order_finish" class="orderFrm" method="post">  <!--post로바꾸기-->
                 <div class="addressBox">
                     <details open>
                         <summary>배송지</summary>
@@ -96,7 +100,7 @@
                                 <tbody>
                                     <tr>
                                         <td class="label">받는사람 <span class="required">*</span></td>
-                                        <td class="inputBox"><input type="text" id="receiver" name="acceptant"/></td>
+                                        <td class="inputBox"><input type="text" id="receiver" name="acceptant" required /></td>
                                     </tr>
                                     <tr>
                                         <td class="label">주소 <span class="required">*</span></td>
@@ -104,7 +108,7 @@
                                             <ul>
                                                 <li>
                                                     <div style="margin-bottom: 10px;">
-                                                        <input type="text" placeholder="우편번호" style="width: 160px;" name="zipcode" id=zipcode readonly />
+                                                        <input type="text" placeholder="우편번호" style="width: 160px;" name="zipcode" id=zipcode readonly required />
                                                         <button type="button" class="addressSearchBtn">주소검색</button>
                                                     </div>
                                                     
@@ -116,7 +120,7 @@
                                                 </li>
                                                 <li>
                                                     <div style="margin-bottom: 10px;">
-                                                        <input type="text" placeholder="기본주소"  id="address1" name="address1" />
+                                                        <input type="text" placeholder="기본주소"  id="address1" name="address1" readonly required />
                                                     </div>
                                                 </li>
                                                 <li>
@@ -132,35 +136,17 @@
                                         <td class="inputBox">
                                             <div class="phone-group">
                                                 <select name="phone1">
-                                                    <option>010</option>
-                                                    <option>011</option>
-                                                    <option>016</option>
-                                                    <option>017</option>
-                                                    <option>018</option>
-                                                    <option>019</option>
+                                                    <option value="010" selected>010</option>
+                                                    <option value="011">011</option>
+                                                    <option value="016">016</option>
+                                                    <option value="017">017</option>
+                                                    <option value="018">018</option>
+                                                    <option value="019">019</option>
                                                 </select>
                                                 <span>-</span>
-                                                <input type="text" class="phone2" />
+                                                <input type="text" class="phone2" name="phone2" maxlength="4" pattern="[0-9]+" required />
                                                 <span>-</span>
-                                                <input type="text" class="phone3" />
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="label">이메일 <span class="required">*</span></td>
-                                        <td class="inputBox">
-                                            <div class="email-group">
-                                                <input type="text" class="email-input" />
-                                                <span>@</span>
-                                                <select class="domain-select">
-                                                    <option>직접입력</option>
-                                                    <option>naver.com</option>
-                                                    <option>gmail.com</option>
-                                                    <option>daum.net</option>
-                                                    <option>hotmail.com</option>
-                                                    <option>yahoo.co.kr</option>
-                                                </select>
-
+                                                <input type="text" class="phone3" name="phone3" maxlength="4" pattern="[0-9]+" required />
                                             </div>
                                         </td>
                                     </tr>
@@ -168,16 +154,16 @@
                                         <td class="label">배송메세지</td>
                                         <td class="inputBox">
                                             <div class="messageBox">
-                                                <select class="deliveryMessage">
-                                                    <option>배송메모를 선택해주세요</option>
-                                                    <option>배송 전 연락 바랍니다</option>
-                                                    <option>부재 시 경비실에 맡겨주세요</option>
-                                                    <option>부재 시 문 앞에 놓아주세요</option>
-                                                    <option>파손의 위험이 있는 상품입니다. 배송 시 주의해 주세요</option>
+                                                <select class="deliveryMessage" name="deliveryMessage">
+                                                    <option value="" selected>배송메모를 선택해주세요</option>
+                                                    <option value="배송 전 연락 바랍니다">배송 전 연락 바랍니다</option>
+                                                    <option value="부재 시 경비실에 맡겨주세요">부재 시 경비실에 맡겨주세요</option>
+                                                    <option value="부재 시 문 앞에 놓아주세요">부재 시 문 앞에 놓아주세요</option>
+                                                    <option value="파손의 위험이 있으니 배송 시 유의해 주세요">파손의 위험이 있으니 배송 시 유의해 주세요</option>
                                                     <option value="selfText">직접입력</option>
                                                 </select>
                                             </div>
-                                            <input type="text" id="deliveryText" placeholder="배송메모 직접 입력" style="display:none;" />
+                                            <input type="text" id="deliveryText" name="deliveryText" placeholder="배송메모 직접 입력" style="display:none;" />
                                         </td>
                                     </tr>
                                 </tbody>
@@ -190,39 +176,20 @@
         
                 <div class="orderProduct">
                     <details open>
-                        <summary>주문상품 <span>(3)</span></summary>
-                        <!-- 상품 하나 -->
-                        <div class="orderProduct_one">
-                            <img src="../images/productimage/photocard.png" alt="상품1" />
-                            <div class="productInfo">
-                                <p class="productName">HI-SRARK PHOTOCARD SET ver. 1 / 2</p>
-                                <p class="productOption">옵션: ver.1</p>
-                                <p class="productQty">수량: 1</p>
-                                <p class="productPrice">₩6,600</p>
-                            </div>
-                        </div>
+                        <summary>주문상품 <span>(${selectedCount})</span></summary>
+                        <c:forEach var="item" items="${cartItems}">
+	                        <!-- 상품 하나 -->
+	                        <div class="orderProduct_one" id="${item.cartitemId}">
+	                            <img src="${item.product.productImg}" alt="상품1" />
+	                            <div class="productInfo">
+	                                <p class="productName">${item.product.productName}</p>
+	                                <p class="productQty">수량: ${item.quantity}</p>
+	                                <p class="productPrice">₩<fmt:formatNumber value="${item.product.productPrice*item.quantity}" pattern="#,###" /></p>
+	                            </div>
+	                        </div>
+	                        <input type="hidden" name="selectedItems" value="${item.cartitemId}" />
+                        </c:forEach>
 
-                        <!-- 반복될 부분 -->
-                        <div class="orderProduct_one">
-                            <img src="../images/productimage/acrylic_keyring_YUHYUN.png" alt="상품2" />
-                            <div class="productInfo">
-                                <p class="productName">YUHYUN ACRYLIC KEYRING</p>
-                                <p class="productOption">옵션: YUHYUN</p>
-                                <p class="productQty">수량: 2</p>
-                                <p class="productPrice">₩24,000</p>
-                            </div>
-                        </div>
-                        
-                        <!-- 반복될 부분 -->
-                        <div class="orderProduct_one">
-                            <img src="../images/productimage/acrylic_keyring_JEONGHUN.png" alt="상품3" />
-                            <div class="productInfo">
-                                <p class="productName">JEONGHUN ACRYLIC KEYRING</p>
-                                <p class="productOption">옵션: JEONGHUN</p>
-                                <p class="productQty">수량: 1</p>
-                                <p class="productPrice">₩12,000</p>
-                            </div>
-                        </div>
                     </details>
                 </div>
         
@@ -235,15 +202,22 @@
                                 <tbody>
                                     <tr>
                                         <td class="label">주문상품</td>
-                                        <td class="value">₩42,600</td>
+                                        <td class="value">
+                                        	₩<fmt:formatNumber value="${total}" pattern="#,###" />
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td class="label">배송비</td>
-                                        <td class="value">₩3,000</td>
+                                        <td class="value">
+                                        	₩<fmt:formatNumber value="${shipping}" pattern="#,###" />
+                                        	<input type="hidden" name="shipping" value="${shipping}" />
+										</td>
                                     </tr>
                                     <tr>
                                         <td class="label total">최종 결제 금액</td>
-                                        <td class="value total">₩45,600</td>
+                                        <td class="value total" id="totalAmount" data-total="${total+shipping}" >
+                                        	₩<fmt:formatNumber value="${total+shipping}" pattern="#,###" />
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -255,16 +229,16 @@
                     <details open>
                         <summary>결제수단</summary>
                         <div class="paymethodradio">
-                            <input type="radio" name="paymethod" id="creditcard" value="creditcard" checked>
+                            <input type="radio" name="paymethod" id="creditcard" value="신용카드" checked>
                             <label for="creditcard" class="paymethod">신용카드</label>
                             
-                            <input type="radio" name="paymethod" id="transfer" value="transfer">
+                            <input type="radio" name="paymethod" id="transfer" value="계좌이체">
                             <label for="transfer" class="paymethod">계좌이체</label>
                             
-                            <input type="radio" name="paymethod" id="virtualAccount" value="virtualAccount">
+                            <input type="radio" name="paymethod" id="virtualAccount" value="가상계좌">
                             <label for="virtualAccount" class="paymethod">가상계좌</label>
                             
-                            <input type="radio" name="paymethod" id="paidCredit" value="paidCredit">
+                            <input type="radio" name="paymethod" id="paidCredit" value="적립금">
                             <label for="paidCredit" class="paymethod">적립금</label>
                             
                             <div class="paymethod-detail" id="creditcard-detail" style="display:none">- 10/1까지 적립금 외 다른 수단의 결제가 중단됩니다.</div>
@@ -272,21 +246,27 @@
                             <div class="paymethod-detail" id="virtualAccount-detail" style="display:none">- 10/1까지 적립금 외 다른 수단의 결제가 중단됩니다.</div>
                             <div class="paymethod-detail" id="paidCredit-detail" style="display:none">
                                 <div>
-                                    적립금 : 1,000,000 P
+                                    적립금 : <span id="creditValue">
+									<fmt:formatNumber value="${member.getPoint()}" pattern="#,###" />
+								</span> P
                                 </div>
                                 <div class="creditInputDiv">
-                                    결제 금액 : <input type="text" id="paidCreditValue" value="0" min="0" readonly/>
-                                    <button type="button">적용</button>
+                                    결제 금액 : <input type="text" id="paidCreditValue" name="paidCreditValue" value="0" min="0"/>
                                     <button type="button" id="payAll">전액 사용</button>
+                                    <button type="button" id="creditConfirm">적용</button>
                                 </div>
                                 <div>
-                                    결제 후 잔액 : <span>954,400</span> P
+                                    결제 후 잔액 : 
+                                    <span id="creditValueAfter">
+                                    <fmt:formatNumber value="${member.getPoint()}" pattern="#,###" />
+                                    </span> P
                                 </div>
+                                <div style="font-size:12px;color:#bbb">※ 적립금의 경우 전액 결제만 지원됩니다.</div>
                             </div>
-                        </div>
+    	               </div>
                         
-                    </details>
-                </div>
+	                </details>
+		         </div>
 
                 
                 <div class="paymentTermsBox">
@@ -309,16 +289,17 @@
                     </div>
                 </div>
 
-            </form>
-        </div>
-        
+        <input type="hidden" id="totalPrice" value="${total}" />
         <div class="payButtonBox"> 
-            <button type="button" id="payBtn">45,600원 결제하기</button>
+            <input type="submit" id="payBtn" value='<fmt:formatNumber value="${total+shipping}" pattern="#,###" /> 원 결제하기'>
+				
             <!-- 결제 클릭했는데 적립금 부족시 적립금이 부족합니다 alert -->
-        </div>
-    </div>
+        	</div>
+        	</div>
+    	</div>
+    </form>
 
     
 </body>
-<script type="text/javascript" src="../js/order.js"></script>
+<script type="text/javascript" src="/js/order.js"></script>
 </html>
