@@ -39,7 +39,9 @@
             <div class="hMenu hRight">
             <a href="/shop/cart" class="cartWrapper">
                 <img src="/images/cart.png" style="width:29px;" />
-                <span class="cartBadge">${sessionScope.cart_count}</span> <!-- 나중에 JS로 동적 숫자 -->
+                <span class="cartBadge" style="display:none;" data-count="${sessionScope.cart_count != null ? sessionScope.cart_count : 0}">
+			    	${sessionScope.cart_count != null ? sessionScope.cart_count : 0}
+			    </span>
             </a>
             <a href="/mypage/shop"><img src="/images/user.png" style="width:28px;" /></a>
         </div>
@@ -269,5 +271,6 @@
 		</div>
 	</div>
 </body>
+<script type="text/javascript" src="/js/shop.js"></script>
 </html>
 

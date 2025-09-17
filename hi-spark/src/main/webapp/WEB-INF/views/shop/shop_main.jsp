@@ -12,6 +12,8 @@
 		<link rel="stylesheet" type="text/css" href="css/shop.css">
 		<link rel="stylesheet" type="text/css" href="css/base.css">
 		<link rel="icon" href="/images/hispark_crop.png">
+		<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+		
 	</head>
 	<body>
 		<div class="wrap">
@@ -38,8 +40,11 @@
 					<!-- 우측 아이콘 -->
 					<div class="hMenu hRight">
 					<a href="/shop/cart" class="cartWrapper">
-						<img src="images/cart.png" style="width:29px;" /> <!--여기부터 다음줄까지-->
-						<span class="cartBadge" data-count="${session.cart_count}">${sessionScope.cart_count}</span> <!-- 스프링에서 c:if 활용 커뮤니티에선 display:none -->
+						<img src="images/cart.png" style="width:29px;" />
+						<span class="cartBadge" style="display:none;" data-count="${sessionScope.cart_count != null ? sessionScope.cart_count : 0}">
+					    	${sessionScope.cart_count != null ? sessionScope.cart_count : 0}
+					    </span>
+						
 					</a>
 					<a href="/mypage/shop"><img src="images/user.png" style="width:28px;" /></a>
 				</div>
@@ -176,6 +181,7 @@
 				</div> -->
 				
 			</div>
+			</div>
 
 
     <div id="footerWrap">
@@ -205,4 +211,5 @@
 		</div>
 	</div>
 </body>
+<script type="text/javascript" src="/js/shop.js"></script>
 </html>

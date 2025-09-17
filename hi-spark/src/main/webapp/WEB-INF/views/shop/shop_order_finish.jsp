@@ -22,12 +22,14 @@
             
             <h1>SPARK SHOP</h1>
             <div class="hMenu hLeft">
-                <a href="/shop"><img src="/images/shopping/left.png" style="width:28px;" /></a>
+                <a href="/shop/cart"><img src="/images/shopping/left.png" style="width:28px;" /></a>
             </div>
             <div class="hMenu hRight">
                 <a href="/shop/cart" class="cartWrapper">
                     <img src="/images/cart.png" style="width:29px;" />
-                    <span class="cartBadge">${sessionScope.cart_count}</span>
+                    <span class="cartBadge" style="display:none;" data-count="${sessionScope.cart_count != null ? sessionScope.cart_count : 0}">
+					    	${sessionScope.cart_count != null ? sessionScope.cart_count : 0}
+					</span>
                 </a>
                 <a href="/mypage/shop"><img src="/images/user.png" style="width:28px;" /></a>
             </div>
@@ -160,5 +162,5 @@
     </div>
 
 </body>
-<script type="text/javascript" src="/js/order_finish.js"></script>
+<script type="text/javascript" src="/js/shop.js"></script>
 </html>
