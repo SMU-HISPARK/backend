@@ -16,13 +16,15 @@ import com.java.repository.CartRepository;
 public class CartServiceImpl implements CartService {
 
     @Autowired private CartRepository cartRepository;
-    @Autowired private CartItemRepository cartItemRepository;  // ✅ CartItemRepository 추가
     @Autowired private MemberRepository memberRepository;
+    @Autowired private CartItemRepository cartItemRepository;  
 
     @Override
-    public Cart getCartByMember(Member member) {
-        return cartRepository.findByMember(member)
-                .orElseGet(Cart::new);
+	public Cart getCartByMember(Member member) {
+	    Cart cart = cartRepository.findByMember(member).orElseGet(
+	    		() -> {return (new Cart());}
+	    		);
+		return cart;
     }
 
     @Override
@@ -31,11 +33,6 @@ public class CartServiceImpl implements CartService {
                 .orElseThrow(() -> new RuntimeException("회원이 존재하지 않습니다."));
         return cartRepository.findByMember(member)
                 .orElseThrow(() -> new RuntimeException("장바구니가 존재하지 않습니다."));
-    }
-
-    @Override
-    public CartItem save(CartItem cartItem) {
-        return cartItemRepository.save(cartItem);  // ✅ CartRepository 대신 CartItemRepository 사용
     }
 
     @Override

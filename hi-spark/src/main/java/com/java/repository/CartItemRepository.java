@@ -11,6 +11,13 @@ import com.java.entity.Product;
 
 @Repository
 public interface CartItemRepository extends JpaRepository<CartItem, Integer> {
+	
+	//이미 있는 카트 아이템 확인
+	Optional<CartItem> findByCart_CartIdAndProduct_ProductId(int cartId, int productId);
+	
+	// /cart/add
+	static void addCartItem(Cart cart, int productId, int quantity) { }
+
 
     // 카트와 상품을 기준으로 조회 (객체 기준)
     Optional<CartItem> findByCartAndProduct(Cart cart, Product product);

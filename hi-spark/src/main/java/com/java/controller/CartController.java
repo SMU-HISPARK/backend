@@ -30,7 +30,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
-@RequestMapping("/shop")
 public class CartController {
 
     private final CartItemRepository cartItemRepository;
@@ -39,12 +38,13 @@ public class CartController {
 	@Autowired MemberService memberService;
 	@Autowired CartItemService cartItemService;
 	@Autowired MainService mainService;
+	
     CartController(CartItemRepository cartItemRepository) {
         this.cartItemRepository = cartItemRepository;
     }
     
     //장바구니로 정보 전송
-    @PostMapping("/cart/add")
+    @PostMapping("/shop/cart/add")
     public String addToCart(@RequestParam("productId") int productId,
                             @RequestParam("quantity") int quantity,
                             HttpServletRequest request,
@@ -58,10 +58,7 @@ public class CartController {
         Cart cart = cartService.getOrCreateCart(member);
 
         // 장바구니에 이미 있는지 먼저 확인
-        Optional<CartItem> existingItemOpt = cartItemRepository.findByCartAndProduct(
-                cart,
-                mainService.findById(productId)
-        );
+        Optional<CartItem> existingItemOpt = cartItemService.findByCartAndProduct(cart,mainService.findById(productId));
 
         // 실제 저장 (수량 증가 or 신규 추가)
         cartItemService.addCartItem(cart, productId, quantity);
@@ -76,10 +73,12 @@ public class CartController {
             redirectAttributes.addFlashAttribute("msg", "장바구니에 상품을 추가했습니다.");
         }
 
-        return "redirect:/shop/cart";
+    	return "redirect:/shop/cart";
     }
+    
+    
 	//상품디테일에 전송받은 후 장바구니 화면 
-	@GetMapping("/cart")
+	@GetMapping("/shop/cart")
 	public String cart(HttpServletRequest request, Model model) {
 	    HttpSession session = request.getSession();
 	    int memberId = 1; // 로그인 붙이기 전 테스트용
@@ -97,7 +96,7 @@ public class CartController {
 	    return "shop/shop_cart"; // JSP
 	}
 
-	
+	//카트에 아이템 추가
 	public String addToCart(
             @RequestParam("cartId") int cartId,
             @RequestParam("productId") int productId,
@@ -112,7 +111,6 @@ public class CartController {
 	
 	
 	// 카트아이템 삭제
-	
 	@DeleteMapping("/cart/delete")
 	@ResponseBody
 	public String deleteCartItem(@RequestParam("cartItemId") int CartItemId) {

@@ -3,7 +3,6 @@ package com.java.service;
 import java.util.Optional;
 
 import com.java.entity.Cart;
-import com.java.entity.CartItem;
 import com.java.entity.Member;
 
 public interface CartService {
@@ -15,14 +14,9 @@ public interface CartService {
 
 	Cart getCartByMember_MemberId(int memberId);
 	
-	
-	//CartItem save(CartItem cartItem);
-	
-	
 	// 장바구니 가져오기
 	Cart getOrCreateCart(Member member);
 
-	CartItem save(CartItem cartItem);
 
 
 }

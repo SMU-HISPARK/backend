@@ -62,13 +62,30 @@ $(document).ready(function(){
 	});
     
     //선택삭제
-    $(document).on("click",".deleteSelected", function(){
-        $('.basket input[type="checkbox"]:checked').closest('.product-container').remove();
-		
-        checkCartEmpty();//장바구니가 비어있는지 확인
-        updatePrice();// 가격 업데이트
+	$(document).on("click",".deleteSelected", function(){
+		    if(confirm("선택한 상품을 삭제하시겠습니까?")) {
+		        $('.basket input[type="checkbox"]:checked').each(function() {
+		            var row = $(this).closest('.product-container');
+		            var cartItemId = $(this).data('cartitemid');
 
-    });//deleteSelected
+		            $.ajax({
+		                url: "/cart/delete",
+		                type: "DELETE",
+		                data: { cartItemId: cartItemId },
+		                success: function(response) {
+		                    row.remove();
+		                    checkCartEmpty();
+		                    updatePrice();
+		                    updateCartBadge();
+		                },
+		                error: function() {
+		                    alert("삭제 중 오류가 발생했습니다.");
+		                }
+		            });
+		        });
+		    }
+		});//deleteSelected
+	    
     
     
 	
@@ -213,76 +230,92 @@ $(document).ready(function(){
 
 	const orderFrm = $('form[name="orderFrm"]');
 
-	// 선택 주문 버튼
-	// 선택 주문 버튼
-	$(document).on("click", "#selectOrderBtn", function(e){
-	    e.preventDefault();
+	// 선택 주문 버튼 수정
+		$(document).on("click", "#selectOrderBtn", function(e){
+		    e.preventDefault();
 
-	    var $form = $("form[name='orderFrm']");
+		    var $form = $("form[name='orderFrm']");
+			$form.find("input[type='hidden'][name='cartItemIds']").remove();
+			$form.find("input[type='hidden'][name='quantities']").remove();
 
-	    // 기존 hidden input 제거
-	    $form.find("input[name='cartItemIds']").remove();
-	    $form.find("input[name='quantities']").remove();
+		    var cartItemIds = [];
+		    var quantities = [];
 
-	    var hasSelected = false;
+		    $(".product-container").each(function(){
+		        var $row = $(this);
+		        var $checkbox = $row.find(".cart-checkbox");
+		        var $qtyInput = $row.find(".quantity-input");
 
-	    $(".product-container").each(function(){
-	        var $row = $(this);
-	        var $checkbox = $row.find(".cart-checkbox");
-	        var $qtyInput = $row.find(".quantity-input");
+		        if($checkbox.is(":checked")){
+		            var cartItemId = $checkbox.val();
+		            var quantity = $qtyInput.val() || 1;
+		            
+		            cartItemIds.push(cartItemId);
+		            quantities.push(quantity);
+		        }
+		    });
 
-	        if($checkbox.is(":checked")){
-	            hasSelected = true;
+		    if(cartItemIds.length === 0){
+		        alert("선택한 상품이 없습니다.");
+		        return;
+		    }
 
-	            // hidden input 생성
-	            $form.append($("<input>", {
-	                type: "hidden",
-	                name: "cartItemIds",
-	                value: $checkbox.val()
-	            }));
-	            $form.append($("<input>", {
-	                type: "hidden",
-	                name: "quantities",
-	                value: $qtyInput.val()
-	            }));
-	        }
-	    });
+		    // 배열을 하나씩 추가하여 순서 보장
+		    for(var i = 0; i < cartItemIds.length; i++) {
+		        $form.append($("<input>", {
+		            type: "hidden",
+		            name: "cartItemIds",
+		            value: cartItemIds[i]
+		        }));
+		        $form.append($("<input>", {
+		            type: "hidden",
+		            name: "quantities", 
+		            value: quantities[i]
+		        }));
+		    }
 
-	    if(!hasSelected){
-	        alert("선택한 상품이 없습니다.");
-	        return;
-	    }
+		    $form.submit();
+		});
 
-	    $form.submit();
-	});
+		// 전체 주문도 동일하게 수정
+		$(document).on("click", "#allOrderBtn", function(e){
+		    e.preventDefault();
+		    var $form = $("form[name='orderFrm']");
+		    
+			$form.find("input[type='hidden'][name='cartItemIds']").remove();
+			$form.find("input[type='hidden'][name='quantities']").remove();
 
-	// 전체 주문 버튼
-	$(document).on("click", "#allOrderBtn", function(e){
-	    e.preventDefault();
-	    var $form = $("form[name='orderFrm']");
+		    var cartItemIds = [];
+		    var quantities = [];
 
-	    $form.find("input[name='cartItemIds']").remove();
-	    $form.find("input[name='quantities']").remove();
+		    $(".product-container").each(function(){
+		        var $row = $(this);
+		        var $checkbox = $row.find(".cart-checkbox");
+		        var $qtyInput = $row.find(".quantity-input");
 
-	    $(".product-container").each(function(){
-	        var $row = $(this);
-	        var $checkbox = $row.find(".cart-checkbox");
-	        var $qtyInput = $row.find(".quantity-input");
+		        var cartItemId = $checkbox.val();
+		        var quantity = $qtyInput.val() || 1;
+		        
+		        cartItemIds.push(cartItemId);
+		        quantities.push(quantity);
+		    });
 
-	        $form.append($("<input>", {
-	            type: "hidden",
-	            name: "cartItemIds",
-	            value: $checkbox.val()
-	        }));
-	        $form.append($("<input>", {
-	            type: "hidden",
-	            name: "quantities",
-	            value: $qtyInput.val()
-	        }));
-	    });
+		    for(var i = 0; i < cartItemIds.length; i++) {
+		        $form.append($("<input>", {
+		            type: "hidden", 
+		            name: "cartItemIds",
+		            value: cartItemIds[i]
+		        }));
+		        $form.append($("<input>", {
+		            type: "hidden",
+		            name: "quantities",
+		            value: quantities[i]
+		        }));
+		    }
 
-	    $form.submit();
-	});
+		    $form.submit();
+		});
+
 	// 전체 주문 버튼
 	$('#allOrderBtn').click(function() {
 	    // 모든 체크박스 체크
