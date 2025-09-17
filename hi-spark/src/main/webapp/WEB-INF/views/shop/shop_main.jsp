@@ -11,7 +11,7 @@
 		<title>Hi-Spark Shop</title>
 		<link rel="stylesheet" type="text/css" href="css/shop.css">
 		<link rel="stylesheet" type="text/css" href="css/base.css">
-		<link rel="icon" href="../images/hispark_crop.png">
+		<link rel="icon" href="/images/hispark_crop.png">
 	</head>
 	<body>
 		<div class="wrap">
@@ -22,8 +22,14 @@
 					<a href="/shop"><h1><img src="images/hispark_crop.png" alt="(로고)" /></h1></a>
 					<div id="snb">
 						<ul>
-							<li><a href="#">로그인</a></li>
-							<li><a href="#">회원가입</a></li>
+							<c:if test="${not empty sessionScope.session_name}">
+							    <li><a href="/mypage/member">${sessionScope.session_name}님</a></li>
+							    <li><a href="/member/logout">로그아웃</a></li>
+							</c:if>
+							<c:if test="${empty sessionScope.session_name}">
+							    <li><a href="/member/login">로그인</a></li>
+							    <li><a href="/member/step01">회원가입</a></li>
+							</c:if>
 							<li><a href="main.html">메인으로</a></li>
 						</ul>
 
@@ -33,7 +39,7 @@
 					<div class="hMenu hRight">
 					<a href="/shop/cart" class="cartWrapper">
 						<img src="images/cart.png" style="width:29px;" /> <!--여기부터 다음줄까지-->
-						<span class="cartBadge">0</span> <!-- 스프링에서 c:if 활용 커뮤니티에선 display:none -->
+						<span class="cartBadge" data-count="${session.cart_count}">${sessionScope.cart_count}</span> <!-- 스프링에서 c:if 활용 커뮤니티에선 display:none -->
 					</a>
 					<a href="/mypage/shop"><img src="images/user.png" style="width:28px;" /></a>
 				</div>

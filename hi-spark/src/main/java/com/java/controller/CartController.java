@@ -3,6 +3,7 @@ package com.java.controller;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
@@ -36,8 +37,38 @@ public class CartController {
 	@Autowired MemberService memberService;
 	@Autowired MainService mainService;
 	
+	//카트 페이지 열기
+	@GetMapping("/shop/cart")
+	public String cart(
+			HttpSession session, 
+			Model model) {
+		
+		Object oMemberId = session.getAttribute("member_id");
+		if (oMemberId == null) {
+	        model.addAttribute("msg", "로그인이 필요합니다.");
+	        model.addAttribute("url", "/member/login");
+	        return "alert"; // alert.jsp
+	    }
 
+	    Integer memberId = (Integer) oMemberId;
+	    Member member = memberService.findById(memberId);
+
+	    if (member == null) {
+	        model.addAttribute("msg", "회원 정보가 없습니다.");
+	        model.addAttribute("url", "/shop");
+	        return "alert"; // alert.jsp
+	    }
+
+	    Cart cart = cartService.getCartByMember(member);
+	    model.addAttribute("cart", cart);
+	    
+	    int cartCount = (cart != null && cart.getItems() != null) ? cart.getItems().size() : 0;
+	    session.setAttribute("cart_count", cartCount);
+	    return "shop/shop_cart";
+	}
 	
+	
+	//카트에 아이템 추가
 	@PostMapping("/shop/cart/add")
 	public String addToCart(@RequestParam("productId") int productId,
             @RequestParam("quantity") int quantity,
@@ -46,8 +77,7 @@ public class CartController {
             Model model) {
 
 		HttpSession session = request.getSession();
-		int memberId = 1; // 로그인 구현 전 테스트용
-		session.setAttribute("memberId", memberId);
+		int memberId = (int) session.getAttribute("member_id");
 		Member member = memberService.findById(memberId);
 		Cart cart = cartService.getOrCreateCart(member);
 		
@@ -67,47 +97,33 @@ public class CartController {
 			redirectAttributes.addFlashAttribute("msg", "장바구니에 상품을 추가했습니다.");
 		}
 		
+		
 			return "redirect:/shop/cart";
-		}
-    
-    
-	@GetMapping("/shop/cart")
-	public String cart(
-			
-			HttpServletRequest request,
-			Model model) {
-		HttpSession session = request.getSession();
-		int memberId = 1;
-		session.setAttribute("memberId",memberId);
-		
-		Member member = memberService.findById(memberId);
-		if ( member == null ) {  
-			model.addAttribute("error", "member not found");
-			return "shop/shop_cart";
-		}
-		
-		Cart cart = cartService.getCartByMember(member);
-		model.addAttribute("cart", cart);
-		
-		return "shop/shop_cart";
 	}
 
-	//카트에 아이템 추가
-	public String addToCart(
-            @RequestParam("cartId") int cartId,
-            @RequestParam("productId") int productId,
-            @RequestParam("quantity") int quantity) {
-
-        cartItemService.addCartItem(cartId, productId, quantity);
-
-        return "redirect:/cart"; // 장바구니 화면으로 리다이렉트
-    }
-	
 	//카트아이템 삭제
 	@DeleteMapping("/cart/delete")
 	@ResponseBody
-	public String deleteCartItem(@RequestParam("cartItemId") int CartItemId) {
+	public ResponseEntity<Void> deleteCartItem(@RequestParam("cartItemId") int CartItemId, HttpSession session) {
 		cartItemService.deleteById(CartItemId);
-		return "success";
+		Integer memberId = (Integer) session.getAttribute("member_id");
+	    Cart cart = cartService.getCartByMember_MemberId(memberId);
+	    int cartCount = (cart != null && cart.getItems() != null) ? cart.getItems().size() : 0;
+	    session.setAttribute("cart_count", cartCount); //카트저장
+
+	    return ResponseEntity.ok().build();
 	}
+	
+	
+	@GetMapping({"/cart/delete","/shop/cart/add"})
+	public String alert(Model model) {
+		model.addAttribute("msg", "권한이 없습니다.");
+        model.addAttribute("url", "/shop");
+        return "alert"; // alert.jsp
+	}
+	
+	
+	
+	
+	
 }

@@ -22,8 +22,14 @@
 			<a href="/shop"><h1><img src="/images/hispark_crop.png" alt="(로고)" /></h1></a>
 			<div id="snb">
 				<ul>
-					<li><a href="/member/login">로그인</a></li>
-					<li><a href="/member/step01">회원가입</a></li>
+				<c:if test="${not empty sessionScope.session_name}">
+				    <li><a href="/mypage/member">${sessionScope.session_name}님</a></li>
+				    <li><a href="/member/logout">로그아웃</a></li>
+				</c:if>
+				<c:if test="${empty sessionScope.session_name}">
+				    <li><a href="/member/login">로그인</a></li>
+				    <li><a href="/member/step01">회원가입</a></li>
+				</c:if>
 					<li><a href="/">메인으로</a></li>
 				</ul>
 
@@ -33,9 +39,9 @@
             <div class="hMenu hRight">
             <a href="/shop/cart" class="cartWrapper">
                 <img src="/images/cart.png" style="width:29px;" />
-                <span class="cartBadge">0</span> <!-- 나중에 JS로 동적 숫자 -->
+                <span class="cartBadge">${sessionScope.cart_count}</span> <!-- 나중에 JS로 동적 숫자 -->
             </a>
-            <a href="/"><img src="/images/user.png" style="width:28px;" /></a>
+            <a href="/mypage/shop"><img src="/images/user.png" style="width:28px;" /></a>
         </div>
 		</div>
 	</div>
@@ -264,3 +270,4 @@
 	</div>
 </body>
 </html>
+

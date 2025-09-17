@@ -31,9 +31,7 @@ public class MemberController {
 	
 	@PostMapping("/member/step03")
 	public String step03(Member member) {
-		
 		mServ.save(member);
-		
 		return "member/step03";
 	}
 	
@@ -42,8 +40,7 @@ public class MemberController {
 	
 	@GetMapping("/member/login")
 	public String login() {
-//		session.setAttribute("session_id", "admin");
-//		session.setAttribute("session_name", "namee");
+
 		return "member/login";
 	}
 	
@@ -64,6 +61,7 @@ public class MemberController {
 		}
 		
 		// 로그인 세션 설정
+		session.setAttribute("member_id", memfind.getMemberId());
 		session.setAttribute("session_id", memfind.getLoginId());
 		session.setAttribute("session_name", memfind.getNickname());
 		

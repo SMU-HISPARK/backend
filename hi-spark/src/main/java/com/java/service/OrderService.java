@@ -19,5 +19,8 @@ public interface OrderService {
 	//주문 생성·재고 차감·포인트 차감
 	Orders placeOrder(int memberId, List<Integer> selectedItemIds, Map<String,String> params);
 
+	//orderid로 찾기
+	Orders findByOrderCode(String orderCode);
+
 
 }

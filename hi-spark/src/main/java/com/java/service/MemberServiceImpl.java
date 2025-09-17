@@ -24,7 +24,7 @@ public class MemberServiceImpl implements MemberService {
 		
 		Member member = memberRepository.findByLoginIdAndPassword(loginId, password).orElse(null);
 		if(member == null) return null;
-		MemberDto memfind = new MemberDto(member.getLoginId(), member.getNickname());
+		MemberDto memfind = new MemberDto(member.getMemberId(), member.getLoginId(), member.getNickname());
 		
 		return memfind;
 	}

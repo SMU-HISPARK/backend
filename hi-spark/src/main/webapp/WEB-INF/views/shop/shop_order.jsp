@@ -10,7 +10,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>주문/결제</title>
-    <link rel="stylesheet" href="../css/order.css" />
+    <link rel="stylesheet" href="/css/order.css" />
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
 
 </head>
@@ -70,14 +70,14 @@
             
             <h1>SPARK SHOP</h1>
             <div class="hMenu hLeft">
-                <a href="javascript:void(0);" id="backBtn"><img src="../images/shopping/left.png" style="width:28px;" /></a>
+                <a href="/shop/cart" id="backBtn"><img src="/images/shopping/left.png" style="width:28px;" /></a>
             </div>
             <div class="hMenu hRight">
                 <a href="/shop/cart" class="cartWrapper">
-                    <img src="../images/cart.png" style="width:29px;" />
-                    <span class="cartBadge">3</span>
+                    <img src="/images/cart.png" style="width:29px;" />
+                    <span class="cartBadge">${sessionScope.cart_count}</span>
                 </a>
-                <a href="/mypage/shop"><img src="../images/user.png" style="width:28px;" /></a>
+                <a href="/mypage/shop"><img src="/images/user.png" style="width:28px;" /></a>
             </div>
         </div>
 
@@ -180,7 +180,7 @@
                         <c:forEach var="item" items="${cartItems}">
 	                        <!-- 상품 하나 -->
 	                        <div class="orderProduct_one" id="${item.cartitemId}">
-	                            <img src="../${item.product.productImg}" alt="상품1" />
+	                            <img src="${item.product.productImg}" alt="상품1" />
 	                            <div class="productInfo">
 	                                <p class="productName">${item.product.productName}</p>
 	                                <p class="productQty">수량: ${item.quantity}</p>
@@ -301,5 +301,5 @@
 
     
 </body>
-<script type="text/javascript" src="../js/order.js"></script>
+<script type="text/javascript" src="/js/order.js"></script>
 </html>

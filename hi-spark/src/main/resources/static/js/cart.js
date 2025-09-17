@@ -31,36 +31,6 @@ $(document).ready(function(){
 	});
     
     
-    // 전체선택 버튼
-    $(document).on("click", ".selectAll", function(){
-        var checkBoxes = $('input[type="checkbox"]');     // 모든 체크박스 선택
-        var allChecked = checkBoxes.filter(':checked').length == checkBoxes.length;  // 모두 체크되었나 확인
-        
-        checkBoxes.prop('checked', !allChecked); // 모두 체크되어있으면 체크 해제하기 
-        if (allChecked) {
-            $(this).text("전체선택");
-        } else {
-            $(this).text("선택해제");
-        }
-		
-		updatePrice();// 가격 업데이트
-		
-    });//selectall
-	
-	$(document).on("change", 'input[type="checkbox"]', function() {
-	    var allCheckBoxes = $('input[type="checkbox"]');
-	    var selectAllBtn = $('.selectAll');
-
-	    var total = allCheckBoxes.length;
-	    var checked = allCheckBoxes.filter(':checked').length;
-
-	    if (checked === total) {
-	        selectAllBtn.text("선택해제"); // 모두 선택된 상태
-	    } else {
-	        selectAllBtn.text("전체선택"); // 일부 선택 혹은 모두 해제
-	    }
-	});
-    
     //선택삭제
 	$(document).on("click",".deleteSelected", function(){
 	    if(confirm("선택한 상품을 삭제하시겠습니까?")) {
@@ -86,7 +56,36 @@ $(document).ready(function(){
 	    }
 	});//deleteSelected
     
-    
+
+	// 전체선택 버튼
+	$(document).on("click", ".selectAll", function(){
+	    var checkBoxes = $('input[type="checkbox"]');     // 모든 체크박스 선택
+	    var allChecked = checkBoxes.filter(':checked').length == checkBoxes.length;  // 모두 체크되었나 확인
+	    
+	    checkBoxes.prop('checked', !allChecked); // 모두 체크되어있으면 체크 해제하기 
+	    if (allChecked) {
+	        $(this).text("전체선택");
+	    } else {
+	        $(this).text("선택해제");
+	    }
+		
+		updatePrice();// 가격 업데이트
+		
+	});//selectall
+
+	$(document).on("change", 'input[type="checkbox"]', function() {
+	    var allCheckBoxes = $('input[type="checkbox"]');
+	    var selectAllBtn = $('.selectAll');
+
+	    var total = allCheckBoxes.length;
+	    var checked = allCheckBoxes.filter(':checked').length;
+
+	    if (checked === total) {
+	        selectAllBtn.text("선택해제"); // 모두 선택된 상태
+	    } else {
+	        selectAllBtn.text("전체선택"); // 일부 선택 혹은 모두 해제
+	    }
+	});
 	
 	// 1️ 페이지 로드 시 모든 체크박스 체크
     $(".basket input[type='checkbox']").prop("checked", true);
@@ -331,8 +330,10 @@ $(document).ready(function(){
 	    } else {
 	        $(".cartBadge").hide();
 	    }
-
+		
 	}// 카트 뱃지 업테이트
+	
+	
 	
 	
 	$(document).on("keydown", "input", function(e) {
@@ -344,4 +345,10 @@ $(document).ready(function(){
 	
 	
 	
+});
+window.addEventListener("beforeunload", function () {
+    const count = $(".product-container").length; // 현재 카트 아이템 수
+
+    // 서버에 전송
+    navigator.sendBeacon("/cart/update-count", new URLSearchParams({ cartCount: count }));
 });

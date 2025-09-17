@@ -28,9 +28,17 @@ public class MainController {
 	@Autowired CartService cartService;
 	
 	@GetMapping("/shop")
-	public String shop_main(Model model) {
+	public String shop_main(HttpSession session, Model model) {
 		List<Product> list = mainService.findAll();
 		model.addAttribute("list",list);
+		
+		Object oMemberId = session.getAttribute("member_id");
+		if(oMemberId != null) {
+		    Integer memberId = (Integer) oMemberId;
+		    Cart cart = cartService.getCartByMember_MemberId(memberId);
+		    int cartCount = (cart != null && cart.getItems() != null) ? cart.getItems().size() : 0;
+		    session.setAttribute("cart_count", cartCount);
+		}
 		return "shop/shop_main";
 	}
 	
@@ -39,6 +47,7 @@ public class MainController {
 			@RequestParam("productId") int productId,
 			Model model) {
 		Product product = mainService.findByID(productId);
+		
 		model.addAttribute("product",product);
 		return "shop/shop_detail";
 	}	

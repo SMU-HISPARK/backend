@@ -8,4 +8,6 @@ public interface OrderRepository extends JpaRepository<Orders,Integer> {
 
 	boolean existsByOrderCode(String orderCode);
 
+	Orders findByOrderCode(String orderCode);
+
 }

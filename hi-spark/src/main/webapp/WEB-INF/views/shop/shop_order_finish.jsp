@@ -10,7 +10,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>주문완료</title>
-    <link rel="stylesheet" href="../css/order.css" />
+    <link rel="stylesheet" href="/css/order.css" />
     <style>
         
     </style>
@@ -22,14 +22,14 @@
             
             <h1>SPARK SHOP</h1>
             <div class="hMenu hLeft">
-                <a href="order.html"><img src="../images/shopping/left.png" style="width:28px;" /></a>
+                <a href="/shop"><img src="/images/shopping/left.png" style="width:28px;" /></a>
             </div>
             <div class="hMenu hRight">
                 <a href="/shop/cart" class="cartWrapper">
-                    <img src="../images/cart.png" style="width:29px;" />
-                    <span class="cartBadge">3</span>
+                    <img src="/images/cart.png" style="width:29px;" />
+                    <span class="cartBadge">${sessionScope.cart_count}</span>
                 </a>
-                <a href="/mypage/shop"><img src="../images/user.png" style="width:28px;" /></a>
+                <a href="/mypage/shop"><img src="/images/user.png" style="width:28px;" /></a>
             </div>
         </div>
         <div class="ordertitle">
@@ -160,4 +160,5 @@
     </div>
 
 </body>
+<script type="text/javascript" src="/js/order_finish.js"></script>
 </html>

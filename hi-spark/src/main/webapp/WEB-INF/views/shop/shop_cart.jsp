@@ -26,9 +26,15 @@
 			<a href="/shop"><h1><img src="/images/hispark_crop.png" alt="(로고)" /></h1></a>
 			<div id="snb">
 				<ul>
-					<li><a href="/member/login">로그인</a></li>
-					<li><a href="/member/step01">회원가입</a></li>
-					<li><a href="/">메인으로</a></li>
+				<c:if test="${not empty sessionScope.session_name}">
+				    <li><a href="/mypage/member">${sessionScope.session_name}님</a></li>
+				    <li><a href="/member/logout">로그아웃</a></li>
+				</c:if>
+				<c:if test="${empty sessionScope.session_name}">
+				    <li><a href="/member/login">로그인</a></li>
+				    <li><a href="/member/step01">회원가입</a></li>
+				</c:if>
+				<li><a href="/">메인으로</a></li>
 				</ul>
 
 			</div>
@@ -99,7 +105,7 @@
 							                <div class="quantity-control">
 							                    <button type="button" class="quantity-btn minus">-</button>
 							                    <!-- name 제거, data-cartitemid 추가 -->
-							                    <input type="text" name="quantities" class="quantity-input" pattern="[0-9]+" data-cartitemid="${item.cartitemId}" value="${item.quantity}" min="1" maxlength="5"/>
+							                    <input type="text" name="quantities" class="quantity-input" pattern="[0-9]+" data-cartitemid="${item.cartitemId}" value="${item.quantity}" min="1" maxlength="4"/>
 							                    <button type="button" class="quantity-btn plus">+</button>
 							                </div>
 							            </td>

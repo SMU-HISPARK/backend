@@ -47,7 +47,7 @@ public class OrderController {
 		HttpSession session, Model model) {
 		
 		
-		int memberId = (int) session.getAttribute("memberId"); // 로그인 세션
+		int memberId = (int) session.getAttribute("member_id"); // 로그인 세션
 		Member member = memberService.findById(memberId);
 
 	    // 선택한 카트아이템만 가져오기
@@ -87,15 +87,39 @@ public class OrderController {
 	                          @RequestParam Map<String,String> params,
 	                          HttpSession session, Model model) {
 
-	    int memberId = (int) session.getAttribute("memberId");
+	    int memberId = (int) session.getAttribute("member_id");
 
 	    Orders order = orderService.placeOrder(memberId, selectedItemIds, params);
+	    
+	    Integer cartCount = (Integer) session.getAttribute("cart_count");
+	    int orderItemCount = order.getOrderitems().size();
+	    int newCartCount = (cartCount != null ? cartCount : 0) - orderItemCount;
+	    session.setAttribute("cart_count", newCartCount);
 
+	    return "redirect:/order/finish-view?orderCode=" + order.getOrderCode();
+	}
+	
+	@GetMapping("/order/finish-view")
+	public String orderFinishView(@RequestParam("orderCode") String orderCode, HttpSession session, Model model) {
+		int memberId = (int) session.getAttribute("member_id");
+		Member member = memberService.findById(memberId);
+
+		Orders order = orderService.findByOrderCode(orderCode); // DB 조회
+		if (!order.getMember().getMemberId().equals(member.getMemberId())) {
+			model.addAttribute("msg", "권한이 없습니다.");
+	        model.addAttribute("url", "/shop");
+			return "alert";
+		}
+
+		
 	    model.addAttribute("order", order);
-	    model.addAttribute("selectedCount", selectedItemIds.size());
-
+	    model.addAttribute("selectedCount", order.getOrderitems().size());
+	    
+	    
+	    
 	    return "shop/shop_order_finish";
 	}
+	
 	
 	
 }
