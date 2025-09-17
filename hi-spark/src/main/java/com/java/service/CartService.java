@@ -10,5 +10,8 @@ public interface CartService {
 	Cart getCartByMember(Member member);
 
 	Cart getCartByMember_MemberId(int memberId);
+	
+	Cart getOrCreateCart(Member member);
+
 
 }

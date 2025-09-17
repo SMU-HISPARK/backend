@@ -1,7 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <!DOCTYPE html>
 <html>
+
 	<head>
 		<meta charset="UTF-8">
 		<title>Hi-Spark Shop</title>
@@ -29,9 +33,9 @@
 					<div class="hMenu hRight">
 					<a href="/shop/cart" class="cartWrapper">
 						<img src="images/cart.png" style="width:29px;" /> <!--여기부터 다음줄까지-->
-						<span class="cartBadge">3</span> <!-- 스프링에서 c:if 활용 커뮤니티에선 display:none -->
+						<span class="cartBadge">0</span> <!-- 스프링에서 c:if 활용 커뮤니티에선 display:none -->
 					</a>
-					<a href="/"><img src="images/user.png" style="width:28px;" /></a>
+					<a href="/mypage/shop"><img src="images/user.png" style="width:28px;" /></a>
 				</div>
 				</div>
 			</div>
@@ -45,16 +49,36 @@
 					<p>All Products</p>
 				</div>
 				<div class="product_list">
+						<c:forEach var="product" items="${list}">
 					<div class="product">
-						<div class="product_img">
-							<a href="/shop/detail">
-								<img src="../images/productimage/photocard.png"/>
-							</a>
-						</div>
-						<div class="product_name">HI-SRARK PHOTOCARD SET ver. 1 / 2</div>
-						<div class="product_price">6,600원</div>
-					</div>
-					<div class="product">
+							<div class="product_img">
+									<a href="/shop/detail?productId=${product.productId}">
+	
+										<img src="${product.productImg}"/>
+									</a>
+								</div>
+								<div class="product_name">${product.productName}</div>
+								
+								
+								<!-- 재고가 0일때 -->
+								<c:choose>
+									<c:when test="${product.productQuantity==0}">
+										<div class="sold out">
+											<p class="product_price">sold out</p>
+										</div>
+									</c:when>
+									<c:otherwise>
+										<div class="product_price">
+											<fmt:formatNumber value="${product.productPrice}" pattern="#,###" />
+										</div>
+									</c:otherwise>									
+								</c:choose>
+							
+							</div>
+						</c:forEach>
+					
+					
+				<!--  	<div class="product">
 						<div class="product_img">
 							<img src="../images/productimage/spark_keyring.jpg"/>
 						</div>
@@ -175,5 +199,4 @@
 		</div>
 	</div>
 </body>
-<script type="text/javascript" src="js/cart.js"></script>
 </html>

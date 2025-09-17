@@ -9,20 +9,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>장바구니</title>
-    <link rel="stylesheet" href="../css/cart.css" />
-    <link rel="stylesheet" href="../css/base.css" />
+    <link rel="stylesheet" href="/css/cart.css" />
+    <link rel="stylesheet" href="/css/base.css" />
     <link rel="icon" href="../images/hispark_crop.png">
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
 </head>
 <body>
+   <c:if test="${not empty msg}">
+          <script>
+              alert("${msg}");
+          </script>
+      </c:if>
 	<div id="header">
 		
 		<div id="snbBox">
-			<a href="/shop"><h1><img src="../images/hispark_crop.png" alt="(로고)" /></h1></a>
+			<a href="/shop"><h1><img src="/images/hispark_crop.png" alt="(로고)" /></h1></a>
 			<div id="snb">
 				<ul>
-					<li><a href="#">로그인</a></li>
-					<li><a href="#">회원가입</a></li>
+					<li><a href="/member/login">로그인</a></li>
+					<li><a href="/member/step01">회원가입</a></li>
 					<li><a href="/">메인으로</a></li>
 				</ul>
 
@@ -31,10 +36,10 @@
             <!-- 우측 아이콘 -->
             <div class="hMenu hRight">
             <a href="/shop/cart" class="cartWrapper">
-                <img src="../images/cart.png" style="width:29px;" />
+                <img src="/images/cart.png" style="width:29px;" />
                 <span class="cartBadge">0</span> <!-- 나중에 JS로 동적 숫자 -->
             </a>
-            <a href="/"><img src="../images/user.png" style="width:28px;" /></a>
+            <a href="/mypage/shop"><img src="/images/user.png" style="width:28px;" /></a>
         </div>
 		</div>
 	</div>
@@ -73,7 +78,7 @@
 							                <input type="checkbox" class="cart-checkbox" value="${item.cartitemId}" data-cartitemid="${item.cartitemId}">
 							            </td>
 							            <td class="pd_img">
-							                <img src="../${item.product.productImg}" width="100px"/>
+							                <a href="/shop/detail?productId=${item.product.productId}"><img src="${item.product.productImg}" width="100px"/></a>
 							            </td>
 							            <td class="product">
 							                <div class="description">
@@ -92,10 +97,10 @@
 							            <td class="quantity-title">수량</td>
 							            <td class="countselect">
 							                <div class="quantity-control">
-							                    <button type="button" class="quantity-btn">-</button>
+							                    <button type="button" class="quantity-btn minus">-</button>
 							                    <!-- name 제거, data-cartitemid 추가 -->
-							                    <input type="text" class="quantity-input" data-cartitemid="${item.cartitemId}" value="${item.quantity}" min="1"/>
-							                    <button type="button" class="quantity-btn">+</button>
+							                    <input type="text" name="quantities" class="quantity-input" pattern="[0-9]+" data-cartitemid="${item.cartitemId}" value="${item.quantity}" min="1" maxlength="5"/>
+							                    <button type="button" class="quantity-btn plus">+</button>
 							                </div>
 							            </td>
 							        </tr>
@@ -115,10 +120,10 @@
                                 <tr>
                                     <td>
                                         [기본배송]<br>
-                                        상품구매금액 <span>[여기 총 상품금액]</span>
-                                         + 배송비 <span>[여기 배송비]</span>
+                                        상품구매금액 <span>[총 상품금액]</span>
+                                         + 배송비 <span>[배송비]</span>
                                         <br>
-                                        합계 : <span>[여기 총 상품금액+배송비]</span>원
+                                        합계 : <span>[총 상품금액+배송비]</span>원
                                     </td>
                                 </tr>
                             </table>
@@ -165,7 +170,7 @@
 		<div id="footer">
 			
 			<div id="finfo">
-				<div id="flogo"><img src="../images/hispark.png" alt="하이스파크 로고" /></div>
+				<div id="flogo"><img src="/images/hispark.png" alt="하이스파크 로고" /></div>
 				<address>
 					<ul>
 						<li>㈜스파크</li>
@@ -189,5 +194,5 @@
 	</div>
 
 </body>
-<script type="text/javascript" src="../js/cart.js"></script>
+<script type="text/javascript" src="/js/cart.js"></script>
 </html>

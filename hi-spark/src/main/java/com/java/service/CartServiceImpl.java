@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.java.entity.Cart;
 import com.java.entity.Member;
 import com.java.repository.MemberRepository;
+import com.java.repository.CartItemRepository;
 import com.java.repository.CartRepository;
 
 @Service
@@ -15,6 +16,7 @@ public class CartServiceImpl implements CartService {
 
 	@Autowired CartRepository cartRepository;
 	@Autowired MemberRepository memberRepository;
+	@Autowired CartItemRepository cartItemRepository;
 	
 	@Override
 	public Cart getCartByMember(Member member) {
@@ -31,6 +33,19 @@ public class CartServiceImpl implements CartService {
 	    return cartRepository.findByMember(member)
 	            .orElseThrow(() -> new RuntimeException("장바구니가 존재하지 않습니다."));
 	}
+	
+	@Override
+    public Cart getOrCreateCart(Member member) {
+        return cartRepository.findByMember(member)
+                .orElseGet(() -> {
+                    Cart newCart = Cart.builder()
+                            .member(member)
+                            .build();
+                    return cartRepository.save(newCart);
+                });
+    }
+	
+
 
 
 }
