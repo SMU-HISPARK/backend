@@ -1,4 +1,4 @@
-package com.java.dto;
+package com.java.entity;
 
 import java.sql.Timestamp;
 
@@ -55,27 +55,6 @@ public class Member {
 	@CreationTimestamp
 	@Column(name="created_at")
 	private Timestamp createdAt;
-	
-	public String getPhone1() {
-        if (phone.length() >= 3) {
-            return phone.substring(0, 3);
-        }
-        return "";
-    }
-
-    public String getPhone2() {
-        if (phone.length() >= 7) {
-            return phone.substring(4, 8);
-        }
-        return "";
-    }
-
-    public String getPhone3() {
-        if (phone.length() > 11) {
-            return phone.substring(9);
-        }
-        return "";
-    }
 	
 
 }

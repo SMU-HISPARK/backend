@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ include file="../layout/header.jsp" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
 <!DOCTYPE html>
 <html lang="ko">
@@ -423,92 +425,29 @@
                 </div>
 
                 <div class="products-grid">
-                    <div class="product-card">
-                        <div class="product-image">
-                            <img src="../images/hoodie1.jpg" alt="한정판 후드티" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjgwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDI4MCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIyODAiIGhlaWdodD0iMjAwIiBmaWxsPSIjRjBGMEYwIi8+CjxwYXRoIGQ9Ik0xMTAgODBIMTcwVjEyMEgxMTBWODBaIiBmaWxsPSIjREREREREIi8+Cjx0ZXh0IHg9IjE0MCIgeT0iMTA1IiBmaWxsPSIjOTk5OTk5IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXNpemU9IjEyIj5JbWFnZTwvdGV4dD4KPC9zdmc+'">
-                            <div class="product-status status-active">판매중</div>
-                        </div>
-                        <div class="product-info">
-                            <div class="product-category">MD</div>
-                            <div class="product-name">한정판 후드티 (블랙)</div>
-                            <div class="product-price">₩89,000</div>
-                            <div class="product-stock stock-low">재고: 12개</div>
-                            <div class="product-actions">
-                            	<button class="btn-small btn-edit" onclick="editProduct(1)">수정</button>
-                                <button class="btn-small btn-delete" onclick="deleteProduct(1)">삭제</button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="product-card">
-                        <div class="product-image">
-                            <img src="../images/keyring1.jpg" alt="아크릴 키링" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjgwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDI4MCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIyODAiIGhlaWdodD0iMjAwIiBmaWxsPSIjRjBGMEYwIi8+CjxwYXRoIGQ9Ik0xMTAgODBIMTcwVjEyMEgxMTBWODBaIiBmaWxsPSIjREREREREIi8+Cjx0ZXh0IHg9IjE0MCIgeT0iMTA1IiBmaWxsPSIjOTk5OTk5IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXNpemU9IjEyIj5JbWFnZTwvdGV4dD4KPC9zdmc+'">
-                            <div class="product-status status-active">판매중</div>
-                        </div>
-                        <div class="product-info">
-                            <div class="product-category">MD</div>
-                            <div class="product-name">아크릴 키링 세트</div>
-                            <div class="product-price">₩15,000</div>
-                            <div class="product-stock stock-normal">재고: 156개</div>
-                            <div class="product-actions">
-                            	<button class="btn-small btn-edit" onclick="editProduct(1)">수정</button>
-                                <button class="btn-small btn-delete" onclick="deleteProduct(2)">삭제</button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="product-card">
-                        <div class="product-image">
-                            <img src="../images/sticker1.jpg" alt="스티커 팩" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjgwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDI4MCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIyODAiIGhlaWdodD0iMjAwIiBmaWxsPSIjRjBGMEYwIi8+CjxwYXRoIGQ9Ik0xMTAgODBIMTcwVjEyMEgxMTBWODBaIiBmaWxsPSIjREREREREIi8+Cjx0ZXh0IHg9IjE0MCIgeT0iMTA1IiBmaWxsPSIjOTk5OTk5IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXNpemU9IjEyIj5JbWFnZTwvdGV4dD4KPC9zdmc+'">
-                            <div class="product-status status-soldout">품절</div>
-                        </div>
-                        <div class="product-info">
-                            <div class="product-category">MD</div>
-                            <div class="product-name">스티커 팩 (50매)</div>
-                            <div class="product-price">₩12,000</div>
-                            <div class="product-stock stock-low">재고: 0개</div>
-                            <div class="product-actions">
-                                <button class="btn-small btn-edit" onclick="editProduct(1)">수정</button>
-                                <button class="btn-small btn-delete" onclick="deleteProduct(3)">삭제</button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="product-card">
-                        <div class="product-image">
-                            <img src="../images/bag1.jpg" alt="에코백" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjgwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDI4MCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIyODAiIGhlaWdodD0iMjAwIiBmaWxsPSIjRjBGMEYwIi8+CjxwYXRoIGQ9Ik0xMTAgODBIMTcwVjEyMEgxMTBWODBaIiBmaWxsPSIjREREREREIi8+Cjx0ZXh0IHg9IjE0MCIgeT0iMTA1IiBmaWxsPSIjOTk5OTk5IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXNpemU9IjEyIj5JbWFnZTwvdGV4dD4KPC9zdmc+'">
-                            <div class="product-status status-active">판매중</div>
-                        </div>
-                        <div class="product-info">
-                            <div class="product-category">MD</div>
-                            <div class="product-name">에코백 (캔버스)</div>
-                            <div class="product-price">₩25,000</div>
-                            <div class="product-stock stock-normal">재고: 67개</div>
-                            <div class="product-actions">
-                            	<button class="btn-small btn-edit" onclick="editProduct(1)">수정</button>
-                                <button class="btn-small btn-delete" onclick="deleteProduct(4)">삭제</button>
-                            </div>
-                        </div>
-                    </div>
-
-
-                    <div class="product-card">
-                        <div class="product-image">
-                            <img src="../images/notebook1.jpg" alt="노트북" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjgwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDI4MCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIyODAiIGhlaWdodD0iMjAwIiBmaWxsPSIjRjBGMEYwIi8+CjxwYXRoIGQ9Ik0xMTAgODBIMTcwVjEyMEgxMTBWODBaIiBmaWxsPSIjREREREREIi8+Cjx0ZXh0IHg9IjE0MCIgeT0iMTA1IiBmaWxsPSIjOTk5OTk5IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXNpemU9IjEyIj5JbWFnZTwvdGV4dD4KPC9zdmc+'">
-                            <div class="product-status status-active">판매중</div>
-                        </div>
-                        <div class="product-info">
-                            <div class="product-category">MD</div>
-                            <div class="product-name">브랜드 노트 (A5)</div>
-                            <div class="product-price">₩18,000</div>
-                            <div class="product-stock stock-normal">재고: 92개</div>
-                            <div class="product-actions">
-                            	<button class="btn-small btn-edit" onclick="editProduct(1)">수정</button>
-                                <button class="btn-small btn-delete" onclick="deleteProduct(6)">삭제</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+			    <c:forEach var="product" items="${products}">
+			        <div class="product-card">
+			            <div class="product-image">
+			                <img src="${product.productImg}" alt="${product.productName}" onerror="this.src='default-image.png'">
+			                <div class="product-status ${product.productQuantity > 0 ? 'status-active' : 'status-soldout'}">
+			                    ${product.productQuantity > 0 ? '판매중' : '품절'}
+			                </div>
+			            </div>
+			            <div class="product-info">
+			                <div class="product-category">MD</div>
+			                <div class="product-name">${product.productName}</div>
+			                <div class="product-price"><fmt:formatNumber value="${product.productPrice}" pattern="#,##0" />원</div>
+			                <div class="product-stock ${product.productQuantity > 0 ? 'stock-normal' : 'stock-low'}">
+			                    재고: ${product.productQuantity}개
+			                </div>
+			                <div class="product-actions">
+			                    <button class="btn-small btn-edit" onclick="editProduct(${product.productId})">수정</button>
+			                    <button class="btn-small btn-delete" onclick="deleteProduct(${product.productId})">삭제</button>
+			                </div>
+			            </div>
+			        </div>
+			    </c:forEach>
+			</div>
 
                 <!-- pagination -->
             <div class="pg-container">
@@ -562,7 +501,7 @@
                 <span class="close" onclick="closeModal()">&times;</span>
             </div>
             <div class="modal-body">
-                <form id="productForm">
+                <form id="productForm" method = "post" action = "/shop"> 
                     <div class="form-group">
                         <label for="productName">상품명 *</label>
                         <input type="text" id="productName" name="productName" required>
@@ -576,6 +515,12 @@
                     <div class="form-group">
                         <label for="productStock">재고수량 *</label>
                         <input type="number" id="productStock" name="productStock" min="0" required>
+                    </div>
+                    
+                    
+                    <div class="form-group">
+                        <label for="productDelfee">배송비 *</label>
+                        <input type="text" id="productDelfee" name="productDelfee" min="0" required>
                     </div>
                     
                     <div class="form-group">
@@ -635,65 +580,62 @@
             document.getElementById('productModal').style.display = 'block';
         }
 
-        // 상품 수정 모달 열기
-        function editProduct(productId) {
-            editingProductId = productId;
-            document.getElementById('modalTitle').textContent = '상품 정보 수정';
-            
-            // 기존 데이터 로드 (실제로는 서버에서 데이터를 가져와야 함)
-            const sampleData = {
-                1: { name: '한정판 후드티 (블랙)',price: 89000, stock: 12, description: '프리미엄 소재의 한정판 후드티입니다.', status: 'active' },
-                2: { name: '아크릴 키링 세트', price: 15000, stock: 156, description: '고품질 아크릴로 제작된 키링 세트입니다.', status: 'active' },
-                3: { name: '스티커 팩 (50매)', price: 12000, stock: 0, description: '다양한 디자인의 스티커 50매 세트입니다.', status: 'soldout' },
-                4: { name: '에코백 (캔버스)', price: 25000, stock: 67, description: '친환경 캔버스 소재의 에코백입니다.', status: 'active' },
-                5: { name: '마우스패드 (대형)', price: 35000, stock: 23, description: '게이밍용 대형 마우스패드입니다.', status: 'active' },
-                6: { name: '브랜드 노트 (A5)', price: 18000, stock: 92, description: 'A5 사이즈의 프리미엄 노트입니다.', status: 'active' }
-            };
-            
-            const data = sampleData[productId];
-            if (data) {
-                document.getElementById('productName').value = data.name;
-                document.getElementById('productPrice').value = data.price;
-                document.getElementById('productStock').value = data.stock;
-                document.getElementById('productDescription').value = data.description;
-            }
-            
-            document.getElementById('productModal').style.display = 'block';
-        }
 
-     // 상품 수정 모달 열기
-        function editProduct(productId) {
-            editingProductId = productId;
-            document.getElementById('modalTitle').textContent = '상품 정보 수정';
-            
-            // 기존 데이터 로드 (실제로는 서버에서 데이터를 가져와야 함)
-            const sampleData = {
-                1: { name: '한정판 후드티 (블랙)', price: 89000, stock: 12, description: '프리미엄 소재의 한정판 후드티입니다.', status: 'active' },
-                2: { name: '아크릴 키링 세트', price: 15000, stock: 156, description: '고품질 아크릴로 제작된 키링 세트입니다.', status: 'active' },
-                3: { name: '스티커 팩 (50매)', price: 12000, stock: 0, description: '다양한 디자인의 스티커 50매 세트입니다.', status: 'soldout' },
-                4: { name: '에코백 (캔버스)', price: 25000, stock: 67, description: '친환경 캔버스 소재의 에코백입니다.', status: 'active' },
-                5: { name: '마우스패드 (대형)', price: 35000, stock: 23, description: '게이밍용 대형 마우스패드입니다.', status: 'active' },
-                6: { name: '브랜드 노트 (A5)', price: 18000, stock: 92, description: 'A5 사이즈의 프리미엄 노트입니다.', status: 'active' }
-            };
-            
-            const data = sampleData[productId];
-            if (data) {
-                document.getElementById('productName').value = data.name;
-                document.getElementById('productPrice').value = data.price;
-                document.getElementById('productStock').value = data.stock;
-                document.getElementById('productDescription').value = data.description;
-            }
-            
-            document.getElementById('productModal').style.display = 'block';
-        }
+     // 상품 수정 모달 열기 (서버 데이터 사용)
+	 function editProduct(productId) {
+	    editingProductId = productId;
+	    document.getElementById('modalTitle').textContent = '상품 정보 수정';
+	    
+	    // 서버에서 상품 정보 요청
+	    $.ajax({
+	    	url: '/adpage/shop/detail?productId=' + productId,
+	        type: 'GET',
+	        dataType: 'json',
+	        success: function(data) {
+	            document.getElementById('productName').value = data.productName;
+	            document.getElementById('productPrice').value = data.productPrice;
+	            document.getElementById('productStock').value = data.productQuantity;
+	            document.getElementById('productDescription').value = data.productContent;
+	
+	            // 기존 이미지가 있으면 미리보기 표시
+	            const previewContainer = document.getElementById('previewContainer');
+	            previewContainer.innerHTML = '';
+	            if (data.productImg) {
+	                const previewItem = document.createElement('div');
+	                previewItem.className = 'preview-item';
+	                previewItem.innerHTML = `
+	                    <img src="${data.productImg}" alt="Preview">
+	                    <button class="remove-preview" onclick="removePreview(this)">&times;</button>
+	                `;
+	                previewContainer.appendChild(previewItem);
+	            }
+	
+	            document.getElementById('productModal').style.display = 'block';
+	        },
+	        error: function(err) {
+	            console.error(err);
+	            alert('상품 정보를 불러오는데 실패했습니다.');
+	        }
+	    });
+	}
 
         // 상품 삭제
         function deleteProduct(productId) {
-            if (confirm('정말 이 상품을 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.')) {
-                alert(`상품 ${productId}이 삭제되었습니다.`);
-                location.reload();
-            }
-        }
+		    if (confirm('정말 이 상품을 삭제하시겠습니까?')) {
+		        $.ajax({
+		            url: '/adpage/shop/' + productId,
+		            type: 'DELETE',
+		            success: function(response) {
+		                alert('삭제 완료');
+		                location.reload(); // 페이지 새로고침해서 목록 갱신
+		            },
+		            error: function(err) {
+		                console.error(err);
+		                alert('삭제 실패');
+		            }
+		        });
+		    }
+		}
 
         // 모달 닫기
         function closeModal() {
@@ -702,24 +644,54 @@
 
         // 상품 저장
         function saveProduct() {
-            const form = document.getElementById('productForm');
-            const formData = new FormData(form);
-            
-            // 필수 항목 검증
-            if (!formData.get('productName') || !formData.get('productPrice') || !formData.get('productStock')) {
-                alert('필수 항목을 모두 입력해주세요.');
-                return;
-            }
-            
-            if (editingProductId) {
-                alert('상품 정보가 수정되었습니다.');
-            } else {
-                alert('새 상품이 등록되었습니다.');
-            }
-            
-            closeModal();
-            location.reload();
-        }
+		    const form = document.getElementById('productForm');
+		    const formData = new FormData(form);
+		
+		    // 필수값 체크
+		    if (!formData.get('productName') || !formData.get('productPrice') || !formData.get('productStock')) {
+		        alert('필수 항목을 모두 입력해주세요.');
+		        return;
+		    }
+		
+		    // 엔티티 매핑용 객체 생성
+		    const data = {
+		        productName: formData.get('productName'),
+		        productPrice: parseInt(formData.get('productPrice')),
+		        productQuantity: parseInt(formData.get('productStock')),
+		        productContent: formData.get('productDescription'),
+		        productImg: document.getElementById('previewContainer').querySelector('img') ? 
+		                    document.getElementById('previewContainer').querySelector('img').src : '',
+		        delfee: 0 // 필요 시 배송비 입력란 추가 가능
+		    };
+		
+		    let ajaxUrl = '/adpage/shop';
+		    let ajaxType = 'POST';
+		
+		    if (editingProductId) {
+		        ajaxUrl += '/' + editingProductId;
+		        ajaxType = 'PUT'; // 수정일 경우
+		    }
+		
+		    $.ajax({
+		        url: ajaxUrl,
+		        type: ajaxType,
+		        contentType: 'application/json',
+		        data: JSON.stringify(data),
+		        success: function(response) {
+		            if (editingProductId) {
+		                alert('상품 정보가 수정되었습니다.');
+		            } else {
+		                alert('새 상품이 등록되었습니다.');
+		            }
+		            closeModal();
+		            location.reload();
+		        },
+		        error: function(err) {
+		            console.error(err);
+		            alert('저장 실패');
+		        }
+		    });
+		}
 
         // 이미지 업로드 처리
         document.getElementById('imageInput').addEventListener('change', function(e) {

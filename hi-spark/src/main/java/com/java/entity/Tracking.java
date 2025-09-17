@@ -1,4 +1,4 @@
-package com.java.dto;
+package com.java.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

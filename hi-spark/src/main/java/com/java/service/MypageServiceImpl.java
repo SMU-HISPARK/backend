@@ -2,16 +2,21 @@ package com.java.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import com.java.dto.Member;
 import com.java.dto.OrderItemDto;
-import com.java.dto.Orders;
-import com.java.dto.Tracking;
+import com.java.entity.Board;
+import com.java.entity.Comments;
+import com.java.entity.Member;
 import com.java.entity.OrderItem;
+import com.java.entity.Orders;
+import com.java.entity.Tracking;
+import com.java.repository.BoardRepository;
+import com.java.repository.CommentsRepository;
 import com.java.repository.MemberRepository;
 import com.java.repository.MypageRepository;
 
@@ -23,6 +28,12 @@ public class MypageServiceImpl implements MypageService{
 	@Autowired MypageRepository mypageRepository;
 	@Autowired MemberRepository memberRepository;
 	@Autowired OrderItemRepository orderItemRepository;
+	@Autowired private BoardRepository boardRepository;
+    @Autowired private CommentsRepository commentsRepository;
+    public MypageServiceImpl(BoardRepository boardRepository, CommentsRepository commentsRepository) {
+    	this.boardRepository = boardRepository;
+    	this.commentsRepository = commentsRepository;
+    }
 	
 	@Autowired private RestTemplate restTemplate;
 	
@@ -31,6 +42,17 @@ public class MypageServiceImpl implements MypageService{
 	private String dservice_key;
 	
 
+
+    // 게시글
+    public List<Board> getAllBoards(Member member) {
+        return boardRepository.findAllByMemberOrderByBdateDesc(member);
+    }
+    
+    // 특정 회원의 댓글
+    public List<Comments> getCommentsByMember(Member member) {
+        return commentsRepository.findByMemberOrderByCdateDesc(member);
+    }
+	
 
 	@Override
 	public String getTrackingStatus(String orderCode) {
@@ -86,36 +108,48 @@ public class MypageServiceImpl implements MypageService{
 		 return mypageRepository.findByOrderCode(orderCode);
 	}
 	
-	@Transactional		// db 반영
+	@Transactional
 	@Override
 	public void updateMember(String loginId, String nickname, String phone1, String phone2, String phone3) {
-		Member member = memberRepository.findByLoginId(loginId);
-		
-		String phone = phone1 + "-" + phone2 + "-" + phone3;
-		
-		member.setNickname(nickname);
-		member.setPhone(phone);
-		
-		memberRepository.save(member);
-		
+	    Optional<Member> memberOpt = memberRepository.findByLoginId(loginId);
+
+	    if (memberOpt.isPresent()) {
+	        Member member = memberOpt.get();
+	        String phone = phone1 + "-" + phone2 + "-" + phone3;
+
+	        member.setNickname(nickname);
+	        member.setPhone(phone);
+
+	        memberRepository.save(member);
+	    } else {
+	        // 필요하면 회원이 없는 경우 예외 처리
+	        throw new RuntimeException("회원 정보가 존재하지 않습니다: " + loginId);
+	    }
 	}
 
 	@Transactional
 	@Override
 	public void updateMemberPoint(String loginId, int point) {
-	    Member m = memberRepository.findByLoginId(loginId);
+	    Optional<Member> mOpt = memberRepository.findByLoginId(loginId);
 	    
-	    m.setPoint(point);
-	    memberRepository.save(m); 
+	    if (mOpt.isPresent()) {
+	        Member m = mOpt.get();
+	        m.setPoint(point);
+	        memberRepository.save(m);
+	    }
+	    
 	}
 
 	@Transactional
 	@Override
 	public void updateMemberPassword(String loginId, String password) {
-	    Member m = memberRepository.findByLoginId(loginId);
+	    Optional<Member> mOpt = memberRepository.findByLoginId(loginId);
 	    
-	    m.setPassword(password);
-	    memberRepository.save(m);
+	    if (mOpt.isPresent()) {
+	        Member m = mOpt.get();
+	        m.setPassword(password);
+	        memberRepository.save(m);
+	    }
 	}
 
 	@Transactional
@@ -170,5 +204,6 @@ public class MypageServiceImpl implements MypageService{
 		
 	    return orderItemDtos;
 	}
+
 
 }

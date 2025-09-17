@@ -9,10 +9,10 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import com.java.dto.Member;
-import com.java.dto.Orders;
-import com.java.dto.Tracking;
+import com.java.entity.Member;
 import com.java.entity.OrderItem;
+import com.java.entity.Orders;
+import com.java.entity.Tracking;
 
 import jakarta.transaction.Transactional;
 

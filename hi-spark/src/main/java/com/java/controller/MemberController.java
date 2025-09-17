@@ -1,57 +1,84 @@
 package com.java.controller;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import com.java.dto.Member;
+import com.java.dto.MemberDto;
+import com.java.entity.Member;
 import com.java.service.MemberService;
 
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class MemberController {
 
-	@Autowired MemberService memberService;
 	@Autowired HttpSession session;
+	@Autowired MemberService mServ;
 	
-	@GetMapping("/")
-	public String index() {
+	@GetMapping("/member/step01")
+	public String step01() {
+		return "member/step01";
+	}
+	
+	@GetMapping("/member/step02")	// 추후 post로 바꿀 것
+	public String step02() {
+		return "member/step02";
+	}
+	
+	@PostMapping("/member/step03")
+	public String step03(Member member) {
 		
+		mServ.save(member);
+		
+		return "member/step03";
+	}
+	
+
+	
+	
+	@GetMapping("/member/login")
+	public String login() {
+//		session.setAttribute("session_id", "admin");
+//		session.setAttribute("session_name", "namee");
 		return "member/login";
 	}
 	
-	@PostMapping("/")
-	public String index(HttpServletResponse response, 
-			RedirectAttributes redirect,
-			Member member,Model model) {
+	
+	@PostMapping("/member/login")
+	public String login(
+			@RequestParam(name="redirectTo",required=false) String redirectURL,
+			@RequestParam("loginId") String loginId,
+			@RequestParam("password") String password,
+			Model model
+			) {
 		
-		String url = "";
-		String id = member.getLoginId();
-		String pw = member.getPassword();
-		
-		Member m = memberService.findByLoginIdAndPassword(id,pw);
-		
-		if(m == null) {
-			System.out.println("로그인 실패");
-			url = "redirect:/";
-		}else {
-			System.out.println("로그인 성공");
-			session.setAttribute("session_id", id);
-			session.setAttribute("session_name", pw);
-			model.addAttribute("m",m);
-			url = "redirect:/mypage/member";
-			System.out.println(session.getAttribute("session_id"));
+		// 일치하는 아이디 찾기
+		MemberDto memfind = mServ.findByLoginIdAndPassword(loginId, password);
+		if(memfind == null) {
+			model.addAttribute("notFound", "1");
+			return "member/login";
 		}
 		
+		// 로그인 세션 설정
+		session.setAttribute("session_id", memfind.getLoginId());
+		session.setAttribute("session_name", memfind.getNickname());
 		
-		
-		return url;
+		// 로그인 요청이 들어온 페이지로 리다이렉트
+		if(redirectURL != null) {
+			return "redirect:"+redirectURL;
+		}
+		return "index";
 	}
+	
+	@GetMapping("/member/logout")
+	public String logout() {
+		session.invalidate();
+		return "index";
+	}
+	
 	
 }

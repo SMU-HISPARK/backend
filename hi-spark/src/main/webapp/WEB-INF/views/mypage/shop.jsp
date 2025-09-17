@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ include file="../layout/headerM.jsp" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
@@ -456,48 +457,66 @@
                 <!-- 주문내역 목록 -->
 				    <div class="order-list">
 				        <c:forEach var="order" items="${ordersList}">
-				            <div class="order-item">
-				                <div class="order-header">
-				                    <div class="post-title">주문번호: ${order.orderCode}</div>
-				                    <div class="order-date">${order.createdAt}</div>
-				                </div>
-				                <div class="order-details">
-				                    <div class="order-field">
-				                        <label>상품명</label>
-				                        <span>상품명</span> <!-- 상품 정보가 없어서 임시 -->
-				                    </div>
-				                    <div class="order-field">
-				                        <label>수량</label>
-				                        <span>1개</span> <!-- 수량 정보가 없어서 임시 -->
-				                    </div>
-				                    <div class="order-field">
-				                        <label>결제금액</label>
-				                        <span><fmt:formatNumber value="${order.totalAmount}" pattern="#,###"/>원</span>
-				                    </div>
-				                    <div class="order-field">
-				                        <label>주문상태</label>
-				                        <c:choose>
-				                            <c:when test="${order.orderState == 2}">
-				                                <span class="status-badge fin">배송완료</span>
-				                            </c:when>
-				                            <c:when test="${order.orderState == 1}">
-				                                <span class="status-badge ing">배송중</span>
-				                            </c:when>
-				                            <c:when test="${order.orderState == 0}">
-				                                <span class="status-badge buy">상품준비중</span>
-				                            </c:when>
-				                            <c:when test="${order.orderState == -1}">
-				                                <span class="status-badge can">주문취소</span>
-				                            </c:when>
-				                        </c:choose>
-				                    </div>
-				                </div>
-				                <div class="order-actions">
-				                    <button class="btn btn-small" data-order-code="${order.orderCode}" data-action="detail">주문상세</button>
-									<button class="btn btn-small" data-order-code="${order.orderCode}" data-action="tracking">배송조회</button>
-				                </div>
-				            </div>
-				        </c:forEach>
+					    <div class="order-item">
+					        <div class="order-header">
+					            <div class="post-title">주문번호: ${order.orderCode}</div>
+					            <div class="order-date">${order.createdAt}</div>
+					        </div>
+					        <div class="order-details">
+					            <!-- 상품명 요약 -->
+					            <div class="order-field">
+					                <label>상품명</label>
+					                <span>
+					                    ${order.orderItems[0].product.productName} 
+					                    <c:if test="${fn:length(order.orderItems) > 1}">
+					                        외 ${fn:length(order.orderItems) - 1}건
+					                    </c:if>
+					                </span> 
+					            </div>
+					
+					            <!-- 수량 합계 -->
+					            <div class="order-field">
+					                <label>수량</label>
+					                <c:set var="totalQty" value="0" />
+					                <c:forEach var="item" items="${order.orderItems}">
+					                    <c:set var="totalQty" value="${totalQty + item.quantity}" />
+					                </c:forEach>
+					                <span>${totalQty}개</span>
+					            </div>
+					
+					            <!-- 결제금액 -->
+					            <div class="order-field">
+					                <label>결제금액</label>
+					                <span><fmt:formatNumber value="${order.totalAmount}" pattern="#,###"/>원</span>
+					            </div>
+					
+					            <!-- 주문상태 -->
+					            <div class="order-field">
+					                <label>주문상태</label>
+					                <c:choose>
+					                    <c:when test="${order.orderState == 2}">
+					                        <span class="status-badge fin">배송완료</span>
+					                    </c:when>
+					                    <c:when test="${order.orderState == 1}">
+					                        <span class="status-badge ing">배송중</span>
+					                    </c:when>
+					                    <c:when test="${order.orderState == 0}">
+					                        <span class="status-badge buy">상품준비중</span>
+					                    </c:when>
+					                    <c:when test="${order.orderState == -1}">
+					                        <span class="status-badge can">주문취소</span>
+					                    </c:when>
+					                </c:choose>
+					            </div>
+					        </div>
+					
+					        <!-- 버튼 -->
+					        <div class="order-actions">
+					            <button class="btn btn-small" data-order-code="${order.orderCode}" data-action="detail">주문상세</button>
+					            <button class="btn btn-small" data-order-code="${order.orderCode}" data-action="tracking">배송조회</button>
+					        </div>
+					    </div>
+					</c:forEach>
 				    </div>
 				</div>
             </div>

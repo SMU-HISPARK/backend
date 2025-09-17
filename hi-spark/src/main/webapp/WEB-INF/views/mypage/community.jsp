@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ include file="../layout/headerM.jsp" %>
+<%@ include file="..\/layout/headerM.jsp" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <script  src="http://code.jquery.com/jquery-latest.min.js"></script>
 <!DOCTYPE html>
 <html lang="ko">
@@ -10,7 +12,6 @@
     <link rel="stylesheet" href="/css/mypage/mypage.css">
     <title>커뮤니티</title>
     <style>
-        h3{ font-weight: 500;}
 
         /* 기본 탭 버튼 스타일 */
         .tab-buttons .btn {
@@ -127,91 +128,64 @@
             
             <!-- 게시글 탭 -->
             <div id="posts-tab" class="community-tab">
-                <div class="post-list">
-                    <div class="post-item">
-                        <div class="post-header">
-                            <div class="post-title">오늘 콘서트 정말 최고였어요!</div>
-                            <div class="post-date">2025-08-30</div>
-                        </div>
-                        <div class="post-content">
-                            어제 공연 정말 감동적이었습니다. 특히 앵콜 무대에서의 퍼포먼스가...
-                        </div>
-                        <div class="post-actions">
-                            <button class="btn btn-small" onclick="viewPost(1)">게시글로 이동</button>
-                        </div>
-                    </div>
-                    
-                    <div class="post-item">
-                        <div class="post-header">
-                            <div class="post-title">굿즈 후기 남겨요</div>
-                            <div class="post-date">2025-08-28</div>
-                        </div>
-                        <div class="post-content">
-                            이번에 구매한 포토카드 퀄리티가 정말 좋네요. 배송도 빠르고...
-                        </div>
-                        <div class="post-actions">
-                            <button class="btn btn-small" onclick="viewPost(2)">게시글로 이동</button>
-                        </div>
-                    </div>
-                    
-                    <div class="post-item">
-                        <div class="post-header">
-                            <div class="post-title">이번 앨범 어떻게 생각하세요?</div>
-                            <div class="post-date">2025-08-26</div>
-                        </div>
-                        <div class="post-content">
-                            신곡들이 다 너무 좋은데 특히 타이틀곡이 중독성이 있어서...
-                        </div>
-                        <div class="post-actions">
-                            <button class="btn btn-small" onclick="viewPost(3)">게시글로 이동</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+		    <div class="post-list">
+		        <c:forEach var="post" items="${postsList}">
+		            <div class="post-item">
+		                <div class="post-header">
+		                    <div class="post-title">${post.btitle}</div>
+		                    <div class="post-date">
+						    <c:choose>
+						        <c:when test="${not empty post.upBdate}">
+						            작성일: <fmt:formatDate value="${post.bdate}" pattern="yyyy-MM-dd"/> / 
+						            수정일: <fmt:formatDate value="${post.upBdate}" pattern="yyyy-MM-dd"/>
+						        </c:when>
+						        <c:otherwise>
+						            작성일:<fmt:formatDate value="${post.bdate}" pattern="yyyy-MM-dd"/>
+						        </c:otherwise>
+						    </c:choose>
+						</div>
+		                </div>
+		                <div class="post-content">
+		                    ${post.bcontent}
+		                </div>
+		                <div class="post-actions">
+		                    <button class="btn btn-small" onclick="viewPost(${post.bno})">게시글로 이동</button>
+		                </div>
+		            </div>
+		        </c:forEach>
+		    </div>
+		</div>
             
             <!-- 댓글 탭 -->
-            <div id="comments-tab" class="community-tab" style="display: none;">
-                <div class="post-list">
-                    <div class="post-item">
-                        <div class="post-header">
-                            <div class="post-title">"신곡 발매 소식!" 게시글에 댓글</div>
-                            <div class="post-date">2025-08-29</div>
-                        </div>
-                        <div class="post-content">
-                            "드디어 나왔네요! 기대했던 만큼 좋은 것 같아요"
-                        </div>
-                        <div class="post-actions">
-                            <button class="btn btn-small" onclick="viewOriginalPost(1)">원글 보기</button>
-                        </div>
-                    </div>
-                    
-                    <div class="post-item">
-                        <div class="post-header">
-                            <div class="post-title">"콘서트 후기" 게시글에 댓글</div>
-                            <div class="post-date">2025-08-27</div>
-                        </div>
-                        <div class="post-content">
-                            "저도 같은 생각이에요! 정말 최고의 무대였습니다 ㅠㅠ"
-                        </div>
-                        <div class="post-actions">
-                            <button class="btn btn-small" onclick="viewOriginalPost(2)">원글 보기</button>
-                        </div>
-                    </div>
-                    
-                    <div class="post-item">
-                        <div class="post-header">
-                            <div class="post-title">"굿즈 추천해주세요" 게시글에 댓글</div>
-                            <div class="post-date">2025-08-25</div>
-                        </div>
-                        <div class="post-content">
-                            "포토카드 세트 추천드려요! 퀄리티 정말 좋아요"
-                        </div>
-                        <div class="post-actions">
-                            <button class="btn btn-small" onclick="viewOriginalPost(3)">원글 보기</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+			<div id="comments-tab" class="community-tab" style="display: none;">
+		    <div class="post-list">
+		        <c:forEach var="comment" items="${commentsList}">
+		            <div class="post-item">
+		                <div class="post-header">
+		                    <div class="post-title">${comment.board.btitle}</div>
+		                    <div class="post-date">
+							    <c:choose>
+							        <c:when test="${not empty comment.upCdate}">
+							            작성일: <fmt:formatDate value="${comment.cdate}" pattern="yyyy-MM-dd"/> / 수정일: 
+							            <fmt:formatDate value="${comment.upCdate}" pattern="yyyy-MM-dd"/>
+							        </c:when>
+							        <c:otherwise>
+							            작성일: <fmt:formatDate value="${comment.cdate}" pattern="yyyy-MM-dd"/>
+							        </c:otherwise>
+							    </c:choose>
+							</div>
+		                </div>
+		                <div class="post-content">
+		                    ${comment.ccontent}
+		                </div>
+		                <div class="post-actions">
+		                    <button class="btn btn-small" onclick="viewOriginalPost(${comment.board.bno})">원글 보기</button>
+		                </div>
+		            </div>
+		        </c:forEach>
+		    </div>
+		</div>            
+
             <!-- pagination -->
             <div class="pg-container">
 		      <div class="paginator">
@@ -278,27 +252,15 @@
             }
         }
         
-        // 게시글 관련 함수들
-        function editPost(postId) {
-            alert(`게시글 ${postId}을 수정합니다.`);
-            // 수정 페이지로 이동하는 로직
+        
+        function viewPost(bno) {
+            alert(`게시글 ${bno}을 조회합니다.`);
+            window.location.href = `/board/view?bno=${post.bno}`;
         }
         
-        function deletePost(postId) {
-            if (confirm('정말로 이 게시글을 삭제하시겠습니까?')) {
-                alert(`게시글 ${postId}이 삭제되었습니다.`);
-                // 삭제 로직
-            }
-        }
-        
-        function viewPost(postId) {
-            alert(`게시글 ${postId}을 조회합니다.`);
-            // 게시글 상세 페이지로 이동하는 로직
-        }
-        
-        function viewOriginalPost(postId) {
-            alert(`원글 ${postId}을 조회합니다.`);
-            // 원글 상세 페이지로 이동하는 로직
+        function viewOriginalPost(bno) {
+        	window.location.href = `/board/view?bno=${post.bno}`;
+
         }
         
         // 페이지 로드 시 게시글 탭 활성화

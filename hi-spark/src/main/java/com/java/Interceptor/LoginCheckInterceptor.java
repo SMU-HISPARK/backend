@@ -20,7 +20,7 @@ public class LoginCheckInterceptor implements HandlerInterceptor{
 		if (loginId == null) {
 		    response.setContentType("text/html; charset=UTF-8");
 		    PrintWriter out = response.getWriter();
-		    out.println("<script>alert('로그인 후 이용 가능합니다.'); location.href='/'</script>");
+		    out.println("<script>alert('로그인 후 이용 가능합니다.'); location.href='/member/login'</script>");
 		    out.flush();
 		    return false;
 		}

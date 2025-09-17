@@ -1,11 +1,14 @@
 package com.java.service;
 
 import java.util.List;
+import java.util.Optional;
 
-import com.java.dto.Member;
 import com.java.dto.OrderItemDto;
-import com.java.dto.Orders;
+import com.java.entity.Board;
+import com.java.entity.Comments;
+import com.java.entity.Member;
 import com.java.entity.OrderItem;
+import com.java.entity.Orders;
 
 public interface MypageService {
 
@@ -29,6 +32,10 @@ public interface MypageService {
 	boolean cancelOrder(String orderCode, String loginId);
 
 	List<OrderItemDto> getOrderItemsByOrderCode(String orderCode);
+
+	List<Board> getAllBoards(Member member);
+
+	List<Comments> getCommentsByMember(Member member);
 
 
 }

@@ -1,7 +1,5 @@
 package com.java.entity;
 
-import com.java.dto.Orders;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

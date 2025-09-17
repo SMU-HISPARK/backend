@@ -15,20 +15,16 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 @Entity
-public class GameResultClub {
+public class GameQuestion {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "question_id")
+    private Long questionId;
+
+    @Column(name = "text", nullable = false, length = 500)
+    private String text;
 	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="club_id")
-	private int clubId;
-	
-	@Column(nullable = false,unique = true)
-	private String name;
-	
-	@Column(name = "result_image",nullable = false,unique = true)
-	private String resultImage;
-	
-	@Column(name = "result_count", nullable = false)
-	private int resultCount;
 	
 }
+
