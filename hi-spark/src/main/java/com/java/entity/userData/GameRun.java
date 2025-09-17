@@ -33,8 +33,8 @@ import lombok.ToString;
 @Data
 @Entity
 @SequenceGenerator(
-		name = "run_seq_gen",
-		sequenceName = "run_seq",
+		name = "runSeqGen",
+		sequenceName = "runSeq",
 		initialValue = 1,
 		allocationSize = 1)
 public class GameRun {
@@ -45,11 +45,11 @@ public class GameRun {
 	private Member member;
 	
 	@ManyToOne
-	@JoinColumn(name = "session_id", nullable = true)
+	@JoinColumn(name = "sessionId", nullable = true)
 	private GameSession gameSession;
 	
 	@ManyToOne
-	@JoinColumn(name = "club_id", nullable = false)
+	@JoinColumn(name = "clubId", nullable = false)
 	private GameResultClub resultClub;
 	
 	
@@ -57,11 +57,11 @@ public class GameRun {
 	@Id
 	@GeneratedValue(
 			strategy = GenerationType.SEQUENCE,
-			generator = "run_seq_gen")
-	private Long run_id;
+			generator = "runSeqGen")
+	private Long runId;
 	
 	@Column(length = 30, nullable = false, unique = false)
-	private String user_name;
+	private String userName;
 	
 	/*
 	@Column(nullable = true)
@@ -75,7 +75,7 @@ public class GameRun {
 	*/
 	
 	@CreationTimestamp
-	private Timestamp finished_at;
+	private Timestamp finishedAt;
 	
 	@ColumnDefault("0")
 	@Column(nullable = false)

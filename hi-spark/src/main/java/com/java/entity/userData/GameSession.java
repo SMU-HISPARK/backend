@@ -1,12 +1,13 @@
 package com.java.entity.userData;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 import org.hibernate.annotations.CreationTimestamp;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.PrePersist;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -21,13 +22,22 @@ public class GameSession {
 
 	@Id
 	@Column(length = 36)
-	private String session_id;
+	private String sessionId;
 	
 	@CreationTimestamp
-	private Timestamp created_at;
+	@Column(updatable = false)
+	private LocalDateTime createdAt;
 	
-	private Timestamp last_seen;
+	private LocalDateTime lastSeen;
 	
-	private Timestamp expires_at;
+	@Column(nullable = false)
+	private LocalDateTime expiresAt;
+	
+	@PrePersist
+	public void prePersist() {
+		if (expiresAt == null) {
+			expiresAt = LocalDateTime.now().plusDays(30);
+		}
+	}
 	
 }

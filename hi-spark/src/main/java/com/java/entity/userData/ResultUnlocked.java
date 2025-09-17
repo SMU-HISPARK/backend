@@ -36,13 +36,13 @@ public class ResultUnlocked {
 	private Member member;
 	
 	@ManyToOne
-	@MapsId("club_id")
-	@JoinColumn(name="club_id", nullable = false)
+	@MapsId("clubId")
+	@JoinColumn(name="clubId", nullable = false)
 	private GameResultClub resultClub;
 	
 	
 	@OneToOne
-	@JoinColumn(name="finished_at", nullable = false)
+	@JoinColumn(name="finishedAt", nullable = false)
 	private GameRun gameRun;
 	
 	

@@ -5,7 +5,6 @@ import com.java.entity.compositeId.ScoringRuleId;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinColumns;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MapsId;
 import lombok.AllArgsConstructor;
@@ -21,16 +20,16 @@ import lombok.NoArgsConstructor;
 public class ScoringRules {
 
 	@EmbeddedId
-	private ScoringRuleId id;
+	private ScoringRuleId scoringRuleId;
 	
 	@ManyToOne
-	@MapsId("option_id")	// ScoringRuleId 클래스
-	@JoinColumn(name="option_id")
+	@MapsId("optionId")	// ScoringRuleId 클래스
+	@JoinColumn(name="optionId")
 	private GameOptions option;
 	
 	@ManyToOne
-	@MapsId("club_id")		// ScoringRuledId 클래스
-	@JoinColumn(name="club_id")
+	@MapsId("clubId")		// ScoringRuledId 클래스
+	@JoinColumn(name="clubId")
 	private GameResultClub club;
 	
 	/// 필드

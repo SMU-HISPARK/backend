@@ -1,20 +1,13 @@
 package com.java.entity.sourceData;
 
-import java.util.List;
-
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
@@ -22,7 +15,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 @Entity
 @Data
@@ -30,20 +22,20 @@ import lombok.ToString;
 @AllArgsConstructor
 @Builder
 @SequenceGenerator(
-		name = "option_seq_gen",
-		sequenceName = "option_seq",
+		name = "optionSeqGen",
+		sequenceName = "optionSeq",
 		initialValue = 1,
 		allocationSize = 1)
 @Table(
 		uniqueConstraints = {
-				@UniqueConstraint(columnNames = {"question_id", "option_no"})
+				@UniqueConstraint(columnNames = {"questionId", "optionNo"})
 		})
 public class GameOptions {
 
 	
 	// FK 설정
 	@ManyToOne
-	@JoinColumn(name = "question_id", nullable = false)
+	@JoinColumn(name = "questionId", nullable = false)
 	private GameQuestion question;
 	
 	/// 필드
@@ -51,9 +43,9 @@ public class GameOptions {
 	@Id
 	@GeneratedValue(
 			strategy = GenerationType.SEQUENCE,
-			generator = "option_seq_gen"
+			generator = "optionSeqGen"
 			)
-	private Integer option_id;
+	private Integer optionId;
 	
 	/*
 	@Column(nullable = false)
@@ -61,17 +53,18 @@ public class GameOptions {
 	*/
 	
 	@Column(nullable = false)
-	private Integer option_no;
+	private Integer optionNo;
 	
 	@Lob
 	@Column(nullable = false)
 	private String text;
 	
-	@Column(length = 50)
+	@Column(length = 50, nullable = true)
 	private String tag;
 	
 	// 읽기 전용 필드(컬럼 X)
 	
+	/*
 	@OneToMany(
 			mappedBy = "option",
 			fetch = FetchType.LAZY, 
@@ -80,5 +73,6 @@ public class GameOptions {
 	@ToString.Exclude
 	@JsonIgnoreProperties({"option"})
 	private List<ScoringRules> Scoring;
+	*/
 	
 }

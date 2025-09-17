@@ -18,14 +18,14 @@ import lombok.NoArgsConstructor;
 public class GameResultClub {
 
 	@Id
-	private Integer club_id;
+	private Integer clubId;
 	
 	@Column(length = 100, nullable = false, unique = true)
 	private String name;
 	
 	@Column(nullable = false, unique = true)
-	private String result_image;
+	private String resultImage;
 	
 	@ColumnDefault("0")
-	private Integer result_count;
+	private Integer resultCount;
 }

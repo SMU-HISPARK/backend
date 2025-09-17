@@ -2,7 +2,6 @@ package com.java.entity.sourceData;
 
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.CascadeType;
@@ -28,8 +27,8 @@ import lombok.ToString;
 @AllArgsConstructor
 @Builder
 @SequenceGenerator(
-		name = "question_seq_gen",
-		sequenceName = "question_seq",
+		name = "questionSeqGen",
+		sequenceName = "questionSeq",
 		initialValue = 1,
 		allocationSize = 1)
 public class GameQuestion {
@@ -37,9 +36,9 @@ public class GameQuestion {
 	@Id
 	@GeneratedValue(
 			strategy = GenerationType.SEQUENCE,
-			generator = "question_seq_gen"
+			generator = "questionSeqGen"
 			)
-	private Integer question_id;
+	private Integer questionId;
 	
 	@Lob
 	@Column(nullable = false)
@@ -62,7 +61,7 @@ public class GameQuestion {
 			fetch = FetchType.LAZY,
 			cascade = CascadeType.ALL, 
 	        orphanRemoval = true)
-	@OrderBy("option_no ASC")
+	@OrderBy("optionNo ASC")
 	@ToString.Exclude
 	@JsonIgnoreProperties({"question"})
 	private List<GameOptions> options;

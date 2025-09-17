@@ -5,10 +5,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.java.dto.ResponseDto;
-import com.java.dto.RunDto;
 import com.java.entity.sourceData.GameQuestion;
 import com.java.service.GameService;
 
@@ -18,7 +18,7 @@ public class GameQuestionController {
 	@Autowired GameService gServ;
 	
 	// 초기 질문의 question_id
-	private final int initalQNum = 8;
+	private final int initalQNum = 1;
 	
 	public int getInitalQNum() {
 		return initalQNum;
@@ -29,19 +29,19 @@ public class GameQuestionController {
 	@PostMapping("/game/nextQuestion")
 	public GameQuestion nextQuestion(@RequestBody ResponseDto dto) {
 		
-		GameQuestion questionInit = gServ.findById(getInitalQNum());
+		GameQuestion questionInit = gServ.findQuestionById(getInitalQNum());
 		Integer nextTime = 0;
 		Integer nextDay = 0;
 		
 		// System.out.println(dto.toString());
 		
 		// 첫 번째 질문 리턴
-		if(dto.getQuestion_id() == null) {
+		if(dto.getQuestionId() == null) {
 			System.out.println(questionInit.toString());
 			return questionInit;
 		}
 		
-		GameQuestion qSubmitted = gServ.findById(dto.getQuestion_id());
+		GameQuestion qSubmitted = gServ.findQuestionById(dto.getQuestionId());
 		
 		if(qSubmitted.getTime() == 3) {
 			nextTime = 1;
@@ -56,16 +56,6 @@ public class GameQuestionController {
 		System.out.println(nextGameQ.toString());
 		
 		return nextGameQ;
-	}
-	
-	
-	@PostMapping("/game/saveRun")
-	public void saveRun(@RequestBody List<RunDto> runResponses) {
-		
-		for(int i=0; i<runResponses.size(); i++) {
-			gServ.save(runResponses.get(i));
-		}
-		
 	}
 	
 }

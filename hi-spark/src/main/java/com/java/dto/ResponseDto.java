@@ -11,6 +11,6 @@ import lombok.NoArgsConstructor;
 @Builder
 public class ResponseDto {
 
-	private Integer question_id;
+	private Integer questionId;
 	private String tag;
 }

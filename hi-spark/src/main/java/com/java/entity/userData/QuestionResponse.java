@@ -2,9 +2,7 @@ package com.java.entity.userData;
 
 import com.java.entity.compositeId.ResponseId;
 import com.java.entity.sourceData.GameOptions;
-import com.java.entity.sourceData.GameQuestion;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
@@ -23,33 +21,16 @@ import lombok.NoArgsConstructor;
 public class QuestionResponse {
 
 	@EmbeddedId
-	private ResponseId id;
+	private ResponseId responseId;
 	
 	@ManyToOne
-	@MapsId("run_id")
-	@JoinColumn(name = "run_id", nullable = false)
+	@MapsId("runId")
+	@JoinColumn(name = "runId", nullable = false)
 	private GameRun gameRun;
 	
 	@ManyToOne
-	@MapsId("question_id")
-	@JoinColumn(name = "question_id", nullable = false)
-	private GameQuestion question;
-	
-	@ManyToOne
-	@JoinColumn(name = "option_id", nullable = false)
+	@MapsId("optionId")
+	@JoinColumn(name = "optionId", nullable = false)
 	private GameOptions options;
 	
-	
-	// 필드
-	
-	/*
-	@Column(nullable = false)
-	private Long run_id;
-	
-	@Column(nullable = false)
-	private Integer quetion_id;
-	
-	@Column(nullable = false)
-	private Integer option_id;
-	*/
 }

@@ -279,6 +279,7 @@
                 </div>
             </div>
         </form> 
+        <form id="game_form"></form>
         <div class="question_img">
         </div>
         <!--<div class="background_img"></div>-->
@@ -304,7 +305,7 @@
     <script>
         
         let name = '';
-        let AnswerMap = new Map(); // 질문 번호와 답변을 저장할 Map
+        let AnswerArr = []; // 질문에 대한 답변을 저장할 배열
         let test_num = 0;      // 현재 질문 번호
         const total_questions = 6; // 총 질문 수 (임시 설정)
 
@@ -392,33 +393,39 @@
             }else{
                 progressBarUpdate(total_questions); // 진행 바 100%로 업데이트
                 
-                console.log('최종 답변 맵:', AnswerMap);
+                console.log('최종 답변 배열:', AnswerArr);
                 alert('테스트가 완료되었습니다.');
-                
-                const AnswerArr = Array.from(map, ([k,v]) => ({ question_id: k, option_id: v}));
-                ////////// 여기서 서버로 답변 맵 전송하는 코드 추가 가능 //////////
-                // 예: AJAX 요청을 통해 서버에 AnswerMap 전송
-                
-                $.ajax({
-                    url: '/game/saveRun',
-                    method: 'POST',
-                    contentType: 'application/json'
-                    dataType: 'json',
-                    data: JSON.stringify(AnswerArr),
-                    success: function(response){
-                        console.log(response);
-                    },
-                    error: function(){
-                        alert("run 데이터 전송/로드 실패");
-                    }
-                });
-                
 
-                location.href = '/game/result'; // 결과 페이지로 이동
+                ////////// 여기서 서버로 답변 맵 전송하는 코드 추가 가능 //////////
+                // form에 input hidden을 추가해서 전송
+                $("#game_form").attr({'action':'/game/saveRun?name='+ name, 'method':'POST'});
+                const form = document.getElementById("game_form");
+                AnswerArr.forEach(n => {
+                    const input = document.createElement("input");
+                    input.type = "hidden";
+                    input.name = "answers";
+                    input.value = n;
+                    form.appendChild(input);
+                });
+                form.submit();
+
+
+                // 예: AJAX 요청을 통해 서버에 AnswerArr 전송
+                /*
+                $.ajax({
+                    url: '/game/saveRun?name=' + name,
+                    method: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(AnswerArr),
+                    success: () => console.log("ok"),
+                    error: (xhr) => console.error('fail', xhr.status)
+                    
+                });
+                */
             }
 
             console.log('선택한 답변:', selected_answer);
-            console.log('답변 맵:', AnswerMap);
+            console.log('답변 배열:', AnswerArr);
 
         }); // next_button click
 
@@ -434,9 +441,8 @@
 
         // 답변 저장 함수
         function saveAnswer(selected_answer) {
-            let question_id = $('.question_id').val();
             let option_id = $(".answer_box input[name=" + selected_answer +"]").val();
-            AnswerMap.set(question_id, option_id);
+            AnswerArr.push(option_id);
         }
 
         // 진행 바 업데이트 함수
@@ -455,8 +461,8 @@
                 url: '/game/nextQuestion',
                 method: 'POST',
                 data: JSON.stringify({
-                    question_id: $('.question_id').val() ?? null,
-                    answer_tag: $(".answer_box input[name=" + selected_answer + "]").attr('class') ?? null
+                    questionId: $('.question_id').val() ?? null,
+                    tag: $(".answer_box input[name=" + selected_answer + "]").attr('class') ?? null
                 }),
                 contentType: 'application/json',
                 dataType: 'json',
@@ -468,11 +474,11 @@
                     $('.question_box h3').text(response.text);
                     $('.answer_box .answer1').text(response.options[0].text);
                     $('.answer_box .answer2').text(response.options[1].text);
-                    $('.question_id').val(response.question_id);
+                    $('.question_id').val(response.questionId);
                     $('.answer_box input[name="answer1"]').addClass(response.options[0].tag);
                     $('.answer_box input[name="answer2"]').addClass(response.options[1].tag);
-                    $('.answer_box input[name="answer1"]').val(response.options[0].option_id); 
-                    $('.answer_box input[name="answer2"]').val(response.options[1].option_id);
+                    $('.answer_box input[name="answer1"]').val(response.options[0].optionId); 
+                    $('.answer_box input[name="answer2"]').val(response.options[1].optionId);
                     $('.question_img').css({"background-image":"url('/images/game/" + response.image + "')"});
                     // background: url('/images/game/corridor_school01.png') no-repeat;
                 },
