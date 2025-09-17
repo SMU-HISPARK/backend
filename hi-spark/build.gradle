@@ -45,6 +45,7 @@ dependencies {
 	
 	//파일업로드
 	implementation("commons-io:commons-io:2.20.0")
+	runtimeOnly 'com.oracle.database.jdbc:ojdbc11'
 	
 	
 	// 스케줄
@@ -58,7 +59,25 @@ dependencies {
     implementation 'com.google.api-client:google-api-client:+'
     implementation 'com.google.oauth-client:google-oauth-client-jetty:+'
     implementation 'me.paulschwarz:spring-dotenv:2.5.4'
-	
+    
+     // member
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+   
+   	// 아티스트 챗봇
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'com.google.cloud:google-cloud-dialogflow:4.1.7'
+    implementation 'com.google.cloud:google-cloud-dialogflow:4.43.0'
+    implementation 'com.google.cloud:google-cloud-core:2.37.0'
+    implementation 'com.google.api:gax:2.48.0'
+   
+	  // Dialogflow API 클라이언트
+    implementation 'com.google.cloud:google-cloud-dialogflow:4.43.0'
+    
+    // GAX (CredentialsProvider 포함)
+    implementation 'com.google.api:gax:2.48.0'
+    
+    // 구글 인증용
+    implementation 'com.google.auth:google-auth-library-oauth2-http:1.23.0'
 }
 
 tasks.named('test') {

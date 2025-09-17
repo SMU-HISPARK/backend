@@ -11,17 +11,21 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/", "/login**", "/error", "/schedule.html", "/css/**", "/js/**").permitAll()
-                .anyRequest().authenticated()
-            )
-            .oauth2Login(oauth2 -> oauth2
-            	    .defaultSuccessUrl("/schedule.html", true)
-            	     // 로그인 성공 시 이동할 URL
-            	    
-            	    
-            	    
-            	    );
+	        .csrf().disable() // 개발 단계에서는 CSRF 비활성화
+	        .authorizeHttpRequests(auth -> auth
+	            .anyRequest().permitAll() // 모든 요청 허용
+	        );
+//        	.authorizeHttpRequests(auth -> auth
+//        	    .requestMatchers("/", "/shop/**", "/css/**", "/js/**").permitAll()
+//        	    .anyRequest().authenticated()
+//        	)
+//            .oauth2Login(oauth2 -> oauth2
+//            	    .defaultSuccessUrl("/schedule.html", true)
+//            	     // 로그인 성공 시 이동할 URL
+//            	    
+//            	    
+//            	    
+//            	    );
         return http.build();
     }
 }
