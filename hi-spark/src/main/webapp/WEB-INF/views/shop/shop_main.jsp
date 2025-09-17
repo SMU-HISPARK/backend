@@ -39,7 +39,7 @@
 						<img src="/images/cart.png" style="width:29px;" /> <!--여기부터 다음줄까지-->
 						<span class="cartBadge">3</span> <!-- 스프링에서 c:if 활용 커뮤니티에선 display:none -->
 					</a>
-					<a href="/mypage/shop"><img src="images/user.png" style="width:28px;" /></a>
+					<a href="/mypage/shop"><img src="/images/user.png" style="width:28px;" /></a>
 				</div>
 				</div>
 			</div>
