@@ -3,8 +3,8 @@
 
 
         /* 댓글 영역 스타일 */
-        .comments-section { margin-top: 40px; }
-        .comments-section h4 { font-size: 1.2em;  padding-bottom: 10px; border-bottom: 2px solid black;}
+        .comment-section { margin-top: 40px; }
+        .comment-section h4{ font-size: 1.2em;  padding-bottom: 10px; border-bottom: 2px solid black;}
         /* 댓글 아이템 */
         .comment-item {
             display: flex;
@@ -21,17 +21,86 @@
         .comment-form button { align-self: flex-end; width: 80px; height: 45px; padding: 0; font-size: 13px; font-weight: 500; line-height: 45px;background-color:white; color:#1a1a1a;border: 1px solid #ccc; cursor: pointer; }
         
         /* 댓글 수정/삭제 버튼 스타일 */
-        .comment-actions {
-            position: absolute; /* comment-item에 대해 절대 위치 */
-            top: 15px; /* 상단에서 15px 아래로 */
-            right: 0; /* 우측 끝으로 이동 */
-        }
-        .comment-actions button {
+        /* 댓글 수정/삭제, 좋아요 아이콘 정렬 */
+.comment-actions {
+    display: flex; /* 내부 요소들을 한 줄에 정렬 */
+    align-items: center; /* 세로 중앙 정렬 */
+    gap: 10px; /* 아이콘들 사이 간격 */
+    
+    position: absolute; /* comment-item에 대해 절대 위치 */
+    top: 15px; /* 상단에서 15px 아래로 */
+    right: 0; /* 우측 끝으로 이동 */
+}
+         .comment-actions .comment-like-button, .comment-actions .comment-action-icon {
             background: none;
             border: none;
             cursor: pointer;
             color: #7f8c8d;
             font-size: 1em;
             margin-left: 5px;
+            text-decoration: none;
         }
+        
+        .comment-form .btn-primary{ align-self: flex-end;}
+        
+        .comment-form textarea {
+     resize: vertical; min-height: 80px; padding: 10px; border: 1px solid #ddd; margin-bottom: 10px;
+}
+		
+		
+		/*---------------------- 글 좋아요 ---------------------*/
+		
+		.like-container {display: flex;justify-content: center;}
+		
+		/* 글 좋아요 크기 두 배 */
+		#like-icon {font-size: 2em;}
+		
+		.like-box { width: 100px;height: 80px;border: 1px solid #ccc;display: flex;align-items: center;justify-content: center;flex-direction: column;}
+		
+		.like-button-style {display: flex;flex-direction: column;align-items: center;justify-content: center;text-decoration: none;color: black;}
+		
+		.like-count {margin-top: 2px;}
+		
+		/* 좋아요를 눌렀을 때 하트 아이콘을 붉은색으로 */
+.like-container .liked {
+    color: red;
+}
+		
+		/* -------------------- 댓글 조하용 ---------------------*/
+		
+		/* 댓글 좋아요 버튼 박스 스타일 */
+		.comment-like-box {display: flex;flex-direction: column;align-items: center;justify-content: center;
+		width: 60px; /* 네모난 박스의 너비 */
+		height: 60px; /* 네모난 박스의 높이 */
+		border: 1px solid #ccc;
+		border-radius: 5px; /* 약간 둥근 모서리 */
+		box-sizing: border-box; /* 패딩과 보더가 크기에 포함되도록 설정 */
+		text-align: center;
+		cursor: pointer;
+		transition: background-color 0.2s; /* 호버 효과를 위한 전환 */
+		}
+		
+		/* 박스에 마우스를 올렸을 때의 효과 */
+		.comment-like-box:hover {
+		    background-color: #f0f0f0;
+		}
+		
+		/* 댓글 좋아요 버튼 (하트 아이콘) 스타일 */
+		.comment-like-box .comment-like-button {
+		    text-decoration: none; /* 밑줄 제거 */
+		color: #34495e; /* 아이콘 색상 설정 */
+		}
+		
+		/* 댓글 좋아요 수 스타일 */
+		.comment-like-box .comment-like-count {
+		    margin-top: 2px; /* 하트와 숫자 사이 간격 */
+		    font-size: 0.8em;
+		    color: #7f8c8d;
+		}
+		
+		/* 기존 아이콘에 적용했던 스타일과 충돌 방지 */
+		.comment-actions .comment-like-button {
+		    text-decoration: none;
+		}
+		
 		

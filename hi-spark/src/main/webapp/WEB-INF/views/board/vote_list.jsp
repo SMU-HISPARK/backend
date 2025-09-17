@@ -206,4 +206,12 @@
     </div>
     
 </body>
+<script>
+    // 컨트롤러에서 전달받은 메시지가 있는지 확인
+    var authError = '${authError}';
+    if (authError) {
+        alert(authError);
+    }
+</script>
+
 </html>

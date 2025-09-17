@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,13 +17,16 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.java.dto.Board;
 import com.java.dto.Member;
 import com.java.dto.Poll;
 import com.java.dto.Poll_Item;
+import com.java.dto.sComment;
 import com.java.repository.BoardRepository;
 import com.java.repository.PollRepository;
 import com.java.repository.Poll_ItemRepository;
@@ -43,10 +47,10 @@ public class BoardController {
 	private PollService pollService;
 	
 	@Autowired
-    private Poll_ItemRepository pollItemRepository; // 새로 추가
+    private Poll_ItemRepository pollItemRepository;
     
     @Autowired
-    private Vote_LogRepository voteLogRepository; // 새로 추가
+    private Vote_LogRepository voteLogRepository;
 	
 	@Autowired
 	private BoardRepository boardRepository;
@@ -65,19 +69,202 @@ public class BoardController {
 	}
 	
 	@GetMapping("/board/forum_list")
-	public String forum_list() {
-		return "board/forum_list";
+	public String forum_list(
+	    @RequestParam(name = "page", defaultValue = "1") int page,
+	    @RequestParam(name = "searchType", required = false) String searchType,
+	    @RequestParam(name = "keyword", required = false) String keyword,
+	    Model model) {
+	    
+	    try {
+	        Pageable pageable = PageRequest.of(page - 1, 10);
+	        Page<Board> forumPage;
+
+	        if (keyword != null && !keyword.trim().isEmpty()) {
+	            if ("title".equals(searchType)) {
+	                forumPage = boardRepository.findByBTypeAndBtitleContaining(1, keyword, pageable);
+	            } else if ("content".equals(searchType)) {
+	                forumPage = boardRepository.findByBTypeAndBcontentContaining(1, keyword, pageable);
+	            } else if ("writer".equals(searchType)) {
+	                forumPage = boardRepository.findByBTypeAndMemberNameContaining(1, keyword, pageable);
+	            } else {
+	                forumPage = boardRepository.findByBTypeWithPaging(1, pageable);
+	            }
+	        } else {
+	            forumPage = boardRepository.findByBTypeWithPaging(1, pageable);
+	        }
+	        
+	        List<Map<String, Object>> boardListWithCount = new ArrayList<>();
+	        
+	        for (Board board : forumPage.getContent()) {
+	            Map<String, Object> item = new HashMap<>();
+	            item.put("board", board);
+	            
+	            long commentCount = 0;
+	            try {
+	                commentCount = boardService.getCommentCount(board.getBno());
+	            } catch (Exception e) {
+	                System.out.println("댓글 수 조회 오류: " + e.getMessage());
+	            }
+	            item.put("commentCount", commentCount);
+	            
+	            long likeCount = 0;
+	            try {
+	                likeCount = boardService.getLikeCount(board.getBno());
+	            } catch (Exception e) {
+	                System.out.println("좋아요 수 조회 오류: " + e.getMessage());
+	            }
+	            item.put("likeCount", likeCount);
+	            
+	            boardListWithCount.add(item);
+	        }
+
+	        int totalPages = forumPage.getTotalPages();
+	        int currentPage = page;
+	        
+	        if (totalPages == 0) {
+	            model.addAttribute("boardListWithCount", new ArrayList<>());
+	            model.addAttribute("currentPage", 1);
+	            model.addAttribute("totalPages", 0);
+	            model.addAttribute("startPage", 1);
+	            model.addAttribute("endPage", 1);
+	            model.addAttribute("hasPrevious", false);
+	            model.addAttribute("hasNext", false);
+	            model.addAttribute("totalElements", 0L);
+	            model.addAttribute("bType", 1);
+	        } else {
+	            int startPage = Math.max(1, currentPage - 2);
+	            int endPage = Math.min(totalPages, currentPage + 2);
+	            
+	            if (endPage - startPage < 4) {
+	                if (startPage == 1) {
+	                    endPage = Math.min(totalPages, startPage + 4);
+	                } else if (endPage == totalPages) {
+	                    startPage = Math.max(1, endPage - 4);
+	                }
+	            }
+	            
+	            model.addAttribute("boardListWithCount", boardListWithCount);
+	            model.addAttribute("currentPage", currentPage);
+	            model.addAttribute("totalPages", totalPages);
+	            model.addAttribute("startPage", startPage);
+	            model.addAttribute("endPage", endPage);
+	            model.addAttribute("hasPrevious", forumPage.hasPrevious());
+	            model.addAttribute("hasNext", forumPage.hasNext());
+	            model.addAttribute("totalElements", forumPage.getTotalElements());
+	            model.addAttribute("bType", 1);
+	        }
+	        
+	        System.out.println("총 게시글 수: " + forumPage.getTotalElements());
+	        System.out.println("boardListWithCount 크기: " + boardListWithCount.size());
+	        
+	    } catch (Exception e) {
+	        System.out.println("자유게시판 페이지네이션 오류: " + e.getMessage());
+	        e.printStackTrace();
+	        
+	        List<Board> forumList = boardRepository.findByBType(1);
+	        List<Map<String, Object>> boardListWithCount = new ArrayList<>();
+	        
+	        for (Board board : forumList) {
+	            Map<String, Object> item = new HashMap<>();
+	            item.put("board", board);
+	            item.put("commentCount", 0L);
+	            item.put("likeCount", 0L);
+	            boardListWithCount.add(item);
+	        }
+	        
+	        model.addAttribute("boardListWithCount", boardListWithCount);
+	        model.addAttribute("currentPage", 1);
+	        model.addAttribute("totalPages", 1);
+	        model.addAttribute("startPage", 1);
+	        model.addAttribute("endPage", 1);
+	        model.addAttribute("hasPrevious", false);
+	        model.addAttribute("hasNext", false);
+	        model.addAttribute("totalElements", (long) forumList.size());
+	        model.addAttribute("bType", 1);
+	    }
+	    
+	    return "board/forum_list";
 	}
 	
 	@GetMapping("/board/forum_view")
-	public String forum_view() {
-		return "board/forum_view";
+	public String forum_view(@RequestParam("bno") int bno, Model model, HttpSession session) {
+	    Board board = boardService.getBoard(bno);
+
+	    if (board == null) {
+	        return "redirect:/board/forum_list";
+	    }
+
+	    // 조회수 증가
+	    boardService.incrementBhit(bno);
+
+	    // 게시글 좋아요 상태 및 개수
+	    boolean isLiked = false;
+	    long likeCount = boardService.getLikeCount(bno);
+
+	    // 로그인 사용자 ID 가져오기
+	    String loginId = null;
+	    Member loggedInMember = (Member) session.getAttribute("loggedInMember");
+	    
+	    if (loggedInMember != null) {
+	        loginId = loggedInMember.getLoginId();
+	        isLiked = boardService.isLikedByUser(bno, loginId);
+	    }
+	    
+	    // 댓글 목록 가져오기 (댓글 좋아요 관련 로직은 제거)
+	    List<sComment> comments = boardService.getCommentsByBno(bno);
+	    long commentCount = boardService.getCommentCount(bno);
+
+	    // 이전글/다음글
+	    int bType = 1; // Forum 게시판 타입
+	    Board prevBoard = boardRepository.findTopByBnoLessThanAndBTypeOrderByBnoDesc(bno, bType);
+	    Board nextBoard = boardRepository.findTopByBnoGreaterThanAndBTypeOrderByBnoAsc(bno, bType);
+
+	    // 모델에 값 전달
+	    model.addAttribute("board", board);
+	    model.addAttribute("isLiked", isLiked);
+	    model.addAttribute("likeCount", likeCount);
+	    model.addAttribute("comments", comments);
+	    model.addAttribute("commentCount", commentCount);
+	    model.addAttribute("prevBoard", prevBoard);
+	    model.addAttribute("nextBoard", nextBoard);
+	    model.addAttribute("loginId", loginId);
+
+	    return "board/forum_view";
 	}
+	
+	@PostMapping("/api/board/toggleLike")
+    @ResponseBody
+    public Map<String, Object> toggleLike(@RequestBody Map<String, Object> payload, HttpSession session) {
+        Map<String, Object> response = new HashMap<>();
+        Member loggedInMember = (Member) session.getAttribute("loggedInMember");
+
+        if (loggedInMember == null) {
+            response.put("success", false);
+            response.put("message", "로그인이 필요합니다.");
+            return response;
+        }
+
+        try {
+            int bno = Integer.parseInt(payload.get("bno").toString());
+            boolean currentLikeStatus = boardService.toggleLike(bno, loggedInMember.getLoginId());
+            long newLikeCount = boardService.getLikeCount(bno);
+
+            response.put("success", true);
+            response.put("isLiked", currentLikeStatus);
+            response.put("likeCount", newLikeCount);
+        } catch (Exception e) {
+            response.put("success", false);
+            response.put("message", "오류가 발생했습니다.");
+        }
+        return response;
+    }
 	
 	@GetMapping("/board/forum_write")
 	public String forum_write() {
 		return "board/forum_write";
 	}
+	
+	
 	
 	@GetMapping("/board/notice_list")
 	public String notice_list(
@@ -538,8 +725,12 @@ public class BoardController {
     }
 	
 	@GetMapping("/board/vote_write")
-	public String vote_write() {
-		return "board/vote_write";
+	public String vote_write(HttpSession session, RedirectAttributes redirect) {
+	    // 관리자 권한 체크 추가
+	    if (!checkAdminAuth(session, redirect)) {
+	        return "redirect:/board/vote_list";
+	    }
+	    return "board/vote_write";
 	}
 	
 	@PostMapping("/board/vote_write_proc")
@@ -550,7 +741,12 @@ public class BoardController {
 	        @RequestParam("poll_items") List<String> poll_items,
 	        @RequestParam(value = "post_file", required = false) MultipartFile file,
 	        HttpSession session,
-	        RedirectAttributes redirect) throws Exception { // throws Exception 추가
+	        RedirectAttributes redirect) throws Exception {
+	    
+	    // 관리자 권한 체크 추가
+	    if (!checkAdminAuth(session, redirect)) {
+	        return "redirect:/board/vote_list";
+	    }
 	    
 	    Member loggedInMember = (Member) session.getAttribute("loggedInMember");
 
@@ -566,7 +762,12 @@ public class BoardController {
 	
 	// 투표 삭제 처리
 	@PostMapping("/board/vote_delete")
-	public String voteDelete(@RequestParam("pollNo") int pollNo, RedirectAttributes redirect) {
+	public String voteDelete(@RequestParam("pollNo") int pollNo, HttpSession session, RedirectAttributes redirect) {
+	    // 관리자 권한 체크 추가
+	    if (!checkAdminAuth(session, redirect)) {
+	        return "redirect:/board/vote_list";
+	    }
+	    
 	    try {
 	        pollService.deletePoll(pollNo);
 	        redirect.addFlashAttribute("success", "투표가 성공적으로 삭제되었습니다.");
@@ -586,7 +787,12 @@ public class BoardController {
 	//투표 수정 ---------------------------------------------------------------------------
 	// 투표 수정 페이지를 보여주는 GET 메서드
     @GetMapping("/board/vote_edit")
-    public String vote_edit(@RequestParam(value = "pollNo") int pollNo, Model model) {
+    public String vote_edit(@RequestParam(value = "pollNo") int pollNo, HttpSession session, Model model, RedirectAttributes redirect) {
+        // 관리자 권한 체크 추가
+        if (!checkAdminAuth(session, redirect)) {
+            return "redirect:/board/vote_list";
+        }
+        
         Optional<Poll> optionalPoll = pollRepository.findById(pollNo);
         if (optionalPoll.isPresent()) {
             model.addAttribute("poll", optionalPoll.get());
@@ -604,6 +810,11 @@ public class BoardController {
         @RequestParam("poll_end_date") String poll_end_date,
         HttpSession session,
         RedirectAttributes redirect) {
+        
+        // 관리자 권한 체크 추가
+        if (!checkAdminAuth(session, redirect)) {
+            return "redirect:/board/vote_list";
+        }
         
         // 로그인 확인
         Member loggedInMember = (Member) session.getAttribute("loggedInMember");

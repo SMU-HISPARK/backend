@@ -1,6 +1,5 @@
 package com.java.dto;
 
-
 import java.sql.Timestamp;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -13,6 +12,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -26,18 +26,19 @@ import com.java.dto.Member;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Comment {
+@Table(name = "sComment")
+public class sComment {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int cno;
+	private int scno;
 	
 	@ManyToOne
     @JoinColumn(name = "bno")
     private Board board;
 	
 	@Column(columnDefinition = "TEXT")
-	private String ccontent;
+	private String sccontent;
 	
 	@ManyToOne
 	@JoinColumn(name = "member_id")
@@ -45,9 +46,9 @@ public class Comment {
 	
 	@Column(nullable = false)
 	@CreationTimestamp
-	private Timestamp cdate;
+	private Timestamp scdate;
 	
 	@Column(nullable = true)
 	@UpdateTimestamp
-	private Timestamp up_cdate;
+	private Timestamp up_scdate;
 }

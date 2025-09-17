@@ -10,6 +10,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,20 +21,21 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Comment_Like {
+@Table(name = "sComment_Like")
+public class sComment_Like {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int cl_no;
+	private int scl_no;
 	
 	@ManyToOne
-    @JoinColumn(name = "cno")
-	private Comment comment;
+    @JoinColumn(name = "scno")
+	private sComment scomment; // sComment로 변경
 	
 	@ManyToOne
 	@JoinColumn(name = "member_id")
 	private Member member;
 	
 	@CreationTimestamp
-	private Timestamp cl_date;
+	private Timestamp scl_date;
 }

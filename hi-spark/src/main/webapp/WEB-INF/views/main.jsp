@@ -26,7 +26,7 @@
 <h2>공지 뷰(막힘)</h2><h2> | </h2>
 <h2><a href="/board/notice_write">공지 쓰기</a></h2><br>
 <h2><a href="/board/vote_list">투표 리스트</a></h2><h2> | </h2>
-<h2><a href="/board/vote_view">투표 뷰</a></h2><h2> | </h2>
+<h2>투표 뷰(막힘)</h2><h2> | </h2>
 <h2><a href="/board/vote_write">투표 쓰기</a></h2><br>
 <h2><a href="/board/test">테스트</a></h2>
 <br>

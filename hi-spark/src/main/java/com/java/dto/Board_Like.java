@@ -15,9 +15,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-// import com.java.dto.Board;
-// import com.java.dto.Member;
-
 @Data
 @Builder
 @AllArgsConstructor
