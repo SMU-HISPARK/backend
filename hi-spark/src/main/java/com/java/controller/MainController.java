@@ -8,7 +8,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.java.entity.Cart;
 import com.java.entity.CartItem;
@@ -29,29 +28,9 @@ public class MainController {
 	@Autowired CartService cartService;
 	
 	@GetMapping("/shop")
-	public String shop_main(Model model,
-			HttpServletRequest request) {
-		HttpSession session = request.getSession(false);
-
-	    if (session == null || session.getAttribute("memberId") == null) {
-	        return "redirect:/member/login";
-	    }
-	    Integer memberId = (Integer) session.getAttribute("memberId");
-	    Member member = memberService.findById(memberId);
-	    if (member == null) {
-	    	return "redirect:/member/login";
-	    }
-
-	    Cart cart = cartService.getCartByMember(member);
-	    model.addAttribute("cart", cart);
-	    List<Product> list = mainService.findAll();
+	public String shop_main(Model model) {
+		List<Product> list = mainService.findAll();
 		model.addAttribute("list",list);
-	    
-	    
-	    int cartCount = (cart != null && cart.getItems() != null) ? cart.getItems().size() : 0;
-	    session.setAttribute("cart_count", cartCount);
-       
-		
 		return "shop/shop_main";
 	}
 	
