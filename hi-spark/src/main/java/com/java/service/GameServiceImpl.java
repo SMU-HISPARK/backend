@@ -41,6 +41,8 @@ public class GameServiceImpl implements GameService {
 	@Autowired GameOptionsRepository gOptionsRep;
 	@Autowired ResultUnlockedRepository ruRep;
 	
+	private static final int clubNumber = 5;
+	
 	@Override
 	public GameQuestion findQuestionById(Integer questionId) {
 
@@ -126,7 +128,7 @@ public class GameServiceImpl implements GameService {
 	@Override
 	@Transactional
 	public GameSession findSessionById(String guestId) {
-		GameSession gameSession = sessionRep.findById(guestId).orElse(null);
+		GameSession gameSession = sessionRep.findById(guestId).orElseThrow();
 		// 세션 최근 접속 기록 및 만료일 갱신
 		gameSession.setLastSeen(LocalDateTime.now());
 		gameSession.setExpiresAt(LocalDateTime.now().plusDays(30));
@@ -172,8 +174,36 @@ public class GameServiceImpl implements GameService {
 			
 			ruRep.save(newUnlockedResult);
 		}
-		
-		
+	}
+
+	// 게스트 플레이어의 게임 결과를 로그인 아이디에 저장
+	@Override
+	public void saveGuestRun(String guestId, String loginId) {
+		// 로그인 한 아이디로 회원 정보 가져오기
+		Member member = memRep.findByLoginId(loginId).orElseThrow();
+		// 쿠키에 있는 식별자로 DB에 있는 게스트 정보 가져오기
+		GameSession gameSession = sessionRep.getReferenceById(guestId);
+		for(int i=1; i<=clubNumber; i++) {	// 모든 동아리에 대해 결과 검색 
+			GameResultClub resultClub =  grcRep.findById(i).orElseThrow();
+			// 게스트 정보와 특정 동아리 결과로 게임 플레이 정보 검색
+			List<GameRun> gameRunList = gRunRep.findByGameSessionAndResultClubOrderByFinishedAtAsc(gameSession, resultClub);
+			// 이미 특정 동아리를 결과로 봤으면
+			if(gameRunList.size() != 0) {
+				// 해당 멤버의 동아리 가입 여부를 검색할 수 있는 ID값 만들기
+				UnlockedId unlockedId = new UnlockedId(member.getMemberId(),i);
+				// 위에서 발급한 ID로 동아리 가입 여부 검사
+				if(!ruRep.existsById(unlockedId)) {	// 동아리에 가입이 안 되어 있으면
+					ruRep.save(		// 동아리 가입
+							ResultUnlocked.builder()
+							.member(member)
+							.gameRun(gameRunList.getFirst())
+							.resultClub(resultClub)
+							.unlockedId(unlockedId)
+							.build()
+							);
+				}
+			}
+		}
 	}
 
 	

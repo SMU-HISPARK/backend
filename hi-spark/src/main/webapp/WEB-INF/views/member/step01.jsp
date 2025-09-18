@@ -253,7 +253,7 @@
         history.back();
     });
 
-    // 다음 버튼 클릭 시 동의 체크 (추후 구현)
+    // 다음 버튼 클릭 시 동의 체크
     function nextBtn(){
       if($('.agree-checkbox.required').length !== $('.agree-checkbox.required:checked').length){
         alert('필수 약관에 모두 동의해 주세요.');

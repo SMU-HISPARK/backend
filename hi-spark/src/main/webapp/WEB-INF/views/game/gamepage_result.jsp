@@ -126,8 +126,14 @@
             </div>
         </div>
         <div class="button_box box">
-            <button type="button" class="share_button black">테스트 공유하기</button>
-            <button type="button" class="result_stats_button">다른 친구들 결과 보러가기</button>
+        <c:if test="${session_id == null}">
+            <button type="button" class="save_run_button black">로그인하고 결과 저장하기</button>
+            <button type="button" class="result_stats_button">다른 친구들 결과 보기</button>
+        </c:if>
+        <c:if test="${session_id != null}">
+            <button type="button" class="result_stats_button black">다른 친구들 결과 보기</button>
+        </c:if>
+            <button type="button" class="share_button">테스트 공유하기</button>
             <button type="button" class="retry_button">다시 해보기</button>
         </div>
     </section>
@@ -179,7 +185,7 @@
         // 동아리 목록 페이지로 이동
         $(".viewpage_button").on("click", function() {
             let artist_no = ['1','3','2','5','4'];
-            location.href = '/artist_no?no=' + artist_no[${result.clubId} - 1];
+            location.href = '/artist/detail?ano=' + artist_no[${result.clubId} - 1];
         });
 
         // 이미지 저장하기 (임시로 alert로 대체)
@@ -197,6 +203,17 @@
             // alert('결과가 저장되었습니다!');
         });
 
+        // 로그인하고 결과 저장하기
+        $('.save_run_button').on("click", function(){
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = '/game/saveGuestRun';
+            createHiddenInput('club_id', "${result.clubId}", form);
+            document.body.appendChild(form);
+            form.submit();
+            
+            // location.href = '/game/saveGuestRun';
+        });
 
         // 테스트 공유하기 (임시로 alert로 대체)
         
@@ -255,6 +272,7 @@
 
         /* 함수 정의 */
 
+        // 공유하기
         async function shareOrFallback({title, text, url}) {
         if (navigator.share) {
             try { return await navigator.share({title, text, url}); }
@@ -263,6 +281,16 @@
         // 폴백: 링크 복사
         await navigator.clipboard.writeText(url);
         alert('링크를 클립보드에 복사했어요!');
+        }
+
+
+        // hidden input 추가 함수
+        function createHiddenInput(nameIn, value, parent){
+            const input = document.createElement("input");
+            input.type = "hidden";
+            input.name = nameIn;
+            input.value = value;
+            parent.appendChild(input);
         }
 
         

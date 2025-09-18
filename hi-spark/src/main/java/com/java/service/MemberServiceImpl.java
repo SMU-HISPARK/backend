@@ -29,5 +29,10 @@ public class MemberServiceImpl implements MemberService {
 		return memfind;
 	}
 
+	@Override
+	public boolean existsByloginId(String loginId) {
+		return mRep.existsByLoginId(loginId);
+	}
+
 	
 }

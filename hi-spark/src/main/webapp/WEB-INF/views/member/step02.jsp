@@ -199,19 +199,6 @@
       }
     }
   </style>
-  <script>
-  	// 확인 버튼 클릭 시 제출 (폰 넘버링을 따로 두면 없어도 됨)
-  	function submitBtn(){
-  		phoneNumbering();
-  		$("#join_form").submit();
-  	}
-  	
-  	// 전화번호 합치는 함수
-  	function phoneNumbering(){
-  		let number = "" + $('#p_head').val() + $('#p_body').val() + $('#p_tail').val();
-  		$('#phone').val(number);
-  	}
-  </script>
 </head>
 <body>
   <div class="container">
@@ -234,8 +221,9 @@
             <td>
               <div class="id-check-box">
                 <input type="text" name="loginId" maxlength="16" pattern="[a-z0-9_]{4,16}" placeholder="영문소문자/숫자, 4~16자, _ 허용">
-                <button type="button">중복확인</button>
+                <button type="button" onclick="idCheck()">중복확인</button>
               </div>
+              <p class="id-check-message"></p>
             </td>
           </tr>
           <tr>
@@ -296,10 +284,58 @@
     </div>
 
     <div class="btn-box">
-      <button class="btn cancel">취소</button>
+      <button class="btn cancel">이전</button>
       <button class="btn submit" onclick="submitBtn()">확인</button>
     </div>
   </div>
+  <script>
+  	// 확인 버튼 클릭 시 제출 (폰 넘버링을 따로 두면 없어도 됨)
+  	function submitBtn(){
+  		phoneNumbering();
+  		$("#join_form").submit();
+  	}
+  	
+  	// 전화번호 합치는 함수
+  	function phoneNumbering(){
+  		let number = "" + $('#p_head').val() + $('#p_body').val() + $('#p_tail').val();
+  		$('#phone').val(number);
+  	}
+
+    function idCheck(){
+      $.ajax({
+        url: '/member/idCheck',
+        method: 'POST',
+        data: 'loginId=' + $('input[name="loginId"]').val(),
+        success: function(boolean){
+          console.log(boolean);
+          if(boolean){
+            document.querySelector('.id-check-message').innerText = '사용 가능한 아이디입니다.';
+          }else{
+            document.querySelector('.id-check-message').innerText = '이미 존재하는 아이디입니다.';
+          }
+          
+        },
+        error: function(){
+          alert("실패");
+        }
+      });
+
+    }
+
+    // 이전버튼 클릭 시 뒤로 가기
+    $('.btn.cancel').click(function() {
+      history.back();
+    });
+
+    // 자식요소로 텍스트 추가하는 함수
+    /*
+    function insertText(element, text){
+      const p = document.createElement('p');
+      p.innerText = text;
+      document.querySelector(element).appendChild(p);
+    }
+    */
+  </script>
 </body>
 </html>
 <%@ include file="../layout/footer.jsp" %>

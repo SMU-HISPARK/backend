@@ -33,6 +33,7 @@ public interface GameService {
 	void sessionSave(GameSession gameSession);
 	void save(GameRun gameRun, List<Integer> runResponse);
 	void resultUnlock(String loginId, GameResultClub gameResult, GameRun gameRun);
+	void saveGuestRun(String guestId, String loginId);
 	
 	///
 	
