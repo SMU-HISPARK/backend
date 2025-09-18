@@ -32,17 +32,17 @@ public class ResultUnlocked {
 	
 	@ManyToOne
 	@MapsId("memberId")
-	@JoinColumn(name="member_id", nullable = false)
+	@JoinColumn(name="member_id", nullable = false, updatable = false)
 	private Member member;
 	
 	@ManyToOne
 	@MapsId("clubId")
-	@JoinColumn(name="clubId", nullable = false)
+	@JoinColumn(name="clubId", nullable = false, updatable = false)
 	private GameResultClub resultClub;
 	
 	
 	@OneToOne
-	@JoinColumn(name="finishedAt", nullable = false)
+	@JoinColumn(name="finishedAt", nullable = false, updatable = false)
 	private GameRun gameRun;
 	
 	

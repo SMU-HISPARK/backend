@@ -304,7 +304,7 @@
 
     <script>
         
-        let name = '';
+        let playerName = '';
         let AnswerArr = []; // 질문에 대한 답변을 저장할 배열
         let test_num = 0;      // 현재 질문 번호
         const total_questions = 6; // 총 질문 수 (임시 설정)
@@ -319,8 +319,8 @@
         // 테스트 시작하기 클릭 시 
         $('#start_form').on('submit', (e) => {
             e.preventDefault();
-            name = $('input[name="name"]').val();
-            if(name.length < 1) {                   // 이름 유효성 검사
+            playerName = $('input[name="name"]').val();
+            if(playerName.length < 1) {                   // 이름 유효성 검사
                 alert('이름을 입력해주세요.');
                 return;
             }
@@ -398,15 +398,10 @@
 
                 ////////// 여기서 서버로 답변 맵 전송하는 코드 추가 가능 //////////
                 // form에 input hidden을 추가해서 전송
-                $("#game_form").attr({'action':'/game/saveRun?name='+ name, 'method':'POST'});
+                $("#game_form").attr({'action':'/game/saveRun', 'method':'POST'});
                 const form = document.getElementById("game_form");
-                AnswerArr.forEach(n => {
-                    const input = document.createElement("input");
-                    input.type = "hidden";
-                    input.name = "answers";
-                    input.value = n;
-                    form.appendChild(input);
-                });
+                createHiddenInput('name', playerName, form);
+                AnswerArr.forEach(n => createHiddenInput('answers', n, form));
                 form.submit();
 
 
@@ -511,6 +506,15 @@
             $('.answer_box input[name="answer1"]').val(next_tag1); 
             $('.answer_box input[name="answer2"]').val(next_tag2);
             */
+        }
+
+        // hidden input 추가 함수
+        function createHiddenInput(nameIn, value, parent){
+            const input = document.createElement("input");
+            input.type = "hidden";
+            input.name = nameIn;
+            input.value = value;
+            parent.appendChild(input);
         }
 
     </script>

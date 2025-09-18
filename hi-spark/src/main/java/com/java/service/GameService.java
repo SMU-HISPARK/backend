@@ -26,14 +26,21 @@ public interface GameService {
 	// 게스트 쿠키로 세션 정보 찾기, 만료 갱신
 	GameSession findSessionById(String guestId);
 	
+	///
 	
-	
-	// 이번 회차 게임 점수 계산
-	Integer[] getResult(List<Integer> runResponses);
-	
+	/// INSERT (save)
 	// 이번 회차 게임 정보 저장
 	void sessionSave(GameSession gameSession);
 	void save(GameRun gameRun, List<Integer> runResponse);
+	void resultUnlock(String loginId, GameResultClub gameResult, GameRun gameRun);
+	
+	///
+	
+	
+	/// game service
+	
+	// 이번 회차 게임 점수 계산
+	Integer[] getResult(List<Integer> runResponses);
 	
 
 

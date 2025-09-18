@@ -2,7 +2,6 @@ package com.java.controller;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
@@ -73,7 +72,6 @@ public class GameController {
 			runResult = resultList.getLast();
 		}
 		GameResultClub gameResult = gServ.findResultById(runResult);
-		model.addAttribute("result", gameResult);
 
 		// 게임 런 객체 생성
 		GameRun gameRun = GameRun.builder()
@@ -87,9 +85,11 @@ public class GameController {
 				.build();
 		
 		// 로그인 아이디 저장
-		if(session.getAttribute("session_id") != null) {
-			String loginId = (String)session.getAttribute("session_id");
+		String loginId = "";
+		if(session.getAttribute("session_id") != null) {	// 로그인 유저의 경우
+			loginId = (String)session.getAttribute("session_id");
 			gameRun.setMember(gServ.findMemberById(loginId));
+			
 		}else {	// 게스트 세션 저장
 			// 생성된 쿠키 유무 확인
 			if(guestId == null) {	// 생성된 쿠키가 없으면
@@ -133,6 +133,14 @@ public class GameController {
 		// 해당 게임 런, 응답 저장
 		gServ.save(gameRun, answers);
 		
+		// 로그인 유저의 경우 resultUnlocked 업데이트
+		if(!loginId.equals("")) {
+			gServ.resultUnlock(loginId, gameResult, gameRun);			
+		}
+		
+		
+		model.addAttribute("result", gameResult);
+		model.addAttribute("userName", name);
 		
 		return "game/gamepage_result";
 		

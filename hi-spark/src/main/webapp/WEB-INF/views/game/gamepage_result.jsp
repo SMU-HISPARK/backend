@@ -9,6 +9,7 @@
     <title>test starting page</title>
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
     <link rel="stylesheet" href="/css/gamepage.css">
+    <link rel="stylesheet" href="/css/fonts.css">
     <style>
 
         /* result_section */
@@ -17,9 +18,11 @@
             min-height: 650px;
             justify-content: space-between;
             text-align: center;
+            font-family: 'KccHanbit', sans-serif;
         }
         .result_box h3 {
             font-size:1.6rem;
+            font-weight: normal;
         }
         .result_box .result_button_box {
             /*border: 1px solid black;*/
@@ -34,6 +37,15 @@
         .button_box {
             min-height:250px;
             background-color: #fafafa;
+        }
+        .result_image {
+            width: 100%;
+            height: 250px;
+            background-image: url('/images/game/지온증사.png');
+            background-repeat: no-repeat;
+            background-size: contain;
+            background-position: center center;
+
         }
 
         /* stats_modal */
@@ -106,10 +118,10 @@
 <body>
     <section class="result_section">
         <div class="result_box box">
-            <h3>나에게 어울리는 동아리는...</h3>
-            <h3>'제과제빵부'입니다!</h3>
+            <h3>${userName}님이 가입한 동아리는...<br><br>'${result.name}'입니다!</h3>
+            <div class="result_image" style='background-image: url("/images/game/${result.resultImage}")'></div>
             <div class="result_button_box">
-                <button type="button" class="viewpage_button">동아리 구경하기</button>
+                <button type="button" class="viewpage_button">동아리 선배 보러가기</button>
                 <button type="button" class="save_button">이미지 저장하기</button>
             </div>
         </div>
@@ -158,22 +170,31 @@
 
     <script>
 
-        /* 이벤트 리스너 */
-
         ////////// 결과에 따라 다른 결과 페이지 출력 //////////
         // (임시로 고정된 결과 출력)
 
 
+        /* 이벤트 리스너 */
 
         // 동아리 목록 페이지로 이동
         $(".viewpage_button").on("click", function() {
-            location.href = '/artist'; 
+            let artist_no = ['1','3','2','5','4'];
+            location.href = '/artist_no?no=' + artist_no[${result.clubId} - 1];
         });
 
         // 이미지 저장하기 (임시로 alert로 대체)
         $(".save_button").on("click", function() {
-            alert('결과가 저장되었습니다!');
-            //////// 결과 이미지 저장하는 코드 추가 가능 ////////
+            //////// 결과 이미지 저장하는 코드 추가 ////////
+            const background_image = $('.result_image').attr('style');
+            let image_url = background_image.split('"')[1]
+            const a = document.createElement('a');
+            a.href = image_url;
+            a.download = `image${result.clubId}.png`;
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            
+            // alert('결과가 저장되었습니다!');
         });
 
 

@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.java.entity.Member;
 import com.java.entity.compositeId.ResponseId;
+import com.java.entity.compositeId.UnlockedId;
 import com.java.entity.sourceData.GameOptions;
 import com.java.entity.sourceData.GameQuestion;
 import com.java.entity.sourceData.GameResultClub;
@@ -16,6 +17,7 @@ import com.java.entity.sourceData.ScoringRules;
 import com.java.entity.userData.GameRun;
 import com.java.entity.userData.GameSession;
 import com.java.entity.userData.QuestionResponse;
+import com.java.entity.userData.ResultUnlocked;
 import com.java.repository.GameOptionsRepository;
 import com.java.repository.GameQuestionRepository;
 import com.java.repository.GameResultClubRepository;
@@ -23,6 +25,7 @@ import com.java.repository.GameRunRepository;
 import com.java.repository.GameSessionRepository;
 import com.java.repository.MemberRepository;
 import com.java.repository.QuestionResponseRepository;
+import com.java.repository.ResultUnlockedRepository;
 import com.java.repository.ScoringRulesRepository;
 
 @Service
@@ -36,6 +39,7 @@ public class GameServiceImpl implements GameService {
 	@Autowired GameRunRepository gRunRep;
 	@Autowired QuestionResponseRepository qrRep;
 	@Autowired GameOptionsRepository gOptionsRep;
+	@Autowired ResultUnlockedRepository ruRep;
 	
 	@Override
 	public GameQuestion findQuestionById(Integer questionId) {
@@ -99,8 +103,11 @@ public class GameServiceImpl implements GameService {
 
 	// 결과 출력
 	@Override
+	@Transactional
 	public GameResultClub findResultById(Integer clubId) {
 		GameResultClub gameResult = grcRep.findById(clubId).orElse(null);
+		// resultCount 업데이트
+		gameResult.setResultCount(gameResult.getResultCount() + 1); 
 		return gameResult;
 	}
 
@@ -144,6 +151,27 @@ public class GameServiceImpl implements GameService {
 			qrRep.save(qResponse);
 		}
 		
+		
+		
+	}
+
+	@Override
+	public void resultUnlock(String loginId, GameResultClub gameResult, GameRun gameRun) {
+		
+		Member member = findMemberById(loginId);
+		UnlockedId unlockedId = new UnlockedId(member.getMemberId(), gameResult.getClubId());
+		ResultUnlocked resultUnlocked = ruRep.findById(unlockedId).orElse(null);
+		
+		if(resultUnlocked == null) {
+			ResultUnlocked newUnlockedResult = ResultUnlocked.builder()
+					.unlockedId(unlockedId)
+					.member(member)
+					.resultClub(gameResult)
+					.gameRun(gameRun)
+					.build();
+			
+			ruRep.save(newUnlockedResult);
+		}
 		
 		
 	}
