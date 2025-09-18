@@ -55,7 +55,6 @@ public class ArtistController {
 
         model.addAttribute("artist", artist);
         model.addAttribute("history", history);
-        model.addAttribute("loginId", loginId);
         System.out.println("artist : " + artist);
         System.out.println("history : " + history);
         System.out.println("history size: " + history.size());

@@ -84,6 +84,12 @@ async function sendMessage() {
   addChat({ message: text, send: 1, createdAt: new Date() }, "me");
   textarea.value = "";
 
+  // artistAno 또는 projectId 가 없으면 요청하지 않음
+  if (!artistAno || !projectId) {
+    console.warn("세션 ID 또는 projectId 없음 → DB 저장 안 함");
+    return;
+  }
+
   try {
     const res = await fetch('/api/message', {
       method: 'POST',

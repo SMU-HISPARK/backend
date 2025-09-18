@@ -93,23 +93,30 @@ public class DialogflowController {
                 String botReply = response.getQueryResult().getFulfillmentText();
 
                 // DB 저장
-                Artist artist = artistService.findById(ano);
                 String loginId = (String) httpSession.getAttribute("session_id");
-                Member member = memberService.findById(loginId);
+                if (loginId != null) {
+                    Member member = memberService.findById(loginId);
+                    if (member != null) {
+                        Artist artist = artistService.findById(ano);
 
-//                chatService.save(Chat.builder()
-//                        .member(member)
-//                        .artist(artist)
-//                        .send(1)
-//                        .message(message)
-//                        .build());
+                        // DB 저장
+//                        chatService.save(Chat.builder()
+//                                .member(member)
+//                                .artist(artist)
+//                                .send(1) // 내가 보낸 메시지
+//                                .message(message)
+//                                .build());
 //
-//                chatService.save(Chat.builder()
-//                        .member(member)
-//                        .artist(artist)
-//                        .send(0)
-//                        .message(botReply)
-//                        .build());
+//                        chatService.save(Chat.builder()
+//                                .member(member)
+//                                .artist(artist)
+//                                .send(0) // 챗봇 답변
+//                                .message(botReply)
+//                                .build());
+                    }
+                } else {
+                    System.out.println("로그인 세션 없음 → DB 저장 안 함");
+                }
 
                 return ResponseEntity.ok(Map.of(
                     "success", true,
