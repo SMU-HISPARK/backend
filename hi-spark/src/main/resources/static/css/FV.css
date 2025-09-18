@@ -50,20 +50,51 @@
 		
 		/*---------------------- 글 좋아요 ---------------------*/
 		
-		.like-container {display: flex;justify-content: center;}
-		
-		/* 글 좋아요 크기 두 배 */
-		#like-icon {font-size: 2em;}
-		
-		.like-box { width: 100px;height: 80px;border: 1px solid #ccc;display: flex;align-items: center;justify-content: center;flex-direction: column;}
-		
-		.like-button-style {display: flex;flex-direction: column;align-items: center;justify-content: center;text-decoration: none;color: black;}
-		
-		.like-count {margin-top: 2px;}
-		
-		/* 좋아요를 눌렀을 때 하트 아이콘을 붉은색으로 */
-.like-container .liked {
-    color: red;
+		.like-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.like-button-style {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    color: #888; /* 기본 색상을 좀 더 연하게 */
+width: 150px;
+height: 80px;
+padding: 15px 0;
+border: 1px solid #ddd;
+border-radius: 8px; /* 모서리를 둥글게 */
+background-color: #fff;
+box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+transition: all 0.2s ease-in-out; 
+}
+
+/* 마우스 올렸을 때 효과 */
+.like-button-style:hover {
+color: #000;
+transform: translateY(-2px); /* 살짝 위로 이동 */
+box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* 하트 아이콘 스타일 */
+#like-icon {
+    font-size: 2em;
+    transition: transform 0.2s ease-in-out;
+}
+
+/* 좋아요를 눌렀을 때 하트 아이콘을 붉은색으로 */
+.like-button-style .liked {
+    color: #ff5252;
+}
+
+/* 좋아요를 눌렀을 때 버튼 박스 스타일 */
+.like-button-style.active {
+    background-color: #ffe6e6;
+    border-color: #ff5252;
 }
 		
 		/* -------------------- 댓글 조하용 ---------------------*/

@@ -88,7 +88,7 @@
 		        <input type="text" name="keyword" placeholder="검색어를 입력하세요" value="${param.keyword}">
 		        <button type="submit">찾기</button>
 		    </form>
-		    <c:if test="${not empty sessionScope.loggedInMember}"> <a href="/board/write?bType=1" class="write-button">글쓰기</a> </c:if>
+		    <c:if test="${not empty sessionScope.loggedInMember}"> <a href="/board/forum_write?bType=1" class="write-button">글쓰기</a> </c:if>
 		</div>
         
         <div class="pg-container">
