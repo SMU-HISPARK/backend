@@ -71,9 +71,17 @@
 		<div id="snbBox">
 			<div id="snb">
 			   <ul>
-			      <li><a href="#">로그인</a></li>
-			      <li><a href="#">회원가입</a></li>
-			      <li><a href="/">메인으로</a></li>
+                 <c:if test="${session_id == null}">
+             	  	<li><a href="/member/login">로그인</a></li>
+              		<li><a href="/member/step01">회원가입</a></li>
+              		 <li><a href="/">메인으로</a></li>
+           		</c:if>
+                <c:if test="${session_id != null}">
+               		<li><a href="#">${session_name}님</a></li>
+              		<li><a href="/member/logout">로그아웃</a></li>
+               		<li><a href="/">메인으로</a></li>
+               </c:if>
+
 			   </ul>
 			</div>
 		</div>

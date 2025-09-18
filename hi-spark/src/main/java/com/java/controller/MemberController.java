@@ -68,6 +68,7 @@ public class MemberController {
 		// 로그인 세션 설정
 		session.setAttribute("session_id", memfind.getLoginId());
 		session.setAttribute("session_name", memfind.getNickname());
+		session.setAttribute("memberId", member.getMemberId());
 		
 		// 로그인 요청이 들어온 페이지로 리다이렉트
 		if(redirectURL != null) {

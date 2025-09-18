@@ -9,6 +9,9 @@ public interface MemberService {
 
 	MemberDto findByLoginIdAndPassword(String loginId, String password);
 
+	Member findById(Integer memberId);
+
 	Member findById(String loginId);
+	
 
 }

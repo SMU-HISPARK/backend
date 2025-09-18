@@ -94,22 +94,22 @@ public class DialogflowController {
 
                 // DB 저장
                 Artist artist = artistService.findById(ano);
-                String loginId = (String) httpSession.getAttribute("session_id");
-                Member member = memberService.findById(loginId);
+                String memberId = (String) httpSession.getAttribute("session_id");
+                Member member = memberService.findById(memberId);
 
-//                chatService.save(Chat.builder()
-//                        .member(member)
-//                        .artist(artist)
-//                        .send(1)
-//                        .message(message)
-//                        .build());
-//
-//                chatService.save(Chat.builder()
-//                        .member(member)
-//                        .artist(artist)
-//                        .send(0)
-//                        .message(botReply)
-//                        .build());
+                chatService.save(Chat.builder()
+                        .member(member)
+                        .artist(artist)
+                        .send(1)
+                        .message(message)
+                        .build());
+
+                chatService.save(Chat.builder()
+                        .member(member)
+                        .artist(artist)
+                        .send(0)
+                        .message(botReply)
+                        .build());
 
                 return ResponseEntity.ok(Map.of(
                     "success", true,

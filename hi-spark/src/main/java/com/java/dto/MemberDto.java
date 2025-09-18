@@ -12,5 +12,6 @@ import lombok.NoArgsConstructor;
 public class MemberDto {
 
 	private String loginId, nickname;
-	
+
+
 }

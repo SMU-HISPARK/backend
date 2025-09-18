@@ -1,5 +1,6 @@
 package com.java.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,18 +27,31 @@ public class ChatViewController {
 
     @GetMapping("/chat/view")
     public String chatView(@RequestParam int ano, HttpSession session, Model model) {
-        String loginId = (String) session.getAttribute("session_id");
-        Member member = memberService.findById(loginId);
+    	String loginId = (String) session.getAttribute("session_id");
+        Integer memberId = (Integer) session.getAttribute("memberId");
         Artist artist = artistService.findById(ano);
 
-        List<Chat> history = chatService.findByMemberAndArtistOrderByCreatedAtAsc(member, artist);
-
+        // 로그인된 경우에만 Member 조회하고 채팅 기록 가져오기
+        if (memberId != null) {
+            Member member = memberService.findById(memberId);
+            List<Chat> history = chatService.findByMemberAndArtistOrderByCreatedAtAsc(member, artist);
+            model.addAttribute("history", history);
+            model.addAttribute("member", member);
+            
+            System.out.println("memberId : " + memberId);
+            System.out.println("history : " + history);
+            System.out.println("history size: " + history.size());
+        } else {
+            // 비로그인시 빈 히스토리
+            model.addAttribute("history", new ArrayList<>());
+            System.out.println("Not logged in - empty history");
+        }
+        
         model.addAttribute("artist", artist);
-        model.addAttribute("history", history);
-        model.addAttribute("loginId", loginId);
+        model.addAttribute("loginId", loginId); // JSP에서 null 체크용 (String)
+        
         System.out.println("artist : " + artist);
-        System.out.println("history : " + history);
-        System.out.println("history size: " + history.size());
+        
 
         return "Artist_chat";
     }

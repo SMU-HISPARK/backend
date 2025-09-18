@@ -67,11 +67,17 @@
 	</div>
 
 
-    <div class="bottom_div">
-        <textarea class="chat_text" placeholder="내용을 입력해주세요."></textarea>
-        <button class="sendChatBtn" >
+   <div class="bottom_div">
+      <c:if test="${loginId  == null}">
+         <p class="error">⚠️ 비회원 이용 시 채팅 기록은 저장되지 않습니다.<a class="login_text" href="/member/login"> 로그인</a></p>
+      </c:if>
+      
+      <div class="chat_div">
+         <textarea class="chat_text" placeholder="내용을 입력해주세요."></textarea>
+         <button class="sendChatBtn" >
             <i class="fa-regular fa-paper-plane" style="color: #ccc;"></i>
-        </button>
+         </button>
+      </div>
     </div>
 
     <script src="../js/Artist_Chat.js"></script>

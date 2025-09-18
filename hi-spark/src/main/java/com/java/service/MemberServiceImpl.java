@@ -34,5 +34,10 @@ public class MemberServiceImpl implements MemberService {
 	    return mRep.findByLoginId(loginId).orElse(null);
 	}
 
+	@Override
+	public Member findById(Integer memberId) {
+		return mRep.findById(memberId).orElse(null);
+	}
+
 	
 }

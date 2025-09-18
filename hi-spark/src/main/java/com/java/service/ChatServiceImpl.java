@@ -28,4 +28,6 @@ public class ChatServiceImpl implements ChatService {
         return chatRepository.findByMemberAndArtistOrderByCreatedAtAsc(member, artist);
     }
 
+
+
 }

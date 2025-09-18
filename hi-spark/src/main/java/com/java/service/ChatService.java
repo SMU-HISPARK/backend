@@ -10,6 +10,7 @@ public interface ChatService {
 
 	void save(Chat chat);
 
+
 	List<Chat> findByMemberAndArtistOrderByCreatedAtAsc(Member member, Artist artist);
 
 }
