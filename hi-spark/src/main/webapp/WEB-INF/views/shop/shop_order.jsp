@@ -135,7 +135,7 @@
                                         <td class="label">휴대전화 <span class="required">*</span></td>
                                         <td class="inputBox">
                                             <div class="phone-group">
-                                                <select name="phone1">
+                                                <select name="phone1" class="phone1">
                                                     <option value="010" selected>010</option>
                                                     <option value="011">011</option>
                                                     <option value="016">016</option>
@@ -176,7 +176,7 @@
         
                 <div class="orderProduct">
                     <details open>
-                        <summary>주문상품 <span>(${selectedCount})</span></summary>
+                        <summary>주문상품 <span class="countclass" data-count="${selectedCount}">(${selectedCount})</span></summary>
                         <c:forEach var="item" items="${cartItems}">
 	                        <!-- 상품 하나 -->
 	                        <div class="orderProduct_one" id="${item.cartitemId}">
@@ -231,19 +231,23 @@
                         <div class="paymethodradio">
                             <input type="radio" name="paymethod" id="creditcard" value="신용카드" checked>
                             <label for="creditcard" class="paymethod">신용카드</label>
-                            
-                            <input type="radio" name="paymethod" id="transfer" value="계좌이체">
-                            <label for="transfer" class="paymethod">계좌이체</label>
-                            
+
                             <input type="radio" name="paymethod" id="virtualAccount" value="가상계좌">
                             <label for="virtualAccount" class="paymethod">가상계좌</label>
+                            
+                            <input type="radio" name="paymethod" id="kakaoPay" value="카카오페이">
+                            <label for="kakaoPay" class="paymethod">카카오페이</label>
                             
                             <input type="radio" name="paymethod" id="paidCredit" value="적립금">
                             <label for="paidCredit" class="paymethod">적립금</label>
                             
-                            <div class="paymethod-detail" id="creditcard-detail" style="display:none">- 10/1까지 적립금 외 다른 수단의 결제가 중단됩니다.</div>
-                            <div class="paymethod-detail" id="transfer-detail" style="display:none">- 10/1까지 적립금 외 다른 수단의 결제가 중단됩니다.</div>
-                            <div class="paymethod-detail" id="virtualAccount-detail" style="display:none">- 10/1까지 적립금 외 다른 수단의 결제가 중단됩니다.</div>
+                            <div class="paymethod-detail" id="creditcard-detail" style="display:none">- 10/1까지 카카오페이, 적립금 외 다른 수단의 결제가 중단됩니다.</div>
+                            <div class="paymethod-detail" id="virtualAccount-detail" style="display:none">- 10/1까지 카카오페이, 적립금 외 다른 수단의 결제가 중단됩니다.</div>
+                            <div class="paymethod-detail" id="kakaoPay-detail" style="display:none">
+            	                <div>
+            	                	<button type="button" id="kakaoPayBtn">카카오페이로 결제하기</button>
+            	                </div>
+                            </div>
                             <div class="paymethod-detail" id="paidCredit-detail" style="display:none">
                                 <div>
                                     적립금 : <span id="creditValue">

@@ -3,9 +3,13 @@ package com.java.service;
 import java.util.List;
 import java.util.Map;
 
+import com.java.dto.KakaoPayApproveResponseDto;
+import com.java.dto.KakaoPayRequestDto;
 import com.java.entity.Cart;
 import com.java.entity.CartItem;
 import com.java.entity.Orders;
+
+import jakarta.servlet.http.HttpSession;
 
 public interface OrderService {
 
@@ -21,6 +25,10 @@ public interface OrderService {
 
 	//orderid로 찾기
 	Orders findByOrderCode(String orderCode);
+
+	Orders placeOrderFromKakao(KakaoPayRequestDto request, Integer memberId, KakaoPayApproveResponseDto approveResponse);
+	
+	
 
 
 }

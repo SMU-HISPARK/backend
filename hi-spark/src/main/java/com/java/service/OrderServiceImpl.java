@@ -1,9 +1,12 @@
 package com.java.service;
 
+import com.java.dto.KakaoPayApproveResponseDto;
+import com.java.dto.KakaoPayRequestDto;
 import com.java.entity.*;
 import com.java.repository.*;
 import com.java.service.OrderService;
 
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -102,7 +105,66 @@ public class OrderServiceImpl implements OrderService {
 
 	        return orderRepository.save(order);
 	    }
+	    
+	    
+	    
+	    
+	    public Orders placeOrderFromKakao(KakaoPayRequestDto request, Integer memberId, KakaoPayApproveResponseDto approveResponse) {
 
+	    	Orders order = new Orders();
+	    	Member member = memberService.findById(memberId);
+	        order.setOrderCode(request.getPartnerOrderId());
+	        order.setMember(member);
+	        order.setReceiver(request.getReceiver());
+	        order.setPhone(request.getPhone());
+	        order.setZipcode(request.getZipcode());
+	        order.setAddressMain(request.getAddressMain());
+	        order.setAddressDetail(request.getAddressDetail());
+	        order.setOrderState(0);
+	        order.setPaymentMethod("카카오페이");
+	        order.setDeliveryMessage(request.getDeliveryMessage());
+
+	        int deliverCost = request.getShipping();
+	        order.setDeliverCost(deliverCost);
+
+	        List<OrderItem> orderItems = new ArrayList<>();
+	        int totalAmount = 0;
+
+	        for (int cartItemId : request.getCartItemIds()) {
+	            CartItem cartItem = cartItemService.findById(cartItemId);
+	            if (cartItem == null) continue;
+
+	            Product product = cartItem.getProduct();
+	            int orderQty = cartItem.getQuantity();
+
+	            if (product.getProductQuantity() < orderQty) {
+	                throw new RuntimeException("재고 부족: " + product.getProductName());
+	            }
+
+	            product.setProductQuantity(product.getProductQuantity() - orderQty);
+	            productService.save(product);
+
+	            OrderItem orderItem = new OrderItem();
+	            orderItem.setOrders(order);
+	            orderItem.setProduct(product);
+	            orderItem.setQuantity(orderQty);
+	            orderItem.setPrice(product.getProductPrice() * orderQty);
+
+	            totalAmount += orderItem.getPrice();
+	            orderItems.add(orderItem);
+
+	            cartItemService.deleteById(cartItemId);
+	        }
+
+	        order.setTotalAmount(totalAmount);
+	        order.setOrderitems(orderItems);
+
+	    	return order;
+	    
+	    }
+	    
+	    
+	    
 	    
 	    @Override  // 주문번호 생성
 	    public String generateOrderCode() {

@@ -6,27 +6,7 @@ $(document).ready(function(){
         history.back();
     });// backBtn
 
-    //팝업창 오픈
-    
-    $(document).on("click", "#shoppingterms-details", function () {
-        popupWindows.push(
-            window.open("../shop/terms_shoppingterms.jsp", "shoppingterms", "width=400,height=600,left=100,top=50")
-        );
-    });
-    
-    $(document).on("click", "#personalinfo-details", function () {
-        popupWindows.push(
-            window.open("../shop/terms_personalinfo.jsp", "personalinfo", "width=400,height=600,left=120,top=70")
-        );
-    });
-    
-    $(document).on("click", "#thirdparty-details", function () {
-        popupWindows.push(
-            window.open("../shop/terms_thirdparty.jsp", "thirdparty", "width=400,height=600,left=140,top=90")
-        );
-    });
-	
-    
+
     
     //배송메모
     $('.deliveryMessage').change(function() {
@@ -42,12 +22,12 @@ $(document).ready(function(){
         if(this.value == '신용카드'){
             $(".paymethod-detail").css("display","none");
             $("#creditcard-detail").css("display","block");
-        }else if(this.value == '계좌이체'){
-            $(".paymethod-detail").css("display","none");
-            $("#transfer-detail").css("display","block");
         }else if(this.value == '가상계좌'){
             $(".paymethod-detail").css("display","none");
             $("#virtualAccount-detail").css("display","block");
+        }else if(this.value == '카카오페이'){
+            $(".paymethod-detail").css("display","none");
+            $("#kakaoPay-detail").css("display","block");
         }else if(this.value == '적립금'){
             $(".paymethod-detail").css("display","none");
             $("#paidCredit-detail").css("display","block");
@@ -81,7 +61,7 @@ $(document).ready(function(){
 	// 적용 버튼 (상황에 따른 alert)
 	$(document).on("click", "#creditConfirm",function() {
 		if (paid==1) {
-		        alert("결제 완료된 건입니다.");
+		        alert("결제 예정 건입니다.");
 		        return;
 		}
 		
@@ -111,6 +91,87 @@ $(document).ready(function(){
 		
 	});
 	
+	//카카오페이로 결제 버튼
+	$('#kakaoPayBtn').click(function(e) {
+		let isValid = true;
+
+	    // 필수 입력값 체크
+	    $('[required]').each(function() {
+	        if ($(this).val().trim() === "") {
+	            isValid = false;
+	            return false; // each 중단
+	        }
+	    });
+		
+		if (!isValid) {
+	        alert("필수 사항을 입력하셔야 결제가 가능합니다.");
+			window.scrollTo({ top: 0, behavior: 'smooth' });
+			e.preventDefault();
+	        return;
+	    }
+		
+		// 약관 체크
+		if (!$("#allconfirm").prop('checked')) {
+		    alert("필수 약관에 모두 동의하셔야 결제가 가능합니다.");
+			e.preventDefault();
+		    return;
+		}
+		
+		let total = parseInt($("#totalAmount").data("total"))||0;
+		let quantity = parseInt($(".countclass").data("count")) || 0;
+		let cartItemIds = [];
+		$('input[name="selectedItems"]').each(function() {
+		    cartItemIds.push(parseInt($(this).val()));
+		});
+		
+		let phone = $(".phone1").val()+"-"+$(".phone2").val()+"-"+$(".phone3").val()
+		let deliveryMessage = $(".deliveryMessage").val(); // select에서 선택된 value
+		let deliveryText = $("#deliveryText").val();       // 직접 입력한 텍스트
+
+		// 만약 직접입력을 선택하면 deliveryText 사용
+		if (deliveryMessage === "selfText") {
+		    deliveryMessage = deliveryText;
+		}
+		
+	    // 서버로 결제 준비 요청
+		var requestData = {
+		    name: "HISPARK SHOP",
+		    quantity: quantity,
+		    price: total,
+			receiver: $("#receiver").val(),
+			phone: phone,
+			zipcode: $("#zipcode").val(),
+			addressMain: $("#address1").val(),
+			addressDetail: $("#address2").val()||"",
+			cartItemIds: cartItemIds,
+			deliveryMessage: deliveryMessage||"",
+			shipping:$("input[name='shipping']").val()
+		};
+		
+		console.log("보내는 데이터:", JSON.stringify(requestData));
+
+		$.ajax({
+		    url: "/kakao-pay/ready",
+		    type: "POST",
+			contentType:"application/json",  // 변경
+			data: JSON.stringify(requestData),
+		    success: function(response) {
+		        window.location.href = response.next_redirect_pc_url;
+		    },
+		    error: function(err) {
+		        alert("결제 준비 실패");
+		        console.log(err);
+		    }
+		});
+
+		
+		paid=1;
+	
+		
+	});
+	
+	
+	
 	
 
 	$(document).on("click", "#payBtn", function(e) {
@@ -125,7 +186,7 @@ $(document).ready(function(){
 	    });
 
 	    if (!isValid) {
-	        alert("필수 사항을 입력하셔야 상품 구매가 가능합니다.");
+	        alert("필수 사항을 입력하셔야 결제가 가능합니다.");
 			window.scrollTo({ top: 0, behavior: 'smooth' });
 			e.preventDefault();
 	        return;
@@ -133,7 +194,7 @@ $(document).ready(function(){
 
 	    // 약관 체크
 	    if (!$("#allconfirm").prop('checked')) {
-	        alert("필수 약관에 모두 동의하셔야 상품 구매가 가능합니다.");
+	        alert("필수 약관에 모두 동의하셔야 결제가 가능합니다.");
 			e.preventDefault();
 	        return;
 	    }
