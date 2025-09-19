@@ -1,0 +1,6 @@
+# application-pay.yml
+kakaopay:
+  admin-key: "126ab598f55652ce98f0f2ba9df12b5e"  # 카카오 개발자센터에서 발급받은 Admin Key
+  cid: "TC0ONETIME"
+  ready-url: "https://kapi.kakao.com/v1/payment/ready"
+  approve-url: "https://kapi.kakao.com/v1/payment/approve"
