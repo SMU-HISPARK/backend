@@ -65,9 +65,9 @@
 			<h1><img src="/images/hispark_crop.png" alt="(로고)" /></h1>
 			<div id="snb">
 				<ul>
-					<li><a href="#">로그인</a></li>
-					<li><a href="#">회원가입</a></li>
-					<li><a href="/">메인으로</a></li>
+					<li><a href="/member/login">로그인</a></li>
+	               <li><a href="/member/step01">회원가입</a></li>
+	               <li><a href="/">메인으로</a></li>
 				</ul>
 
 			</div>

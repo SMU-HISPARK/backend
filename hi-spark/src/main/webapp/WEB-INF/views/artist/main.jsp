@@ -11,8 +11,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="../css/Artist_Main.css">
     <script src="https://kit.fontawesome.com/e674411d10.js" crossorigin="anonymous"></script>
-    <script type="text/javascript" src="/js/base.js"></script>
-    
     <title>아티스트 메인</title>
 </head>
 <body>
@@ -24,15 +22,15 @@
 		<div id="snbBox">
 			<div id="snb">
 			   <ul>
-			                      <c:if test="${session_id == null}">
-               <li><a href="/member/login">로그인</a></li>
-               <li><a href="/member/step01">회원가입</a></li>
-               <li><a href="/">메인으로</a></li>
-               </c:if>
+			     <c:if test="${session_id == null}">
+             	  	<li><a href="/member/login">로그인</a></li>
+              		<li><a href="/member/step01">회원가입</a></li>
+              		 <li><a href="/">메인으로</a></li>
+           		</c:if>
                 <c:if test="${session_id != null}">
-               <li><a href="#">${session_name}님</a></li>
-               <li><a href="/member/logout">로그아웃</a></li>
-               <li><a href="/">메인으로</a></li>
+               		<li><a href="#">${session_name}님</a></li>
+              		<li><a href="/member/logout">로그아웃</a></li>
+               		<li><a href="/">메인으로</a></li>
                </c:if>
 			   </ul>
 			</div>
@@ -63,8 +61,13 @@
                 <a href="/artist/detail?ano=5"><img src="../images/artistimage/정훈폴라.png" class="polaroid"></a>
                 <img src="../images/artistimage/오브젝트_정훈.png" class="object jh">
             </div>
-
         </div>
+		<div id="hisparksong" style="margin-top: 40px; ">
+			<p  style= "color: white; padding-left: 10px; padding-left: 40px; margin-bottom: 10px;">하이스파크의 노래를 들어보세요!</p>
+		    <audio controls>
+		       <source src="${pageContext.request.contextPath}/resources/music/High Spark.mp3" type="audio/mpeg">
+		   	</audio>
+		</div>
     </div>
 
     
