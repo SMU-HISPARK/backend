@@ -248,6 +248,16 @@
 
         // 통계 모달 열기
         $(".result_stats_button").on("click", function() {
+
+            $.ajax({
+                url: 'game/getStat';
+                dataType: 'json';
+                success: function(res){
+                    
+                }
+
+            });
+
             $modal.css("display", "flex");
         });
 

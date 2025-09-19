@@ -37,14 +37,6 @@ public class GameController {
 		return "game/gamepage_start";
 	}
 	
-	
-	@GetMapping("/game/result")
-	public String gamepage_result() {
-		
-		return "game/gamepage_result";
-	}
-	
-	
 	@PostMapping("/game/saveRun")
 	public String saveRun(
 			@RequestParam("answers") List<Integer> answers,

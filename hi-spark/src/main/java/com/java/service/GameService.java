@@ -3,6 +3,7 @@ package com.java.service;
 import java.util.List;
 
 import com.java.entity.Member;
+import com.java.entity.sourceData.GameOptions;
 import com.java.entity.sourceData.GameQuestion;
 import com.java.entity.sourceData.GameResultClub;
 import com.java.entity.userData.GameRun;
@@ -42,6 +43,15 @@ public interface GameService {
 	
 	// 이번 회차 게임 점수 계산
 	Integer[] getResult(List<Integer> runResponses);
+	
+	
+	/// stats
+	
+	Long gameRunCount();
+	List<Double> calResultRate();
+	Long calMemberCount();
+	List<Double> calMultiRate();
+	GameOptions calMostOption();
 	
 
 

@@ -1,7 +1,10 @@
 package com.java.service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,6 +30,7 @@ import com.java.repository.MemberRepository;
 import com.java.repository.QuestionResponseRepository;
 import com.java.repository.ResultUnlockedRepository;
 import com.java.repository.ScoringRulesRepository;
+import com.java.repository.projection.CountBucket;
 
 @Service
 public class GameServiceImpl implements GameService {
@@ -103,7 +107,7 @@ public class GameServiceImpl implements GameService {
 		return scores;
 	}
 
-	// 결과 출력
+	/// 결과 출력
 	@Override
 	@Transactional
 	public GameResultClub findResultById(Integer clubId) {
@@ -204,6 +208,87 @@ public class GameServiceImpl implements GameService {
 				}
 			}
 		}
+	}
+
+	
+	/// 통계
+	
+	@Override
+	public Long gameRunCount() {
+		return gRunRep.count();
+	}
+
+	
+	@Override
+	public List<Double> calResultRate() {
+		List<Double> resultRateList = new ArrayList<Double>();
+		long runs = gRunRep.count();
+		for(int i=1; i<=clubNumber; i++) {
+			
+			GameResultClub resultClub = grcRep.findById(i).orElseThrow();
+			long clubRuns = gRunRep.countByResultClub(resultClub);
+			
+			Double resultRate = clubRuns / (double)runs;
+			resultRateList.add(resultRate);
+			
+		}
+		
+		return resultRateList;
+	}
+
+	
+	@Override
+	public Long calMemberCount() {
+		Long memberCount = ruRep.CountDistinctMember();
+		return memberCount;
+	}
+
+	
+	@Override
+	public List<Double> calMultiRate() {
+		long memberCount = ruRep.CountDistinctMember();
+		List<Double> multiClubMemberRateList = new ArrayList<Double>();
+		List<CountBucket> rows = ruRep.countMembersByUnlockCount();
+		Map<Integer, Long> buckets = new LinkedHashMap<Integer,Long>();
+		for(int n=1; n<=clubNumber; n++) buckets.put(n, 0L);	// 0으로 초기화
+		for(CountBucket r : rows) {
+			buckets.put(r.getCnt(),r.getMembers());
+		}
+		for(int i=0; i<clubNumber; i++) {
+			double rate = (long)buckets.get(i+1) / (double)memberCount;
+			multiClubMemberRateList.add(i, rate);
+		}
+
+		return multiClubMemberRateList;
+	}
+
+	@Override
+	public GameOptions calMostOption() {
+		
+		Map<Integer,Double> optionRateMap = new LinkedHashMap<Integer,Double>();
+		Map<Integer,Long> optionCountMap = new LinkedHashMap<Integer,Long>();
+		
+		List<GameQuestion> questionList = gqRep.findAll();
+		for(GameQuestion q : questionList) {
+			long questionCount = 0L;
+			List<GameOptions> optionList = q.getOptions();
+			for(GameOptions o : optionList) {
+				long optionCount = 0L;
+				optionCount = qrRep.countByOptions();				// 옵션 별 선택된 수 
+				optionCountMap.put(o.getOptionId(),optionCount);	// 옵션 별 카운트 결과 저장
+				questionCount += optionCount;						// 해당 질문 뜬 경우 수 구하기 
+			}
+			if(questionCount >= 10) {	// 응답 수 10회 이상인 질문 중에서,
+				for(GameOptions o : optionList) {
+					// 응답 별 비율 구하기
+					Double rate = optionCountMap.get(o.getOptionId()) / (double)questionCount;
+					optionRateMap.put(o.getOptionId(), rate);
+				}
+			}
+		}
+		
+		
+		return null;
 	}
 
 	

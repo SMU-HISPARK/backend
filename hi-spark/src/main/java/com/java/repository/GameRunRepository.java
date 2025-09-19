@@ -14,4 +14,6 @@ public interface GameRunRepository extends JpaRepository<GameRun, Long> {
 
 	List<GameRun> findByGameSessionAndResultClubOrderByFinishedAtAsc(GameSession gameSession, GameResultClub resultClub);
 
+	Long countByResultClub(GameResultClub resultClub);
+
 }

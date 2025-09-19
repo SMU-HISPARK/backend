@@ -9,4 +9,6 @@ import com.java.entity.userData.QuestionResponse;
 @Repository
 public interface QuestionResponseRepository extends JpaRepository<QuestionResponse, ResponseId> {
 
+	Long countByOptions();
+
 }

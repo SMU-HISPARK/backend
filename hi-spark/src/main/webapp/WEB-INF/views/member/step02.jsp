@@ -275,11 +275,11 @@
             <td>휴대전화 <span style="color:red"></span></td>
             <td>
               <div class="phone-input">
-                <input type="text" id="p_head" class="phone_number" maxlength="3">
+                <input type="text" id="p_head" class="phone_number" pattern="[0-9]{3}" maxlength="3">
                 <span>-</span>
-                <input type="text" id="p_body" class="phone_number" maxlength="4">
+                <input type="text" id="p_body" class="phone_number" pattern="[0-9]{4}" maxlength="4">
                 <span>-</span>
-                <input type="text" id="p_tail" class="phone_number" maxlength="4">
+                <input type="text" id="p_tail" class="phone_number" pattern="[0-9]{4}" maxlength="4">
                 <input type="hidden" id="phone" name="phone" value="">
               </div>
             </td>
@@ -311,6 +311,7 @@
     let email_flag = 0;
     let pw_flag = 0;
     let pw_confirm_flag = 0;
+    let phone_flag = 0;
 
   	// 확인 버튼 클릭 시 폼 유효성 검사 후 제출
   	function submitBtn(){
@@ -347,6 +348,12 @@
       if(pw_confirm_flag == 0){
         alert("비밀번호가 일치하지 않습니다.");
         document.getElementById('password-confirm').focus();
+        return;
+      }
+
+      if(phone_flag == 0){
+        alert("유효한 번호를 입력해주세요.");
+        document.querySelector('#p_head').focus();
         return;
       }
 
@@ -469,6 +476,13 @@
 
     // 전화번호 합치는 함수
   	function phoneNumbering(){
+      if(document.querySelector('#p_head').validity.patternMismatch ||
+          document.querySelector('#p_body').validity.patternMismatch ||
+          document.querySelector('#p_tail').validity.patternMismatch){
+        phone_flag = 0;
+      }else{
+        phone_flag = 1;
+      }
   		let number = "" + $('#p_head').val() + $('#p_body').val() + $('#p_tail').val();
   		$('#phone').val(number);
   	}
