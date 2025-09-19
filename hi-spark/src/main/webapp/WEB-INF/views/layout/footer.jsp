@@ -1,86 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <style>
-    #footerWrap {
-            width: 100vw;
-            margin-left: calc(50% - 50vw);
-            margin-top: 56px;
-            background: #ebebeb;
-            padding: 20px 0;
-        }
+    <link rel="stylesheet" type="text/css" href="/css/footer.css">
 
-        #footer {
-            max-width: 1200px;
-            margin: 20px auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;       
-            gap: 40px;
-            flex-wrap: wrap; 
-                      
-        }
-
-        #finfo {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-
-        #finfo img {
-            width: 150px;
-            height: 150px;
-            object-fit: contain;
-        }
-
-        #finfo address {
-            font-size: 12px;
-            color: #666;
-            line-height: 1.6;
-            font-style: normal;
-        }
-
-        #finfo address ul {
-            list-style: none;
-            margin: 0;
-            padding: 0;
-        }
-
-        .social-links {
-            display: flex;
-            gap: 15px;
-        }
-
-        .social-links a {
-            width: 35px;
-            height: 35px;
-            display: inline-block;
-            background-size: cover;
-            background-position: center;
-            border-radius: 30%;
-            transition: transform 0.2s ease;
-        }
-
-        .social-links a:hover {
-            transform: scale(1.1);
-        }
-
-        .youtube-button { background-image: url("/images/youtube.png"); }
-        .instagram-button { background-image: url("/images/instagram.png"); }
-        .x-button { background-image: url("/images/x.png"); }
-        .facebook-button { background-image: url("/images/facebook.png"); }
-        
-    </style>
-
-
-</head>
-<body>
-    
     <div id="footerWrap">
 		<div id="footer">
 			
@@ -108,4 +29,5 @@
 		</div>
 	</div>
 </body>
+<script type="text/javascript" src="/js/base.js"></script>
 </html>

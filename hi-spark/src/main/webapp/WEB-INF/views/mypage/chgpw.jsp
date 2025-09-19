@@ -166,15 +166,27 @@
                 </div>
                 <ul>
                     <li>8자 이상 16자 이하</li>
-                    <li>영문 대문자, 소문자, 숫자, 특수문자 중 3가지 이상 포함</li>
+                    <li>영문 대소문자, 숫자, 특수문자 포함</li>
                 </ul>
             </div>
             
-            <form id="passwordForm">
+            <!-- 에러/성공 메시지  -->
+			<c:if test="${not empty error}">
+			    <div style="color: red; text-align: center; margin-bottom: 20px;">
+			        ${error}
+			    </div>
+			</c:if>
+			<c:if test="${not empty success}">
+			    <div style="color: #035fe0; text-align: center; margin-bottom: 20px;">
+			        ${success}
+			    </div>
+			</c:if>
+
+            <form name = "pwFrm" id="passwordForm" method = "post" action = "/mypage/chgpw" >
                 <div class="form-section">
                     <div class="form-group">
                         <label for="currentPassword">현재 비밀번호</label>
-                        <input type="password" id="currentPassword" name="currentPassword" required>
+                        <input type="password" id="currentPassword" name="currPassword" required>
                         <div class="error-message" id="currentPasswordError"></div>
                     </div>
                     
@@ -203,9 +215,9 @@
     
     <script>
 
-        function cancelAction() {
-                window.close(); // 취소 버튼 클릭 시 팝업 닫기
-            }
+	    function cancelAction() {
+	        window.close(); // 취소 버튼 클릭 시 팝업 닫기
+	    }
 
         // 비밀번호 유효성 검사
         function validatePassword(password) {
@@ -215,7 +227,6 @@
             const hasLowerCase = /[a-z]/.test(password);
             const hasNumbers = /\d/.test(password);
             const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
-            const hasConsecutive = /(.)\1{2,}/.test(password) || /012|123|234|345|456|567|678|789|890|abc|bcd|cde|def|efg|fgh|ghi|hij|ijk|jkl|klm|lmn|mno|nop|opq|pqr|qrs|rst|stu|tuv|uvw|vwx|wxy|xyz/i.test(password);
             
             const criteria = [hasUpperCase, hasLowerCase, hasNumbers, hasSpecialChar];
             const metCriteria = criteria.filter(Boolean).length;
@@ -225,12 +236,9 @@
             }
             
             if (metCriteria < 3) {
-                return { valid: false, message: '영문 대문자, 소문자, 숫자, 특수문자 중 3가지 이상 포함해야 합니다.' };
+                return { valid: false, message: '영문 대소문자, 숫자, 특수문자를 포함해야 합니다.' };
             }
             
-            if (hasConsecutive) {
-                return { valid: false, message: '연속된 문자나 숫자 3개 이상 사용할 수 없습니다.' };
-            }
             
             return { valid: true, message: '사용 가능한 비밀번호입니다.' };
         }
@@ -286,69 +294,39 @@
         
         // 폼 제출 처리
         document.getElementById('passwordForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const currentPassword = document.getElementById('currentPassword').value;
-            const newPassword = document.getElementById('newPassword').value;
-            const confirmPassword = document.getElementById('confirmPassword').value;
-            
-            // 현재 비밀번호 확인
-            if (!currentPassword) {
-                document.getElementById('currentPasswordError').textContent = '현재 비밀번호를 입력해주세요.';
-                document.getElementById('currentPasswordError').style.display = 'block';
-                return;
-            }
-            
-            // 새 비밀번호 유효성 검사
-            const passwordValidation = validatePassword(newPassword);
-            if (!passwordValidation.valid) {
-                return;
-            }
-            
-            // 비밀번호 확인
-            if (newPassword !== confirmPassword) {
-                return;
-            }
-            
-            // API 호출 시뮬레이션
-            changePassword(currentPassword, newPassword);
-        });
+		    const currentPassword = document.getElementById('currentPassword').value;
+		    const newPassword = document.getElementById('newPassword').value;
+		    const confirmPassword = document.getElementById('confirmPassword').value;
+		    
+		    // 현재 비밀번호 확인
+		    if (!currentPassword) {
+		        document.getElementById('currentPasswordError').textContent = '현재 비밀번호를 입력해주세요.';
+		        document.getElementById('currentPasswordError').style.display = 'block';
+		        e.preventDefault();
+		        return;
+		    }
+		    
+		    // 새 비밀번호 유효성 검사
+		    const passwordValidation = validatePassword(newPassword);
+		    if (!passwordValidation.valid) {
+		        e.preventDefault();
+		        return;
+		    }
+		    
+		    // 비밀번호 확인
+		    if (newPassword !== confirmPassword) {
+		        e.preventDefault();
+		        return;
+		    }
+		    
+		    // 모든 검증 통과 시 서버로 폼 전송
+		});
         
-        // 비밀번호 변경 API 호출 (시뮬레이션)
-        function changePassword(currentPassword, newPassword) {
-            // 실제로는 여기서 서버 API를 호출합니다
-            // fetch('/api/change-password', { ... })
-            
-            // 시뮬레이션을 위한 임시 처리
-            const loadingButton = document.querySelector('.btn-primary');
-            loadingButton.textContent = '변경 중...';
-            loadingButton.disabled = true;
-            
-            setTimeout(() => {
-                // 현재 비밀번호 검증 시뮬레이션
-                if (currentPassword !== 'oldpassword123') {
-                    document.getElementById('currentPasswordError').textContent = '현재 비밀번호가 일치하지 않습니다.';
-                    document.getElementById('currentPasswordError').style.display = 'block';
-                    loadingButton.textContent = '비밀번호 변경';
-                    loadingButton.disabled = false;
-                    return;
-                }
-                
-                // 성공 처리
-                alert('비밀번호가 성공적으로 변경되었습니다.');
-                resetForm();
-                loadingButton.textContent = '비밀번호 변경';
-                loadingButton.disabled = false;
-                
-                // 실제로는 로그아웃 처리하거나 로그인 페이지로 이동
-                // window.location.href = '/login';
-                
-            }, 1500); // 1.5초 로딩 시뮬레이션
-        }
+        
         
         // 폼 리셋
         function resetForm() {
-            location.href = "mypage_member.html";
+            location.href = "/mypage/member";
         }
         
         // 현재 비밀번호 에러 메시지 숨기기 (입력 시)

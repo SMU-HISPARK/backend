@@ -1,13 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ include file="../layout/header.jsp" %>
+<%@ include file="../layout/headerM.jsp" %>
 <script  src="http://code.jquery.com/jquery-latest.min.js"></script>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/css/mypage.css">
+    <link rel="stylesheet" href="/css/mypage/mypage.css">
     <title>가입 동아리</title>
     <style>
         .message{
@@ -20,48 +20,56 @@
             color : #1a1a1ab6;
         }
 
-        /* 동아리 카드 */
         .detail-section {
-            margin-bottom: 30px;
-        }
-
-        .club-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-            gap: 15px 25px;
-        }
-
-        .club-card {
-            border: 1px solid #ddd;
-            padding: 15px;
-            text-align: center;
-            cursor: pointer;
-        }
-
-
-        .club-card.inactive {
-            border: 1px dashed #ccc;
-            color: #999;
-            background-color: #fafafa;
-            cursor: default;
-        }
-
-
-        .club-emoji img{
-            width : 50px;
-            height : 50px;
-            margin-bottom: 10px;
-        }
-
-        .club-name {
-            font-weight: 400;
-            margin-bottom: 5px;
-        }
-
-        .join-date {
-            font-size: 12px;
-            color: #666;
-        }
+		    margin-bottom: 30px;
+		}
+		
+		.club-grid {
+		    display: grid;
+		    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+		    gap: 15px 25px;
+		}
+		
+		.club-card {
+		    border: 1px solid #ddd;
+		    padding: 15px;
+		    text-align: center;
+		    cursor: pointer;
+		}
+		
+		.club-card.inactive {
+		    border: 1px dashed #ccc;
+		    color: #999;
+		    background-color: #fafafa;
+		    cursor: default;
+		}
+		
+		.club-emoji img {
+		    width: 50px;
+		    height: 50px;
+		    margin-bottom: 10px;
+		}
+		
+		.club-name {
+		    font-weight: 400;
+		    margin-bottom: 5px;
+		    font-size: 14px;
+		}
+		
+		.join-date {
+		    font-size: 12px;
+		    color: #666;
+		}
+		
+		/* 가입 상태별 텍스트 색상 */
+		.club-card:not(.inactive) .join-date {
+		    color: #035fe0;
+		    font-weight: 500;
+		}
+		
+		.club-card.inactive .join-date {
+		    color: #999;
+		}
 
         /* 버튼 */
         .btn {
@@ -114,40 +122,16 @@
                 <p>* 동아리 이름을 클릭하면 해당 동아리의 상세 에피소드를 확인할 수 있습니다.</p>
             </div>
             <div class="detail-section">
-                <div class="club-grid">
-                    <div class="club-card" onclick="viewClubEpisode('제과제빵부')">
-                        <div class="club-emoji"><img src = "../images/cake.png" alt = "제과제빵부"></div>
-                        <div class="club-name">제과제빵부</div>
-                        <div class="join-date">가입일: 2025-08-30</div>
+		    <div class="club-grid">
+                <c:forEach var="club" items="${clubs}">
+                    <div class="club-card ${club.finishedAt != null ? '' : 'inactive'}" onclick="viewClubEpisode('${club.name}')">
+                        <div class="club-emoji">
+                            <img src="${club.imageUrl}" alt="${club.name}">
+                        </div>
+                        <div class="club-name">${club.name}</div>
+                        <div class="join-date">${club.finishedAt != null ? '가입' : '미가입'}</div>
                     </div>
-                    
-                    <div class="club-card" onclick="viewClubEpisode('밴드부')">
-                        <div class="club-emoji"><img src = "../images/band.png" alt = "밴드부"></div>
-                        <div class="club-name">밴드부</div>
-                        <div class="join-date">가입일: 2025-08-25</div>
-                    </div>
-                    
-                    <div class="club-card" onclick="viewClubEpisode('도서부')">
-                        <div class="club-emoji"><img src = "../images/book.png" alt = "도서부"></div>
-                        <div class="club-name">도서부</div>
-                        <div class="join-date">가입일: 2025-08-20</div>
-                    </div>
-                    
-                    <div style="grid-column:1 / -1;"></div>
-                    
-                    <div class="club-card inactive">
-                        <div class="club-emoji"><img src = "../images/basket.png" alt = "운동부"></div>
-                        <div class="club-name">운동부</div>
-                        <div class="join-date">미가입</div>
-                    </div>
-                    
-                    <div class="club-card inactive">
-                        <div class="club-emoji"><img src = "../images/school.png" alt = "선도부"></div>
-                        <div class="club-name">선도부</div>
-                        <div class="join-date">미가입</div>
-                    </div>
-                </div>
-                
+                </c:forEach>
             </div>
             
             <div style="text-align: center; margin-top: 30px;">
@@ -158,15 +142,30 @@
     </div>
 
     <script>
-        function viewClubEpisode(clubName) {
-            alert(`${clubName} 에피소드를 다시 보여드립니다.`);
-            // 여기에 에피소드 보기 로직을 구현할 수 있습니다.
-        }
-        
-        function startNewTest() {
-            alert('새로운 동아리 매칭 테스트를 시작합니다.');
-            // 여기에 테스트 페이지로 이동하는 로직을 구현할 수 있습니다.
-        }
+	 // 동아리명과 club_id 매핑
+	    const clubMap = {
+	        "도서부": 1,
+	        "밴드부": 2,
+	        "선도부": 3,
+	        "운동부": 4,
+	        "제과제빵부": 5
+	    };
+	
+	    function viewClubEpisode(clubName) {
+	        const clubId = clubMap[clubName];
+	        if (!clubId) {
+	            alert("해당 동아리가 존재하지 않습니다.");
+	            return;
+	        }
+	
+	        // club_id 기반 상세 페이지 이동
+	        window.location.href = `/game/result`;
+	    }
+	
+	    function startNewTest() {
+	        alert('새로운 동아리 매칭 테스트를 시작합니다.');
+	        window.location.href = "/game";
+	    }
     </script>
 </body>
 </html>

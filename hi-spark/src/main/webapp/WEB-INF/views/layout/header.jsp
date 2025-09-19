@@ -1,11 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HEADER</title>
+    <title>LOGIN</title>
     <style>
 		@font-face {
 			font-family: 'Pretendard';
@@ -44,8 +46,8 @@
             gap: 10px;
         }
         #header #snbBox h1 img{
-            width: 45px;
-            height: 45px;
+            width: 60px;
+            height: 60px;
         }
 		#header #snbBox #snb{position: absolute; top: 0; right: 0; margin:0 27px 0 0;}
 		#header #snbBox #snb ul{width:100%; }
@@ -60,12 +62,12 @@
 	<div id="header">
 		
 		<div id="snbBox">
-			<h1><img src="/images/hispark.png" alt="(로고)" />HI-SPARK</h1>
+			<h1><img src="/images/hispark_crop.png" alt="(로고)" /></h1>
 			<div id="snb">
 				<ul>
 					<li><a href="#">로그인</a></li>
 					<li><a href="#">회원가입</a></li>
-					<li><a href="#">메인으로</a></li>
+					<li><a href="/">메인으로</a></li>
 				</ul>
 
 			</div>
