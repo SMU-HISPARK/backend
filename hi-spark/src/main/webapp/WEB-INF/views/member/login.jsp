@@ -36,6 +36,9 @@
            font-weight: 700;
            font-display: swap;
        }
+    button {
+      font-family: inherit;
+    }
     body {
       font-family: 'Pretendard4', sans-serif;
       margin: 0;
@@ -109,6 +112,7 @@
       width: 140px;
       height: 45px;
       margin-top: 15px;
+      cursor: pointer;
     }
     /* Links */
     .links {
@@ -165,7 +169,7 @@
       <div class="signup-box">
         <p><strong>아직 회원이 아니신가요?</strong></p>
         <p>지금 회원가입을 하시면<br>다양하고 특별한 혜택이 준비되어 있습니다.</p>
-        <button class="btn-signup">회원가입</button>
+        <a href="/member/step01"><button class="btn-signup">회원가입</button></a>
       </div>
     </div>
   </div>

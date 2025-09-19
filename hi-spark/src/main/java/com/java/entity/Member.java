@@ -37,17 +37,18 @@ public class Member {
 	@Column(length = 20, nullable = false)
 	private String password;
 	
-	@Column(length = 50, nullable = false)
+	@Column(length = 50, nullable = true)
 	private String name;
 	
-	@Column(length = 30, unique = true, nullable = false)
+	@Column(length = 30, nullable = false)
 	private String nickname;
-	
-	@Column(length = 20, unique = true, nullable = false)
-	private String phone;
 	
 	@Column(length = 100, unique = true, nullable = false)
 	private String email;
+	
+	@Column(length = 20, nullable = true)
+	private String phone;
+	
 	
 	@ColumnDefault("0")
 	@Column(nullable = false)
