@@ -7,7 +7,6 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>LOGIN</title>
     <style>
 		@font-face {
 			font-family: 'Pretendard';
@@ -28,6 +27,8 @@
             height:150px;
             text-align: center;
             /*margin-bottom : 50px;*/
+            background-color:#035fe0;
+            margin-bottom:20px;
         }
         
 		#header ul{list-style: none;}
@@ -52,8 +53,9 @@
 		#header #snbBox #snb{position: absolute; top: 0; right: 0; margin:0 27px 0 0;}
 		#header #snbBox #snb ul{width:100%; }
 		#header #snbBox #snb ul li{float:left; height:25px; line-height:25px; padding:8px 2px 0 18px;}
-		#header #snbBox #snb ul li a{text-decoration : none; color:#888; font-size:11px; font-weight:600;}
-
+		#header #snbBox #snb ul li a{text-decoration : none; color:#fafafa; font-size:11px; font-weight:600;}
+		
+		
     </style>
 </head>
 <body>
@@ -62,17 +64,20 @@
 	<div id="header">
 		
 		<div id="snbBox">
-			<h1><img src="/images/hispark_crop.png" alt="(로고)" /></h1>
+			<a href="/board/main"><h1><img src="/images/layout/logo_white.png" alt="(로고)" /></h1></a>
 			<div id="snb">
 				<ul>
-					<li><a href="#">로그인</a></li>
-					<li><a href="#">회원가입</a></li>
-					<li><a href="/">메인으로</a></li>
+				<c:if test="${not empty sessionScope.session_name}">
+				    <li><a href="/mypage/community">${sessionScope.session_name}님</a></li>
+				    <li><a href="/member/logout">로그아웃</a></li>
+				</c:if>
+				<c:if test="${empty sessionScope.session_name}">
+				    <li><a href="/member/login?redirectTo=${pageContext.request.requestURI}">로그인</a></li>
+				    <li><a href="/member/step01">회원가입</a></li>
+				</c:if>
+				<li><a href="/">메인으로</a></li>
 				</ul>
 
 			</div>
 		</div>
 	</div>
-    
-</body>
-</html>
