@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.java.dto.KakaoPayApproveResponseDto;
+import com.java.dto.KakaoPayRequestDto;
 import com.java.entity.Cart;
 import com.java.entity.CartItem;
 import com.java.entity.Member;
@@ -25,6 +27,7 @@ import com.java.repository.CartItemRepository;
 import com.java.repository.OrderRepository;
 import com.java.service.CartItemService;
 import com.java.service.CartService;
+import com.java.service.KakaoPayService;
 import com.java.service.MemberService;
 import com.java.service.OrderService;
 import com.java.service.ProductService;
@@ -39,6 +42,7 @@ public class OrderController {
 	@Autowired CartService cartService;
 	@Autowired MemberService memberService;
 	@Autowired CartItemService cartItemService;
+	@Autowired KakaoPayService kakaoPayService;
 	
 	
 	@PostMapping("/order/order_form")
@@ -46,8 +50,8 @@ public class OrderController {
 			@RequestParam("quantities") List<Integer> quantities,
 		HttpSession session, Model model) {
 		
-		
-		int memberId = (int) session.getAttribute("member_id"); // 로그인 세션
+		 Integer memberId = (Integer) session.getAttribute("memberId");
+		//int memberId = (int) session.getAttribute("member_id"); // 로그인 세션
 		Member member = memberService.findById(memberId);
 
 	    // 선택한 카트아이템만 가져오기
@@ -86,8 +90,8 @@ public class OrderController {
 	public String orderfinish(@RequestParam("selectedItems") List<Integer> selectedItemIds,
 	                          @RequestParam Map<String,String> params,
 	                          HttpSession session, Model model) {
-
-	    int memberId = (int) session.getAttribute("member_id");
+		 Integer memberId = (Integer) session.getAttribute("memberId");
+	    //int memberId = (int) session.getAttribute("member_id");
 
 	    Orders order = orderService.placeOrder(memberId, selectedItemIds, params);
 	    
@@ -101,7 +105,9 @@ public class OrderController {
 	
 	@GetMapping("/order/finish-view")
 	public String orderFinishView(@RequestParam("orderCode") String orderCode, HttpSession session, Model model) {
-		int memberId = (int) session.getAttribute("member_id");
+		 Integer memberId = (Integer) session.getAttribute("memberId");
+		
+		//int memberId = (int) session.getAttribute("member_id");
 		Member member = memberService.findById(memberId);
 
 		Orders order = orderService.findByOrderCode(orderCode); // DB 조회
@@ -119,6 +125,7 @@ public class OrderController {
 	    
 	    return "shop/shop_order_finish";
 	}
+	
 	
 	
 	

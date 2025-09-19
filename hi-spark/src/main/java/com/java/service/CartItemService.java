@@ -8,6 +8,8 @@ import com.java.entity.CartItem;
 import com.java.entity.Product;
 
 public interface CartItemService {
+	
+	
 
 	//삭제
 	void deleteById(int cartItemId);
@@ -32,5 +34,17 @@ public interface CartItemService {
 
     //
 	Optional<CartItem> findByCartAndProduct(Cart cart, Product byId);
-
+	
+	
+	
+	
+//	
+//    CartItem addCartItem(int cartId, int productId, int quantity);
+//    CartItem addCartItem(Cart cart, int productId, int quantity); // 오버로드 가능
+//    CartItem save(CartItem cartItem);
+//    
+//    
+//    
+//    //카트아이템 삭제
+//	void deleteById(int cartItemId);
 }

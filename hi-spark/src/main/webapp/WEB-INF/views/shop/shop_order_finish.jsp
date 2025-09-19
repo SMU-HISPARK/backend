@@ -50,7 +50,7 @@
                 </div>
                 <div>
                     <span>주문금액</span>
-                    <span>₩<fmt:formatNumber value="${order.totalAmount}" pattern="#,###" /></span>
+                    <span>₩<fmt:formatNumber value="${order.totalAmount+order.deliverCost}" pattern="#,###" /></span>
                 </div>
             </div>
         </div>
@@ -117,7 +117,7 @@
                     <!-- 상품 하나 -->
                     <c:forEach var="item" items="${order.orderitems}" >
 	                    <div class="orderProduct_one">
-	                        <img src="../${item.product.productImg}" alt="상품 사진" />
+	                        <img src="${item.product.productImg}" alt="상품 사진" />
 	                        <div class="productInfo">
 	                            <p class="productName">${item.product.productName}</p>
 	                            <p class="productQty">수량: ${item.quantity}</p>

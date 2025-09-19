@@ -16,12 +16,11 @@ import com.java.repository.ProductRepository;
 @Service
 public class CartItemServiceImpl implements CartItemService {
 
-	@Autowired CartItemRepository cartItemRepository;
-    @Autowired ProductRepository productRepository;
-    @Autowired CartRepository cartRepository;
-	
-	
-	@Override  //삭제
+    @Autowired private CartItemRepository cartItemRepository;
+    @Autowired private ProductRepository productRepository;
+    @Autowired private CartRepository cartRepository;
+   
+    @Override  //삭제
 	public void deleteById(int cartItemId) {
 		cartItemRepository.deleteById(cartItemId);
 	}
@@ -49,7 +48,7 @@ public class CartItemServiceImpl implements CartItemService {
 				);
 		return item;
 	}
-	
+        
     // cartId로 찾는 버전
     @Override
     public CartItem addCartItem(int cartId, int productId, int quantity) {
@@ -74,36 +73,33 @@ public class CartItemServiceImpl implements CartItemService {
                 });
     }
 
-
     // Cart 객체로 받는 버전
     @Override
     public CartItem addCartItem(Cart cart, int productId, int quantity) {
-        Product product = productRepository.findById(productId).orElseThrow();
-        
-        return cartItemRepository.findByCart_CartIdAndProduct_ProductId(cart.getCartId(),productId)
-	    		.map(item -> {
-	            item.setQuantity(item.getQuantity() + quantity); // 수량 증가
-	            return cartItemRepository.save(item);
-	        }).orElseGet(()->{
-	            CartItem cartItem = CartItem.builder()
-	                    .cart(cart)
-	                    .product(product)
-	                    .quantity(quantity)
-	                    .build();
-	            
-	            
-	            return cartItemRepository.save(cartItem);
-	        });
-    }
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new IllegalArgumentException("Product not found"));
 
-	@Override
+        return cartItemRepository.findByCartAndProduct(cart, product)
+                .map(item -> {
+                    item.setQuantity(item.getQuantity() + quantity); // 이미 있으면 수량 증가
+                    return cartItemRepository.save(item);
+                })
+                .orElseGet(() -> {
+                    // 없으면 새로 생성
+                    CartItem cartItem = CartItem.builder()
+                            .cart(cart)
+                            .product(product)
+                            .quantity(quantity)
+                            .build();
+                    return cartItemRepository.save(cartItem);
+                });
+    }
+    
+    @Override
 	public Optional<CartItem> findByCartAndProduct(Cart cart, Product byId) {
 		Optional<CartItem> item = cartItemRepository.findByCartAndProduct(cart, byId);
 		return item;
 	}
 
 
-
-
-	
 }

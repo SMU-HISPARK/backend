@@ -20,9 +20,9 @@ import lombok.NoArgsConstructor;
 public class CartItem {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="cartitem_id")
-	private int cartitemId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="cartitem_id")
+    private int cartitemId;
 	
     @ManyToOne
     @JoinColumn(name = "cart_id")

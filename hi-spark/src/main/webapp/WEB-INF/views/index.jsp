@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="../images/hispark_crop.png">
+    <link rel="icon" href="/images/hispark_crop.png">
     <title>HI-SPARK</title>
     <style>
         *{
@@ -16,7 +16,7 @@
         .container {
             position: relative;
             width: 100%;            /* 부모 크기에 맞춰 확대/축소 */
-            background: url("images/schooldesk.png") no-repeat center / cover;
+            background: url("/images/schooldesk.png") no-repeat center / cover;
             height: 100vh;
             overflow: hidden;
         }
@@ -38,7 +38,7 @@
             left: 18%;
             width: 18.5%;
             aspect-ratio: 393 / 405;
-            background: url("images/mainobject_MD.png") no-repeat center / cover;
+            background: url("/images/mainobject_MD.png") no-repeat center / cover;
         }
         
         /* 게임페이지 */
@@ -47,7 +47,7 @@
             left: 45.7%;
             width: 27%;
             aspect-ratio: 576 / 466;
-            background: url("images/mainobject_game.png") no-repeat center / cover;
+            background: url("/images/mainobject_game.png") no-repeat center / cover;
         }
         
         /* 커뮤니티페이지 */
@@ -56,7 +56,7 @@
             left: 13%;
             width: 20%;
             aspect-ratio: 427 / 344;
-            background: url("images/mainobject_community.png") no-repeat center / cover;
+            background: url("/images/mainobject_community.png") no-repeat center / cover;
         }
         
         /* 아티스트페이지 */
@@ -65,7 +65,7 @@
             left: 36.8%;
             width: 28%;
             aspect-ratio: 611 / 448;
-            background: url("images/mainobject_artist.png") no-repeat center / cover;
+            background: url("/images/mainobject_artist.png") no-repeat center / cover;
         }
 
         /* 스케줄페이지 */
@@ -74,7 +74,7 @@
             left: 70.7%;
             width: 14%;
             aspect-ratio: 302 / 376;
-            background: url("images/mainobject_schedule.png") no-repeat center / cover;
+            background: url("/images/mainobject_schedule.png") no-repeat center / cover;
         }
 
     </style>
@@ -84,9 +84,9 @@
     <div class="container">
         <a href="/shop"><div class="box shopping"></div></a>
         <a href="/game"><div class="box game"></div></a>
-        <a href="/board"><div class="box community"></div></a>
+        <a href="/board/main"><div class="box community"></div></a>
         <a href="/artist"><div class="box artist"></div></a>
-        <a href="/schedule"><div class="box schedule"></div></a>
+        <a href="/schedule.html"><div class="box schedule"></div></a>
     </div>
     
 </body>

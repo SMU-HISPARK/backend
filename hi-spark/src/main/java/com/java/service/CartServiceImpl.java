@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.java.entity.Cart;
+import com.java.entity.CartItem;
 import com.java.entity.Member;
 import com.java.repository.MemberRepository;
 import com.java.repository.CartItemRepository;
@@ -14,27 +15,27 @@ import com.java.repository.CartRepository;
 @Service
 public class CartServiceImpl implements CartService {
 
-	@Autowired CartRepository cartRepository;
-	@Autowired MemberRepository memberRepository;
-	@Autowired CartItemRepository cartItemRepository;
-	
-	@Override
+    @Autowired private CartRepository cartRepository;
+    @Autowired private MemberRepository memberRepository;
+    @Autowired private CartItemRepository cartItemRepository;  
+
+    @Override
 	public Cart getCartByMember(Member member) {
 	    Cart cart = cartRepository.findByMember(member).orElseGet(
 	    		() -> {return (new Cart());}
 	    		);
 		return cart;
-	}
+    }
 
-	@Override
-	public Cart getCartByMember_MemberId(int memberId) {
-		Member member = memberRepository.findById(memberId)
-	            .orElseThrow(() -> new RuntimeException("회원이 존재하지 않습니다."));
-	    return cartRepository.findByMember(member)
-	            .orElseThrow(() -> new RuntimeException("장바구니가 존재하지 않습니다."));
-	}
-	
-	@Override
+    @Override
+    public Cart getCartByMember_MemberId(int memberId) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new RuntimeException("회원이 존재하지 않습니다."));
+        return cartRepository.findByMember(member)
+                .orElseThrow(() -> new RuntimeException("장바구니가 존재하지 않습니다."));
+    }
+
+    @Override
     public Cart getOrCreateCart(Member member) {
         return cartRepository.findByMember(member)
                 .orElseGet(() -> {
@@ -44,8 +45,8 @@ public class CartServiceImpl implements CartService {
                     return cartRepository.save(newCart);
                 });
     }
+
+
+
 	
-
-
-
 }

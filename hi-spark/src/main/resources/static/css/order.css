@@ -358,7 +358,7 @@ input[id="paidCreditValue"]{
     padding-left: 7px;
 }
 
-.creditInputDiv button{
+.paymethodradio button{
     height:21.6px;
     padding: 0.3px 5px;
     border:1px solid #bbb;
@@ -368,14 +368,21 @@ input[id="paidCreditValue"]{
     font-size: 12px;
 }
 
-.creditInputDiv #creditConfirm{
+.paymethodradio #kakaoPayBtn{
+	color: #333B58;
+	border:1px solid #ffd500;
+	background-color:#ffe300;
+}
+
+
+.creditInputDiv #payAll{
     color:#fafafa;
     background-color: #a0a0a0;
-    border:1px solid #a0a0a0;
+    border:1px solid #a0a0a0;;
 }
 
 #paidCredit-detail span{
-    color:#636363;
+    color:#636363
 }
 
 
