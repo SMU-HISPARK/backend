@@ -10,6 +10,10 @@ public interface MemberService {
 	void save(Member member);
 
 	MemberDto findByLoginIdAndPassword(String loginId, String password);
+	// cart
+	Member findById(Integer memberId);
+	//login
+	Optional<Member> findByLoginId(String loginId);
 
-	Member findById(int memberId);
+	Member findById(String loginId);
 }

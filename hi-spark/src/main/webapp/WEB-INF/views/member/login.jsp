@@ -42,6 +42,7 @@
       padding: 0;
       background: #fff;
       color: #1a1a1a;
+      overflow-x:hidden
     }
     .icons {
       display: flex;
@@ -137,6 +138,7 @@
       color: #1a1a1a;
       font-weight: 700;
     }
+    
   </style>
   <script>
   	if("${notFound}" == "1"){
@@ -158,10 +160,6 @@
         <input type="password" name="password" placeholder="비밀번호" class="input-box" required>
         <button type="submit" class="btn btn-login">로그인</button>
       </form>
-      <div class="links">
-        <a href="#">아이디 찾기</a> |
-        <a href="#">비밀번호 찾기</a>
-      </div>
       <div class="signup-box">
         <p><strong>아직 회원이 아니신가요?</strong></p>
         <p>지금 회원가입을 하시면<br>다양하고 특별한 혜택이 준비되어 있습니다.</p>
@@ -173,6 +171,4 @@
   	
   </div>
   
-</body>
-</html>
 <%@ include file="../layout/footer.jsp" %>

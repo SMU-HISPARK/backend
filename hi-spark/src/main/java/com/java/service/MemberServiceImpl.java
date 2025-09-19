@@ -16,7 +16,9 @@ public class MemberServiceImpl implements MemberService {
 	
 	@Override
 	public void save(Member member) {
+		
 		memberRepository.save(member);
+		
 	}
 
 	@Override
@@ -24,18 +26,29 @@ public class MemberServiceImpl implements MemberService {
 		
 		Member member = memberRepository.findByLoginIdAndPassword(loginId, password).orElse(null);
 		if(member == null) return null;
-		MemberDto memfind = new MemberDto(member.getMemberId(), member.getLoginId(), member.getNickname());
+		MemberDto memfind = new MemberDto(member.getMemberId(),member.getLoginId(), member.getNickname());
 		
 		return memfind;
 	}
+	
+	
 
 	@Override
-	public Member findById(int memberId) {
-		Member member = memberRepository.findById(memberId).orElseGet(
-				()-> {return(new Member());}
-				);
-		
+	public Member findById(String loginId) {
+	    return memberRepository.findByLoginId(loginId).orElse(null);
+	}
+
+	@Override
+	public Member findById(Integer memberId) {
+		Member member = memberRepository.findById(memberId).get();
 		return member;
 	}
 
+	@Override
+	public Optional<Member> findByLoginId(String loginId) {
+		Optional<Member> member = memberRepository.findByLoginId(loginId);
+		return member;
+	}
+	
+	
 }

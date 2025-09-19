@@ -13,6 +13,15 @@
 }
 
 
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Pretendard';
+    color:#1a1a1a;
+}
+
+ul,ol{list-style: none;}
 
 
 

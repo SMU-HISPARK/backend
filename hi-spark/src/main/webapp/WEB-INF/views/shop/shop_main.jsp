@@ -3,17 +3,16 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
-<!DOCTYPE html>
-<html>
 
+<!DOCTYPE html>
+<html lang="ko">
 	<head>
 		<meta charset="UTF-8">
 		<title>Hi-Spark Shop</title>
-		<link rel="stylesheet" type="text/css" href="css/shop.css">
-		<link rel="stylesheet" type="text/css" href="css/base.css">
+		<link rel="stylesheet" type="text/css" href="/css/shop.css">
+		<link rel="stylesheet" type="text/css" href="/css/base.css">
 		<link rel="icon" href="/images/hispark_crop.png">
 		<script src="http://code.jquery.com/jquery-latest.min.js"></script>
-		
 	</head>
 	<body>
 		<div class="wrap">
@@ -21,7 +20,7 @@
 			<div id="header">
 				
 				<div id="snbBox">
-					<a href="/shop"><h1><img src="images/hispark_crop.png" alt="(로고)" /></h1></a>
+					<a href="/shop"><h1><img src="/images/hispark_crop.png" alt="(로고)" /></h1></a>
 					<div id="snb">
 						<ul>
 							<c:if test="${not empty sessionScope.session_name}">
@@ -29,10 +28,10 @@
 							    <li><a href="/member/logout">로그아웃</a></li>
 							</c:if>
 							<c:if test="${empty sessionScope.session_name}">
-							    <li><a href="/member/login">로그인</a></li>
+							    <li><a href="/member/login?redirectTo=${pageContext.request.requestURI}">로그인</a></li>
 							    <li><a href="/member/step01">회원가입</a></li>
 							</c:if>
-							<li><a href="main.html">메인으로</a></li>
+							<li><a href="/">메인으로</a></li>
 						</ul>
 
 					</div>
@@ -40,13 +39,12 @@
 					<!-- 우측 아이콘 -->
 					<div class="hMenu hRight">
 					<a href="/shop/cart" class="cartWrapper">
-						<img src="images/cart.png" style="width:29px;" />
+						<img src="/images/cart.png" style="width:29px;" /> <!--여기부터 다음줄까지-->
 						<span class="cartBadge" style="display:none;" data-count="${sessionScope.cart_count != null ? sessionScope.cart_count : 0}">
 					    	${sessionScope.cart_count != null ? sessionScope.cart_count : 0}
 					    </span>
-						
 					</a>
-					<a href="/mypage/shop"><img src="images/user.png" style="width:28px;" /></a>
+					<a href="/mypage/shop"><img src="/images/user.png" style="width:28px;" /></a>
 				</div>
 				</div>
 			</div>
@@ -54,7 +52,7 @@
 			<!-- container -->
 			<div class="container">
 				<div class="banner">
-					<img src="https://file.cafe24cos.com/banner-admin-live/upload/vlastshop/0656f217-1310-4a55-f6d8-060104815bee.jpeg">
+					<img src="/images/banner.png" style="width:100%;"/>
 				</div>
 				<div class="list_text">
 					<p>All Products</p>
@@ -89,127 +87,9 @@
 						</c:forEach>
 					
 					
-				<!--  	<div class="product">
-						<div class="product_img">
-							<img src="../images/productimage/spark_keyring.jpg"/>
-						</div>
-						<div class="product_name">SPARK KEYRING</div>
-						<div class="product_price">22,000원</div>
-					</div>
-					<div class="product">
-						<div class="product_img">
-							<img src="../images/productimage/acrylic_keyring_JEONGHUN.png"/>
-						</div>
-						<div class="product_name">JEONGHUN ACRYLIC KEYRING</div>
-						<div class="product_price">12,000원</div>
-					</div>
-					<div class="product">
-						<div class="product_img">
-							<img src="../images/productimage/acrylic_keyring_YUHYUN.png"/>
-						</div>
-						<div class="product_name">YUHYUN ACRYLIC KEYRING</div>
-						<div class="product_price">12,700원</div>
-					</div>
-					<div class="product">
-						<div class="product_img">
-							<img src="../images/productimage/acrylic_keyring_KYOUNG.png"/>
-						</div>
-						<div class="product_name">KYOUNG ACRYLIC KEYRING</div>
-						<div class="product_price">12,000원</div>
-					</div>
-					<div class="product">
-						<div class="product_img">
-							<img src="../images/productimage/acrylic_keyring_SEUNGMIN.png"/>
-						</div>
-						<div class="product_name">SEUNGMIN ACRYLIC KEYRING</div>
-						<div class="product_price">12,000원</div>
-					</div>
-					<div class="product">
-						<div class="product_img">
-							<img src="../images/productimage/acrylic_keyring_JION.png"/>
-						</div>
-						<div class="product_name">JION ACRYLIC KEYRING</div>
-						<div class="product_price">12,000원</div>
-					</div>
-					<div class="product">
-						<div class="product_img">
-							<img src="../images/productimage/tshirt_white.png"/>
-						</div>
-						<div class="product_name">SPARK T-SHIRT WHITE</div>
-						<div class="product_price">17,000원</div>
-					</div>
-					<div class="product">
-						<div class="product_img">
-							<img src="../images/productimage/tshirt_black.png"/>
-						</div>
-						<div class="product_name">SPARK T-SHIRT BLACK</div>
-						<div class="product_price">17,000원</div>
-					</div>
-					<div class="product">
-						<div class="product_img">
-							<img src="../images/productimage/tumbler.png"/>
-						</div>
-						<div class="product_name">HI-SPARK TUMBLER</div>
-						<div class="product_price">17,000원</div>
-					</div>
-					<div class="product">
-						<div class="product_img">
-							<img src="../images/productimage/karabiner.png"/>
-						</div>
-						<div class="product_name">HI-SPARK KARABINER</div>
-						<div class="product_price">17,000원</div>
-					</div>
-					<div class="product">
-						<div class="product_img">
-							<img src="../images/productimage/light.png"/>
-						</div>
-						<div class="product_name">HISPARK FAN LIGHT</div>
-						<div class="product_price">17,000원</div>
-					</div>
-					<div class="product">
-						<div class="product_img">
-							<img src="../images/productimage/album1.png"/>
-						</div>
-						<div class="product_name">1ST ALBUM HISPARK</div>
-						<div class="product_price">17,000원</div>
-					</div>
-					
-					
-				</div>
-				<!-- <div class="paginator">
-					<h2>페이지네이터</h2>
-				</div> -->
-				
 			</div>
-			</div>
-
-
-    <div id="footerWrap">
-		<div id="footer">
-			
-			<div id="finfo">
-				<div id="flogo"><img src="images/hispark.png" alt="하이스파크 로고" /></div>
-				<address>
-					<ul>
-						<li>㈜스파크</li>
-						<li>대표자 김슬비</li>
-						<li class="tnone">주소 서울시 용산구 독서당로 111(한남더힐)</li>
-						<li class="webnone">소비자상담실 02)123-4567</li>
-						<li>사업자등록번호 012-345-6789</li>
-						<li class="tnone">통신판매신고 제 강남 – 1160호</li>
-						<li class="copy">COPYRIGHT © 2025 HI-SPARK <span>ALL RIGHTS RESERVED.</span></li>
-					</ul>
-				</address>
-
-			</div>
-            <div class="social-links">
-                <a href="https://www.youtube.com/user/smtown/" class="youtube-button" target="_blank" rel="noopener noreferrer"></a>
-                <a href="https://www.instagram.com/hispark__official/" class="instagram-button" target="_blank" rel="noopener noreferrer"></a>
-                <a href="https://twitter.com/hispark5/" class="x-button" target="_blank" rel="noopener noreferrer"></a>
-                <a href="https://www.facebook.com/smtown/" class="facebook-button" target="_blank" rel="noopener noreferrer"></a>
-            </div>
 		</div>
 	</div>
-</body>
+
 <script type="text/javascript" src="/js/shop.js"></script>
-</html>
+<%@ include file="../layout/footer.jsp" %>

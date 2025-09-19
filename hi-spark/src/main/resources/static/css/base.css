@@ -7,24 +7,16 @@
 
 
 
-*{margin: 0; padding:0;
-box-sizing: border-box;
-}
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Pretendard';
-    color:#1a1a1a;
-}
-
-ul,ol{list-style: none;}
-
-
-
+*{margin: 0; padding:0;}
 .wrap{
     margin: 0 auto;
 }
+
+body {
+    overflow-x: hidden;
+    max-width: 100vw;
+}
+
 #header{
     margin-left: calc(50% - 50vw);
     border-bottom : 0.5px solid rgb(232, 232, 232);
@@ -101,6 +93,7 @@ ul,ol{list-style: none;}
 
 #footerWrap {
     width: 100%;
+    
     margin-top: 100px;
     background: #ebebeb;
     padding: 20px 0;
@@ -108,6 +101,7 @@ ul,ol{list-style: none;}
 
 #footer {
     max-width: 1200px;
+    overflow:hidden;
     margin: 0 auto;
     display: flex;
     justify-content: space-between;

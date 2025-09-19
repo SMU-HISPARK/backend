@@ -1,13 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<%@ include file="../layout/header.jsp" %>
+    pageEncoding="UTF-8" isELIgnored="false"%>
+<%@ include file="../layout/headerM.jsp" %>
 <script  src="http://code.jquery.com/jquery-latest.min.js"></script>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/css/mypage.css">
+    <link rel="stylesheet" href="../css/mypage/mypage.css">
     <title>회원정보</title>
     <style>
 
@@ -22,7 +22,7 @@
         .form-group {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap : 10px;
         }
 
         .form-group label {
@@ -44,17 +44,15 @@
             width: 540px; 
         }
 
-        /* 수정 불가능한 필드 스타일 */
         .form-group input[readonly]:not(.editable) {
             background-color: #f0eeee;
         }
+        
 
-        /* 비밀번호 확인 필드 (초기 숨김) */
         .password-check {
             display: none;
         }
 
-        /* 버튼 */
         .btn {
             border: 1px solid #ccc;
             padding: 10px 20px;
@@ -109,31 +107,31 @@
             <div class="profile-details">
                 <div class="form-group">
                     <label>아이디</label>
-                    <input type="text" value="aaa" readonly>
+                    <input type="text" value="${m.loginId}" readonly>
                 </div>
                 <div class="form-group">
                     <label>이름</label>
-                    <input type="text" value="홍길동" readonly>
+                    <input type="text" value="${m.name}" readonly>
                 </div>
                 <div class="form-group">
                     <label>닉네임</label>
-                    <input type="text" class="editable" value="길동스" readonly>
+                    <input type="text" class="editable" name = "nickname" value="${m.nickname}" readonly>
                 </div>
                 <div class="form-group">
                     <label>전화번호</label>
-                    <input type="text" class="tel editable" value="010" readonly>
+                    <input type="text" class="tel editable" name = "phone1" value="${m.phone1}" readonly>
                     <a>-</a>
-                    <input type="text" class="tel editable" value="1234" readonly>
+                    <input type="text" class="tel editable" name = "phone2" value="${m.phone2}" readonly>
                     <a>-</a>
-                    <input type="text" class="tel editable" value="5678" readonly>
+                    <input type="text" class="tel editable" name = "phone3" value="${m.phone3}" readonly>
                 </div>
                 <div class="form-group">
                     <label>이메일</label>
-                    <input type="email" value="hong@example.com" readonly>
+                    <input type="email" value="${m.email}" readonly>
                 </div>
                 <div class="form-group">
                     <label>가입일</label>
-                    <input type="text" value="2024-01-15" readonly>
+                    <input type="text" value='<fmt:formatDate value="${m.createdAt}" pattern = "YYYY-MM-dd"/>' readonly>
                 </div>
                 <div class="form-group password-check" id="passwordCheck">
                     <label>비밀번호 확인</label>
@@ -190,7 +188,7 @@
             const editButton = document.getElementById('editBtn');
             const passwordCheckDiv = document.getElementById('passwordCheck');
             const passwordInput = document.getElementById('passwordInput');
-            const correctPassword = '1234'; // 실제로는 서버에서 확인해야 함
+            const correctPassword = '${m.password}'; 
             
             editButton.addEventListener('click', function() {
                 const editableInputs = document.querySelectorAll('.editable');
@@ -222,7 +220,32 @@
                     }
                     
                 } else {
+                	
                     // 저장
+                    const nickname = document.querySelector('input[name="nickname"]').value;
+                    const phone1 = document.querySelector('input[name="phone1"]').value;
+                    const phone2 = document.querySelector('input[name="phone2"]').value;
+                    const phone3 = document.querySelector('input[name="phone3"]').value;
+                    
+                    //ajax
+                    $.ajax({
+                    	url:"/mypage/member/update",
+                    	type:"POST",
+                    	data:{
+                    		nickname:nickname,
+                    		phone1:phone1,
+                    		phone2:phone2,
+                    		phone3:phone3
+                    	},
+                    	success:function(data){
+                    		console.log("nickname : " + nickname);
+                    		console.log("phone : " + phone1 + phone2 + phone3);
+                    	}
+                    	
+                    })//ajax
+                    
+                    
+                    
                     editableInputs.forEach(input => {
                         input.setAttribute('readonly', true);
                         input.style.backgroundColor = '#f0eeee';

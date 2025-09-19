@@ -1,11 +1,12 @@
+* { box-sizing: border-box; }
+
 /* container */
-.mainBox{
-	box-sizing: border-box;
+.container{
     /* border: 1px solid red; */
     margin: 0 auto;
     max-width: 1230px;
 }
-.mainBox .product_detail{
+.product_detail{
     /* border: 1px solid black; */
     margin: 20px 0 80px;
     height: 600px;
@@ -13,21 +14,21 @@
 }
 
 /* 상품 이미지 */
-.mainBox .product_img {
+.product_img {
     /* border: 1px solid blue; */
     padding: 30px 0;
     width: 50%;
 }
-.mainBox .product_img img {
+.product_img img {
     width:570px;
 }
 
 /* 상품 정보 */
-.mainBox .product_data {
+.product_data {
     padding: 0 15px;
     width: 50%;
 }
-.mainBox .product_name {
+.product_name {
     border-bottom: 1px solid #1a1a1a;
     margin: 20px 0;
     padding-bottom: 15px;
@@ -38,13 +39,13 @@
     display: flex;
     align-items: center;
 }
-.mainBox .product_text table {
+.product_text table {
     /* border: 1px solid black; */
     width:100%;
     display: flex;
     justify-items: center;
 }
-.mainBox .product_text th {
+.product_text th {
     /* border: 1px solid black; */
     padding: 5px 8px 5px 0;
     width: 50%;
@@ -54,7 +55,7 @@
     text-align: left;
     vertical-align: middle;
 }
-.mainBox .product_text td {
+.product_text td {
     /* border: 1px solid black; */
     padding: 5px 8px 5px 0;
     font-size: 15px;
@@ -63,7 +64,8 @@
     vertical-align: middle;
     width:100px
 }
-.mainBox #product_text_01{
+
+#product_text_01{
     font-weight: 700;
     color: #035fe0;
     padding: 5px 8px 5px 0;
@@ -72,15 +74,15 @@
     vertical-align: middle;
     width:100px
 }
-.mainBox .product_price{
+.product_price{
     font-weight: 700;
 	
 }
-.mainBox .product_option th,
-.mainBox .product_option td {
+.product_option th,
+.product_option td {
     padding: 20px 0;
 }
-.mainBox .product_option select{
+.product_option select{
     padding: 5px 10px;
     width: 100%;
     height: 40px;
@@ -90,13 +92,13 @@
     border: 1px solid #ccc;
     outline: none;
 }
-.mainBox .product_total th {
+.product_total th {
     padding: 20px 0;
     font-size: 20px;
     font-weight: 400;
     color: #1a1a1a;
 }
-.mainBox .product_total td {
+.product_total td {
     padding: 20px 0;
     font-size: 25px;
     font-weight: 700;
@@ -104,21 +106,21 @@
     
 }
 /* 장바구니,구매하기 버튼 */
-.mainBox .product_button {
+.product_button {
     margin: 10px 0;
     height: 50px;
     display: flex;
     gap: 15px;
 }
-.mainBox .quantity-title{
+.quantity-title{
 	color:  #1a1a1a;
 }
-.mainBox .quantity-control {
+.quantity-control {
     display: flex;
     align-items: center;
-    justify-content: flex-end;
+ /*   justify-content: flex-end;*/
 }
-.mainBox .quantity-btn {
+.quantity-btn {
     padding: 2px 6px;
     cursor: pointer;
     background: white;
@@ -126,7 +128,7 @@
     height: 36px;
     border:1px solid #ccc;
 }
-.mainBox .quantity-btn-plus{
+.quantity-btn-plus{
     padding: 2px 6px;
     cursor: pointer;
     background: white;
@@ -134,7 +136,7 @@
     height: 36px;
     border:1px solid #ccc;
 }
-.mainBox .quantity-btn-minus{
+.quantity-btn-minus{
     padding: 2px 6px;
     cursor: pointer;
     background: white;
@@ -142,7 +144,7 @@
     height: 36px;
     border:1px solid #ccc;
 }
-.mainBox .quantity-input {
+.quantity-input {
     border-top:1px solid #ccc;
     border-bottom:1px solid #ccc;
     border-left:none;
@@ -153,7 +155,7 @@
     padding: 2px;
 }
 
-.mainBox .action-buttons {
+.action-buttons {
     margin: 20px 0;
     text-align: center;
     display:flex;
@@ -162,7 +164,7 @@
 }
 
 
-.mainBox .basket {
+.basket {
     background-color: #1a1a1a;
     color: #fafafa;
     width: 100%;
@@ -171,7 +173,7 @@
     font-size: 15px;
     font-weight: 700px;
 }
-.mainBox #cartFrm {
+#cartFrm {
     width: 100%;
     border:1px solid #ccc;
     background-color: #fafafa;
@@ -181,7 +183,7 @@
     display: flex;
     align-items: center;
 }
-.mainBox .buy {
+.buy {
     /* width: 160px; */
     width: 50%;
     background-color: #1a1a1a;
@@ -192,11 +194,11 @@
 }
 
 /* 상세정보 */
-.mainBox .Information {
+.Information {
     /* border: 1px solid black; */
     text-align: center;
 }
-.mainBox .Information p {
+.Information p {
     border-top: 1px solid #1a1a1a;
     border-bottom: 1px solid #ccc;
     padding: 18px 0;
@@ -206,6 +208,6 @@
     color: #1a1a1a;
     /* background-color: #fafafa; */
 }
-.mainBox .Information img {
+.Information img {
     margin: 40px 0;
 }

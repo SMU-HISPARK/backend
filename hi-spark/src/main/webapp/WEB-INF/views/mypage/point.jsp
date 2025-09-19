@@ -1,13 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ include file="../layout/header.jsp" %>
+<%@ include file="../layout/headerM.jsp" %>
 <script  src="http://code.jquery.com/jquery-latest.min.js"></script>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/css/mypage.css">
+    <link rel="stylesheet" href="/css/mypage/mypage.css">
     <title>회원정보</title>
     <style>
         .profile-details {
@@ -42,11 +42,11 @@
             background : #1a1a1a;
             color : #FFF;
             padding: 10px 15px;
-            margin : 10px 0px 20px 0;
+            margin : 30px auto;
             cursor: pointer;
             font-size: 14px;
             font-weight: 400;
-
+            display: block;
         }
 
         .btn:hover {
@@ -54,8 +54,9 @@
         }
 
         .charge {
-            width: 90%;
+            width: 550px;
             border-collapse: collapse;
+            margin: 0 auto; 
         }
 
         .charge tr {
@@ -65,6 +66,7 @@
         .charge td {
             padding: 12px 8px;
         }
+        
     </style>
 </head>
 <body>
@@ -93,96 +95,83 @@
         <div class="content">
             <div class="profile-details">
                 <div class="form-group">
-                    <p>보유 적립금 : <span id="currentPoint">0</span> P</p>
+                    <p>보유 적립금 : <span id="currentPoint">${currentPoint}</span> P</p>
                 </div>
+                <form id="chargeFrm" action="/mypage/point" method="POST" onsubmit="return chargePoint()">
                 <table class = "charge">
                     <tr>
-                        <td><input type = "radio" name = "point" value = "1000"></td>
+                        <td><input type="radio" name="point" value="1000"></td>
                         <td class = "point">1,000P</td>
                         <td class = "mon">1,000원</td>
                     </tr>
                     <tr>
-                        <td><input type = "radio" name = "point" value = "3000"></td>
+                        <td><input type="radio" name="point" value="3000"></td>
                         <td class = "point">3,000P</td>
                         <td class = "mon">3,000원</td>
                     </tr>
                     <tr>
-                        <td><input type = "radio" name = "point" value = "5000"></td>
+                        <td><input type="radio" name="point" value="5000"></td>
                         <td class = "point">5,000P</td>
                         <td class = "mon">5,000원</td>
                     </tr>
                     <tr>
-                        <td><input type = "radio" name = "point" value = "10000"></td>
+                        <td><input type="radio" name="point" value="10000"></td>
                         <td class = "point">10,000P</td>
                         <td class = "mon">10,000원</td>
                     </tr>
                     <tr>
-                        <td><input type = "radio" name = "point" value = "15000"></td>
+                        <td><input type="radio" name="point" value="15000"></td>
                         <td class = "point">15,000P</td>
                         <td class = "mon">15,000원</td>
                     </tr>
                     <tr>
-                        <td><input type = "radio" name = "point" value = "20000"></td>
+                        <td><input type="radio" name="point" value="20000"></td>
                         <td class = "point">20,000P</td>
                         <td class = "mon">20,000원</td>
                     </tr>
                     <tr>
-                        <td><input type = "radio" name = "point" value = "30000"></td>
+                        <td><input type="radio" name="point" value="30000"></td>
                         <td class = "point">30,000P</td>
                         <td class = "mon">30,000원</td>
                     </tr>
                     <tr>
-                        <td><input type = "radio" name = "point" value = "50000"></td>
+                        <td><input type="radio" name="point" value="50000"></td>
                         <td class = "point">50,000P</td>
                         <td class = "mon">50,000원</td>
                     </tr>
                     <tr>
-                        <td><input type = "radio" name = "point" value = "100000"></td>
+                        <td><input type="radio" name="point" value="100000"></td>
                         <td class = "point">100,000P</td>
                         <td class = "mon">100,000원</td>
                     </tr>
                 </table>
-                <button class = "btn" onclick = "chargeBtn()"> 충전하기 </button>
+                <button type = "submit" class = "btn"> 충전하기 </button>
+                </form>
             </div>
         </div>
     </div>
 
-
-    <script>
-        // 페이지 로드시 저장된 적립금 불러오기
-        window.onload = function() {
-            const savedPoint = localStorage.getItem('userPoint') || '0';
-            document.getElementById('currentPoint').textContent = Number(savedPoint).toLocaleString();
-        }
-
-        function chargeBtn(){
-            // 선택된 라디오 버튼 찾기
-            const selectedPoint = document.querySelector('input[name="point"]:checked');
-            
-            if (!selectedPoint) {
-                alert("충전할 적립금을 선택해주세요.");
-                return;
-            }
-            
-            const chargeAmount = parseInt(selectedPoint.value);
-            const currentPoint = parseInt(localStorage.getItem('userPoint') || '0');
-            
-            if(confirm(`${chargeAmount.toLocaleString()}P를 충전하시겠습니까?`)){
-                // 새로운 적립금 계산
-                const newPoint = currentPoint + chargeAmount;
-                
-                // localStorage에 저장
-                localStorage.setItem('userPoint', newPoint.toString());
-                
-                // 화면에 업데이트
-                document.getElementById('currentPoint').textContent = newPoint.toLocaleString();
-                
-                // 라디오 버튼 선택 해제
-                selectedPoint.checked = false;
-                
-                alert(`${chargeAmount.toLocaleString()}P가 충전되었습니다.`);
-            }
-        }
+	<script>
+		document.addEventListener('DOMContentLoaded', function() {
+		    const currentPoint = ${currentPoint != null ? currentPoint : 0};
+		    document.getElementById('currentPoint').textContent = currentPoint.toLocaleString();
+		});
+	
+		function chargePoint() {
+		    const selectedPoint = document.querySelector('input[name="point"]:checked');
+		    if (!selectedPoint) {
+		        alert("충전할 적립금을 선택해주세요.");
+		        return false;
+		    }
+		    
+		    const chargeAmount = parseInt(selectedPoint.value);
+		    if (!confirm(chargeAmount.toLocaleString() + 'P를 충전하시겠습니까?')) {
+		        return false;
+		    }
+	
+		    return true; // 폼 제출
+		}
+	
     </script>
 </body>
 </html>
