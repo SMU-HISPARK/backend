@@ -61,8 +61,13 @@
                 <a href="/artist/detail?ano=5"><img src="../images/artistimage/정훈폴라.png" class="polaroid"></a>
                 <img src="../images/artistimage/오브젝트_정훈.png" class="object jh">
             </div>
-
         </div>
+		<div id="hisparksong" style="margin-top: 40px; ">
+			<p  style= "color: white; padding-left: 10px; padding-left: 40px; margin-bottom: 10px;">하이스파크의 노래를 들어보세요!</p>
+		    <audio controls>
+		       <source src="${pageContext.request.contextPath}/resources/music/High Spark.mp3" type="audio/mpeg">
+		   	</audio>
+		</div>
     </div>
 
     
