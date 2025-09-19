@@ -23,7 +23,6 @@ configurations {
 repositories {
 	mavenCentral()
 }
-
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
@@ -44,7 +43,57 @@ dependencies {
 	
 	//파일업로드
 	implementation("commons-io:commons-io:2.20.0")
+	
+	// log출력 - jdbc 변동
+	implementation 'org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4.1:1.16'
+	
+	// email text메일 보냄
+	implementation 'org.springframework.boot:spring-boot-starter-mail'
+	// email html메일 보냄
+	implementation 'javax.mail:javax.mail-api:1.6.2'
+	
+	// member
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+	
+	
+	// 스케줄
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	annotationProcessor 'org.projectlombok:lombok'
+	testImplementation 'org.springframework.security:spring-security-test'
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+    
+    // Google API 간단 버전
+    implementation 'com.google.apis:google-api-services-calendar:+'
+    implementation 'com.google.api-client:google-api-client:+'
+    implementation 'com.google.oauth-client:google-oauth-client-jetty:+'
+    implementation 'me.paulschwarz:spring-dotenv:2.5.4'
+    
+     // member
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+   
+   	// 아티스트 챗봇
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'com.google.cloud:google-cloud-dialogflow:4.1.7'
+    implementation 'com.google.cloud:google-cloud-dialogflow:4.43.0'
+    implementation 'com.google.cloud:google-cloud-core:2.37.0'
+    implementation 'com.google.api:gax:2.48.0'
+   
+	// Dialogflow API 클라이언트
+    implementation 'com.google.cloud:google-cloud-dialogflow:4.43.0'
+    
+    // GAX (CredentialsProvider 포함)
+    implementation 'com.google.api:gax:2.48.0'
+    
+    // 구글 인증용
+    implementation 'com.google.auth:google-auth-library-oauth2-http:1.23.0'
+    
+    
+	// 관리자페이지 - 엑셀 내보내기
+	implementation 'org.apache.poi:poi:5.2.3'
+    implementation 'org.apache.poi:poi-ooxml:5.2.3'
+    
 }
+	
 
 tasks.named('test') {
 	useJUnitPlatform()
