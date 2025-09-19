@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
     <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -76,12 +77,30 @@
             aspect-ratio: 302 / 376;
             background: url("/images/mainobject_schedule.png") no-repeat center / cover;
         }
+        
+        #snb{position: absolute; top: 0; right: 0; margin:0 27px 0 0;}
+		#snb ul{width:100%; list-style: none; }
+		#snb ul li{float:left; height:25px; line-height:25px; padding:8px 2px 0 18px;}
+		#snb ul li a{text-decoration : none; color:#fafafa; font-size:11px; font-weight:600;}
 
     </style>
 </head>
 <body>
-
     <div class="container">
+		<div id="snb">
+			<ul>
+				<c:if test="${not empty sessionScope.session_name}">
+				    <li><a href="/mypage/member">${sessionScope.session_name}님</a></li>
+				    <li><a href="/member/logout">로그아웃</a></li>
+				</c:if>
+				<c:if test="${empty sessionScope.session_name}">
+				    <li><a href="/member/login?redirectTo=${pageContext.request.requestURI}">로그인</a></li>
+				    <li><a href="/member/step01">회원가입</a></li>
+				</c:if>
+				<li><a href="/">메인으로</a></li>
+			</ul>
+		</div>
+		
         <a href="/shop"><div class="box shopping"></div></a>
         <a href="/game"><div class="box game"></div></a>
         <a href="/board/main"><div class="box community"></div></a>
