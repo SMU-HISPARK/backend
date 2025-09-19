@@ -9,6 +9,8 @@ public interface MemberService {
 
 	MemberDto findByLoginIdAndPassword(String loginId, String password);
 
-	boolean existsByloginId(String loginId);
+	boolean existsByLoginId(String loginId);
+
+	boolean existsByEmail(String email);
 
 }

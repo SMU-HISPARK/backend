@@ -37,7 +37,13 @@ public class MemberController {
 	@ResponseBody
 	@PostMapping("/member/idCheck")
 	public boolean idCheck(@RequestParam("loginId") String loginId) {
-		return !mServ.existsByloginId(loginId);
+		return !mServ.existsByLoginId(loginId);
+	}
+	
+	@ResponseBody
+	@PostMapping("/member/mailCheck")
+	public boolean mailCheck(@RequestParam("email") String email) {
+		return !mServ.existsByEmail(email);
 	}
 	
 	

@@ -30,8 +30,13 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public boolean existsByloginId(String loginId) {
+	public boolean existsByLoginId(String loginId) {
 		return mRep.existsByLoginId(loginId);
+	}
+
+	@Override
+	public boolean existsByEmail(String email) {
+		return mRep.existsByEmail(email);
 	}
 
 	
