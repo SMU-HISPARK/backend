@@ -8,36 +8,129 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>test starting page</title>
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="/css/gamepage.css">
     <link rel="stylesheet" href="/css/fonts.css">
+    <!-- <script defer src="/js/infographic.js"></script> -->
     <style>
 
         /* result_section */
         .result_box {
-            background-color: #fafafa;
+            /*background-color: #fafafa;*/
             min-height: 650px;
             justify-content: space-between;
             text-align: center;
             font-family: 'KccHanbit', sans-serif;
         }
+        .result_title {
+            margin-top: 20px;
+        }
         .result_box h3 {
             font-size:1.6rem;
             font-weight: normal;
+            margin: 10px 0;
         }
         .result_box .result_button_box {
             /*border: 1px solid black;*/
-            height:73px; width:100%;
-            margin-bottom: 25px;
-            display:flex; flex-direction: row; justify-content: center; align-items: center; gap: 20px;
+            height:100px; width:100%;
+            margin-bottom: 15px;
+            display:flex; flex-direction: row; justify-content: center; align-items: center; gap: 60px;
         }
+        /*.icon-buttons {
+        display: flex; gap: 1rem; justify-content: center;
+        }*/
+        .viewpage_button, .save_button {
+            /*
+            display: flex; flex-direction: column; align-items: center;
+            justify-content: center;
+            width: 72px; height: 72px;
+            border: none; border-radius: 12px;
+            background: #fff; box-shadow: 0 2px 6px rgba(0,0,0,.1);
+            cursor: pointer;
+            */
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            padding: 0;
+            width: 120px; height: 100px;
+            /*border-radius: 16px;*/
+            /*shadow: 0 4px 10px rgba(0,0,0,0.15);*/
+            display: flex; align-items: center; justify-content: flex-start; flex-direction: column;
+            gap: 10px;
+            /*transition: transform .15s, box-shadow .15s;*/
+        }
+        .result_button_box img:hover { 
+            background: transparent;
+            transform: translateY(-3px);
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
+            
+        }
+        .result_button_box img { 
+            /*
+            width: 28px; height: 28px; margin-bottom: .4rem; 
+            */
+            background-color: transparent;
+            width: 50%; height: auto;
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
+        }
+        /*
+        .result_button_box span { 
+            font-size: .75rem; color: #444; 
+        }
+            */
+        /*
         .result_button_box button {
             height: 70px; width: 180px;
         }
-
+            */
         .button_box {
             min-height:250px;
-            background-color: #fafafa;
+            /*background-color: #fafafa;*/
         }
+        /*
+        .button_box button {
+            width: 320px;
+        }
+        */
+        .gradient {
+            background: linear-gradient(145deg, #3ca7ff, #ffb6f0);
+        }
+        .candy {
+            /*height: 70px; width: 230px;*/
+            font-family: 'KccHanbit', sans-serif;
+            /*margin-bottom: 5px;*/
+            border: none;
+            border-radius: 999px;
+            padding: 14px 20px;
+            font-size: /*18px*/ 1.0rem;
+            font-weight: normal;
+            color: #fff;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            /*box-shadow: 0 6px 12px rgba(0,0,0,0.2), inset 0 4px 8px rgba(255,255,255,0.5);*/
+            /*transition: all 0.2s ease;*/
+            cursor: pointer;
+            transition: filter .2s, transform .2s;
+        }
+        .candy:hover{
+            filter: brightness(1.1);
+            transform: translateY(-2px);
+        }
+        .candy:active { 
+            filter: brightness(.95);
+            transform: translateY(0);
+        }
+        .share_button, .retry_button {
+            
+            background: rgba(0,0,0,0.05);
+            border: none;
+            border-radius: 12px;
+            padding: .6rem 1rem;
+            font-size: 0.9rem;
+            color: #1a1a1a;
+            cursor:pointer;
+        }
+        .share_button:hover, .retry_button:hover { background: rgba(0,0,0,0.08); }
+        
         .result_image {
             width: 100%;
             height: 250px;
@@ -58,14 +151,16 @@
             justify-content: center;
             align-items: center;
         }
+        /*
         .modal_content {
             background-color: #fafafa;
             max-width: 80%;
             max-height: 100%;
             overflow-y: auto;
             
-            /*display: flex; flex-direction: column; align-items: center; gap: 1.5%;*/
+            display: flex; flex-direction: column; align-items: center; gap: 1.5%;
         }
+        */
 
         .topbar {
             border:1px solid black;
@@ -113,25 +208,95 @@
             flex: 1;
         }
 
+        /* 인포그래픽 */
+
+        .modal_content {
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+            width: 1200px;
+            margin: 0 auto;
+            
+            background-color: #fafafa;
+            overflow-y: auto;
+            
+        }
+
+        .kpi-top {
+            display: flex;
+            margin: 0 20px;
+            gap: 20px;
+        }
+
+        .kpi-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            padding: 24px;
+            text-align: center;
+        }
+
+        .kpi-label {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .kpi-value {
+            font-size: 28px;
+            font-weight: bold;
+            margin-top: 8px;
+        }
+        .chart_box {
+            display: flex; flex-direction: row;
+        }
+
+        .chart-container {
+            background: white;
+            border-radius: 12px;
+            height: auto;
+            padding: 24px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+
+        .chart-container.bar {
+            width: 700px;
+        }
+        .chart-container.pie {
+            width: 400px;
+        }
+
+        canvas {
+            max-width: 100%;
+            min-height: 300px;
+        }
+
     </style>
 </head>
 <body>
     <section class="result_section">
         <div class="result_box box">
-            <h3>${userName}님이 가입한 동아리는...<br><br>'${result.name}'입니다!</h3>
+            <div class="result_title">
+                <h3>${userName}님의 동아리는...</h3><h3>'${result.name}'입니다!</h3>
+            </div>
             <div class="result_image" style='background-image: url("/images/game/${result.resultImage}")'></div>
             <div class="result_button_box">
-                <button type="button" class="viewpage_button">동아리 선배 보러가기</button>
-                <button type="button" class="save_button">이미지 저장하기</button>
+                <button type="button" class="viewpage_button">
+                    <img src="/images/game/eyes.png" alt="선배 보러가기">
+                    <div>선배 보러가기</div>
+                </button>
+                <button type="button" class="save_button">
+                    <img src="/images/game/heart.png" alt="이미지 저장하기">
+                    <div>이미지 저장하기</div>
+                </button>
             </div>
         </div>
         <div class="button_box box">
         <c:if test="${session_id == null}">
-            <button type="button" class="save_run_button black">로그인하고 결과 저장하기</button>
-            <button type="button" class="result_stats_button">다른 친구들 결과 보기</button>
+            <button type="button" class="save_run_button candy gradient">로그인하고 결과 저장하기</button>
+            <button type="button" class="result_stats_button candy gradient">다른 친구들 결과 보기</button>
         </c:if>
         <c:if test="${session_id != null}">
-            <button type="button" class="result_stats_button black">다른 친구들 결과 보기</button>
+            <button type="button" class="result_stats_button candy gradient">다른 친구들 결과 보기</button>
         </c:if>
             <button type="button" class="share_button">테스트 공유하기</button>
             <button type="button" class="retry_button">다시 해보기</button>
@@ -144,6 +309,33 @@
                 <div class="prev"><</div>
                 <h3>동아리 방문 순위</h3>
             </div>
+            <div class="kpi-top">
+                <div class="kpi-card">
+                    <div class="kpi-label">총 참여자 수</div>
+                    <div class="kpi-value">1,249명</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">최다 선택 문항</div>
+                    <div class="kpi-value">점심시간 (42%)</div>
+                </div>
+            </div>
+
+            <!-- 첫 번째 그래프 -->
+            <div class="chart_box">
+                <div class="chart-container bar">
+                <h3>결과 분포</h3>
+                <canvas id="resultChart"></canvas>
+                </div>
+    
+                <!-- 두 번째 그래프 -->
+                <div class="chart-container pie">
+                <h3>다중 가입 비율</h3>
+                <canvas id="multiJoinChart"></canvas>
+                </div>
+            </div>
+
+
+<!--             
             <div class="stat_box">
                 <div class="club">
                     <div class="club_image"></div>
@@ -170,7 +362,7 @@
                     <div>선도부</div>
                     <div class="club_stats">15%</div>
                 </div>
-            </div>
+            </div> -->
         </div>
     </div>
 
@@ -185,7 +377,7 @@
         // 동아리 목록 페이지로 이동
         $(".viewpage_button").on("click", function() {
             let artist_no = ['1','3','2','5','4'];
-            location.href = '/artist/detail?ano=' + artist_no[${result.clubId} - 1];
+            location.href = '/artist/detail?ano=' + artist_no["${result.clubId}" - 1];
         });
 
         // 이미지 저장하기 (임시로 alert로 대체)
@@ -209,6 +401,7 @@
             form.method = 'POST';
             form.action = '/game/saveGuestRun';
             createHiddenInput('club_id', "${result.clubId}", form);
+            createHiddenInput('userName', "${userName}", form);
             document.body.appendChild(form);
             form.submit();
             
@@ -250,10 +443,10 @@
         $(".result_stats_button").on("click", function() {
 
             $.ajax({
-                url: 'game/getStat';
-                dataType: 'json';
+                url: '/game/getStat',
+                dataType: 'json',
                 success: function(res){
-                    
+                    console.log(res);
                 }
 
             });
@@ -303,7 +496,50 @@
             parent.appendChild(input);
         }
 
-        
+
+        /// 통계 ///
+
+        const resultCtx = document.getElementById('resultChart').getContext('2d');
+        const resultChart = new Chart(resultCtx, {
+        type: 'bar',
+        data: {
+            labels: ['A', 'B', 'C', 'D', 'E'],
+            datasets: [{
+            label: '비율',
+            data: [34, 25, 18, 12, 11],
+            backgroundColor: '#84b1ff',
+            }]
+        },
+        options: {
+            indexAxis: 'y',
+            scales: {
+            x: {
+                beginAtZero: true,
+                ticks: { callback: val => `${val}%` }
+            }
+            }
+        }
+        });
+
+        const multiCtx = document.getElementById('multiJoinChart').getContext('2d');
+        const multiJoinChart = new Chart(multiCtx, {
+        type: 'pie',
+        data: {
+            labels: ['1개 가입', '2개 이상 가입'],
+            datasets: [{
+            data: [67, 33],
+            backgroundColor: ['#ffcc99', '#ff9999'],
+            }]
+        },
+        options: {
+            plugins: {
+            legend: {
+                position: 'bottom'
+            }
+            }
+        }
+        });
+
     </script>
 </body>
 </html>

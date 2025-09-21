@@ -16,21 +16,46 @@
         /*// starting_section //*/
         /* title_box */
         .title_box {
-            background-color: #fafafa;
-            min-height: 550px;
-            justify-content: center;
+            background-color: transparent;
+            min-height: 500px;
+            justify-content: flex-start;
             text-align: center;
+            margin-top: 20px;
             font-family: 'KccHanbit', sans-serif;
         }
         .title_box h3 {
             font-size:1.6rem;
-            margin-bottom: 100px;
+            margin-bottom: 0;
         }
 
         /* button_box */
         .button_box {
-            min-height: 350px;
-            background-color: #fafafa;
+            min-height: 400px;
+            background-color: transparent;
+
+        }
+
+        .button_box .black {
+            margin-bottom: 23px;
+            margin-left: 150px;
+            width: 250px;
+            font-family: 'Pretendard', sans-serif;
+            font-weight: 500;
+            font-size: 1.1rem;
+        }
+        .button_box input {
+            width: 300px;
+            margin-left: 100px;
+            text-align: center;
+            font-family: 'KccHanbit', 'Pretendard', sans-serif;
+            font-weight: normal;
+            font-size: 1.1rem;
+        }
+        .button_box .login_button {
+            width: 400px;
+            font-family: 'Pretendard', sans-serif;
+            font-weight: 500;
+            font-size: 1.1rem;
         }
 
 
@@ -39,7 +64,8 @@
             display: none;
         }
         .question_box {
-            min-height: 500px;
+            margin-top:20px;
+            min-height: 450px;
             justify-content: flex-end;
             text-align: center;
             font-family: 'KccHanbit', sans-serif;
@@ -55,8 +81,8 @@
             margin: 0;
         }
         .question_board {
-            height:405px; width: 100%; 
-            margin-bottom: 80px;
+            height:365px; width: 100%; 
+            margin-bottom: 70px;
             display:flex; flex-direction:column;  justify-content: space-between; align-items: center; gap :20px;
         }
         .question_progress {
@@ -136,12 +162,12 @@
         }
         
         .answer_box {
-            min-height: 400px;
+            min-height: 430px;
         }
-        .answer1, .answer2 {
+        .answer1, .answer2, .answer3 {
             height: 70px; width: 410px;
             font-family: 'KccHanbit', sans-serif;
-            margin-top: 10px;
+            margin-bottom: 15px;
 
             /* so-called 캔디 버튼 */
             background: /*linear-gradient(145deg, #ffb6f0, #ffd166);*/
@@ -157,11 +183,11 @@
             transition: all 0.2s ease;
             cursor: pointer;
         }
-        .answer1:hover, .answer2:hover {
+        .answer1:hover, .answer2:hover, .answer3:hover {
             transform: translateY(-2px);
             box-shadow: 0 8px 16px rgba(0,0,0,0.25), inset 0 4px 8px rgba(255,255,255,0.6);
         }
-        .answer1:active, .answer2:active {
+        .answer1:active, .answer2:active, .answer3:active {
             transform: translateY(2px);
             box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
         }
@@ -187,17 +213,20 @@
             height: 895px;
             z-index: -1;
         }
-        /*
-        .background_img {
-            background: #ebf8ff;
-            url('/images/bluestars.jpg');
-            background-attachment: fixed;
+        
+        .application_img {
+            /*border:1px solid black;*/
+            background-repeat: no-repeat;
+            background-image: url('/images/game/application.png');
+            background-size: contain;
             position: fixed;
-            inset: 0;
-            width: 100%; height: 100%;
-            z-index: -2;
+            bottom: 45%; left: 50%;
+            transform: translate(-50%, 50%);
+            /*width: 100%; height: auto;*/
+            width: 500px;
+            height: 700px;
+            z-index: -10;
         }
-        */
 
         /* modal 창 */
         
@@ -221,12 +250,26 @@
             justify-content: center;
             text-align: center;
         }
+        .modal_content button {
+            margin-top: 25px;
+            margin-bottom: 20px;
+            font-size: 1.0rem;
+        }
+        .modal_content input {
+            font-size: 1.0rem;
+        }
+        .modal_content h3 {
+            margin-bottom: 45px;
+            font-family: 'KccHanbit', 'Pretendard';
+            font-weight: 400;
+        }
         .close {
+            width: fit-content;
             color: #aaa;
-            align-self: flex-end;
             font-size: 28px;
             font-weight: bold;
             cursor: pointer;
+            margin-left: 450px;
         }
     </style>
 </head>
@@ -240,14 +283,15 @@
 
         <form id="start_form">
             <div class="button_box box">
+                <button type="submit" class="black">테스트 시작하기</button>
                 <input type="text" name="name" placeholder="이름을 입력해주세요." 
                 <c:if test="${session_name != null}">value="${session_name}"</c:if> />
                 <c:if test="${session_id == null}">
                     <button type="button" class="login_button">내 프로필 가져오기</button>
                 </c:if>
-                <button type="submit" class="black">테스트 시작하기</button>
             </div>
         </form>
+        <div class="application_img"></div>
     </section>
     <!-- /시작 섹션 -->
 
@@ -274,6 +318,8 @@
                 <input type="hidden" name="answer1" class="" value=""/>             <!-- DB에 저장된 답변태그1 -->
                 <button type="button" class="answer2">혼자서 책 읽기</button>
                 <input type="hidden" name="answer2" class="" value=""/>             <!-- DB에 저장된 답변태그2 -->
+                <button type="button" class="answer3">다음 시간 준비</button>
+                <input type="hidden" name="answer3" class="" value=""/>             <!-- DB에 저장된 답변태그2 -->
                 <div class="next_box">
                     <button type="submit" class="next_button" disabled>다음으로</button>
                 </div>
@@ -291,7 +337,7 @@
     <div class="login_modal modal">
         <div class="modal_content">
             <form action="/member/login" method="post">
-                <span class="close">&times;</span>
+                <div class="close">&times;</div>
                 <h3>로그인 후 결과를 저장해 보세요.</h3>
                 <input type="text" name="loginId" placeholder="아이디">
                 <input type="password" name="password" placeholder="비밀번호">
@@ -322,6 +368,7 @@
             playerName = $('input[name="name"]').val();
             if(playerName.length < 1) {                   // 이름 유효성 검사
                 alert('이름을 입력해주세요.');
+                document.querySelector('.button_box input').focus();
                 return;
             }
             // 테스트 시작

@@ -274,7 +274,7 @@ public class GameServiceImpl implements GameService {
 			List<GameOptions> optionList = q.getOptions();
 			for(GameOptions o : optionList) {
 				long optionCount = 0L;
-				optionCount = qrRep.countByOptions();				// 옵션 별 선택된 수 
+				optionCount = qrRep.countByOptions(o);				// 옵션 별 선택된 수 
 				optionCountMap.put(o.getOptionId(),optionCount);	// 옵션 별 카운트 결과 저장
 				questionCount += optionCount;						// 해당 질문 뜬 경우 수 구하기 
 			}

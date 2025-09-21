@@ -99,6 +99,7 @@ public class MemberController {
 				// 세션에 있는 게임결과 정보 삭제
 				session.removeAttribute("resultClubId");
 				model.addAttribute("result", gameResult);
+				model.addAttribute("userName", (String)session.getAttribute("userName"));
 			}
 			return returnTo;
 		}

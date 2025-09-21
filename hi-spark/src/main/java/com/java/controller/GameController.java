@@ -140,9 +140,11 @@ public class GameController {
 	
 	@PostMapping("/game/saveGuestRun")
 	public String saveGuestRun(
-			@RequestParam("club_id") Integer clubId) {
+			@RequestParam("club_id") Integer clubId,
+			@RequestParam("userName") String userName) {
 		session.setAttribute("returnTo","game/gamepage_result");
 		session.setAttribute("resultClubId", clubId);
+		session.setAttribute("userName", userName);
 		return "redirect:/member/login";
 	}
 	
