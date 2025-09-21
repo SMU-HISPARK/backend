@@ -38,7 +38,6 @@ public class Orders {
 	
 	@ManyToOne
 	@JoinColumn(name="member_id")
-	@JsonIgnore
 	private Member member;
 	
     @OneToMany(mappedBy = "orders", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -83,5 +82,4 @@ public class Orders {
 	@UpdateTimestamp
 	@Column(name="updated_at")
 	private Timestamp updatedAt;
-
 }
