@@ -246,12 +246,12 @@ a { text-decoration: none; color: inherit; }
 }
 
 .tab_text{
-	font-size: 22px;
-	color: #1a1a1a;
-}
+	font-size: 20px;
+	color: #636363;
+	font-weight: 400;}
 
 .tap_product{
-	font-size: 22px;
+	font-size: 20px;
 	color: #035fe0;
 	font-weight: 700;
 }
@@ -275,20 +275,15 @@ a { text-decoration: none; color: inherit; }
 .product-info .title {
     font-weight: bold;
     font-size: 0.95em;
-    margin-bottom: 5px;
 }
-.product-info .author, .product-info .publisher {
-    font-size: 0.85em;
-    color: #666;
-}
+
 .product-info .price {
-    margin-top: 8px;
+    margin-top: 2px;
     font-weight: bold;
-    color: #d6336c;
+    color: #035fe0;
 }
-.product-info .price .discount {
-    font-size: 0.8em;
-    color: #888;
+.product-info .price .unit {
+    color: #1a1a1a;
     margin-left: 5px;
 }
 

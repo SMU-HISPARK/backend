@@ -179,93 +179,35 @@
 				    </nav>
 				
 				    <div id="content-together" class="tab-content is-active">
-				        <ul class="product-list">
-				            <li class="product-item">
-				                <a href="#"><img src="https://image.yes24.com/goods/152298374/L" alt="호의에 대하여"></a>
-				                <div class="product-info">
-				                    <p class="title"><a href="#">호의에 대하여</a></p>
-				                    <p class="author">문형배 저</p>
-				                    <p class="price">16,920원 <span class="discount">(10%)</span></p>
-				                </div>
-				            </li>
-				            <li class="product-item">
-				                <a href="#"><img src="https://image.yes24.com/goods/149739762/L" alt="렛뎀 이론"></a>
-				                <div class="product-info">
-				                    <p class="title"><a href="#">렛뎀 이론</a></p>
-				                    <p class="author">멜 로빈스 저</p>
-				                    <p class="price">18,000원 <span class="discount">(10%)</span></p>
-				                </div>
-				            </li>
-				            <li class="product-item">
-				                <a href="#"><img src="https://image.yes24.com/goods/90688995/L" alt="나는 왜 네 말이 힘들까"></a>
-				                <div class="product-info">
-				                    <p class="title"><a href="#">나는 왜 네 말이 힘들까</a></p>
-				                    <p class="author">박재연 저</p>
-				                    <p class="price">15,120원 <span class="discount">(10%)</span></p>
-				                </div>
-				            </li>
-				            <li class="product-item">
-				                <a href="#"><img src="https://image.yes24.com/goods/147178677/L" alt="단 한 줄만 내 마음에 새긴다고 해도"></a>
-				                <div class="product-info">
-				                    <p class="title"><a href="#">단 한 줄만 내 마음에 새긴다고 해도</a></p>
-				                    <p class="author">나민애 저</p>
-				                    <p class="price">21,420원 <span class="discount">(10%)</span></p>
-				                </div>
-				            </li>
-				            <li class="product-item">
-				                <a href="#"><img src="https://image.yes24.com/goods/136298166/L" alt="어른의 행복은 조용하다"></a>
-				                <div class="product-info">
-				                    <p class="title"><a href="#">어른의 행복은 조용하다</a></p>
-				                    <p class="author">태수 저</p>
-				                    <p class="price">16,020원 <span class="discount">(10%)</span></p>
-				                </div>
-				            </li>
-				        </ul>
+						<c:if test="${togetherProducts != null}">
+							<ul class="product-list">
+								<c:forEach var="product" items="${togetherProducts}">
+								    <li class="product-item">
+								        <a href="#"><img src="${product.productImg}" alt="${product.productName}"></a>
+								        <div class="product-info">
+								            <p class="title"><a href="#">${product.productName}</a></p>
+											<p class="price"><fmt:formatNumber value="${product.productPrice}" pattern="#,###" />원</p>								        </div>
+								    </li>
+								</c:forEach>
+							</ul>
+
+						</c:if>	
 				    </div>
 				
 				    <div id="content-frequent" class="tab-content">
-				        <ul class="product-list">
-				            <li class="product-item">
-				                <a href="#"><img src="https://image.yes24.com/goods/126590468/L" alt="초역 부처의 말"></a>
-				                <div class="product-info">
-				                    <p class="title"><a href="#">초역 부처의 말</a></p>
-				                    <p class="author">코이케 류노스케 저</p>
-				                    <p class="price">16,020원 <span class="discount">(10%)</span></p>
-				                </div>
-				            </li>
-				            <li class="product-item">
-				                <a href="#"><img src="https://image.yes24.com/goods/146344852/L" alt="우리의 낙원에서 만나자"></a>
-				                <div class="product-info">
-				                    <p class="title"><a href="#">우리의 낙원에서 만나자</a></p>
-				                    <p class="author">하태완 저</p>
-				                    <p class="price">17,550원 <span class="discount">(10%)</span></p>
-				                </div>
-				            </li>
-				            <li class="product-item">
-				                <a href="#"><img src="https://image.yes24.com/goods/144021119/L" alt="단 한 번의 삶"></a>
-				                <div class="product-info">
-				                    <p class="title"><a href="#">단 한 번의 삶</a></p>
-				                    <p class="author">김영하 저</p>
-				                    <p class="price">15,120원 <span class="discount">(10%)</span></p>
-				                </div>
-				            </li>
-				            <li class="product-item">
-				                <a href="#"><img src="https://image.yes24.com/goods/32526726/L" alt="슈독"></a>
-				                <div class="product-info">
-				                    <p class="title"><a href="#">슈독</a></p>
-				                    <p class="author">필 나이트 저</p>
-				                    <p class="price">19,800원 <span class="discount">(10%)</span></p>
-				                </div>
-				            </li>
-				            <li class="product-item">
-				                <a href="#"><img src="https://image.yes24.com/goods/8759796/L" alt="모순"></a>
-				                <div class="product-info">
-				                    <p class="title"><a href="#">모순</a></p>
-				                    <p class="author">양귀자 저</p>
-				                    <p class="price">11,700원 <span class="discount">(10%)</span></p>
-				                </div>
-				            </li>
-				        </ul>
+						<c:if test="${byUserProducts != null}">
+							<ul class="product-list">
+								<c:forEach var="product" items="${byUserProducts}">
+								    <li class="product-item">
+								        <a href="#"><img src="${product.productImg}" alt="${product.productName}"></a>
+								        <div class="product-info">
+								            <p class="title"><a href="#">${product.productName}</a></p>
+											<p class="price"><fmt:formatNumber value="${product.productPrice}" pattern="#,###" />원</p>								        </div>
+								    </li>
+								</c:forEach>
+							</ul>
+
+						</c:if>	
 				    </div>
 				</section>
 				
