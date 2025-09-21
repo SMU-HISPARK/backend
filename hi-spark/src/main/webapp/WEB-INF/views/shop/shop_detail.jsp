@@ -179,11 +179,11 @@
 				    </nav>
 				
 				    <div id="content-together" class="tab-content is-active">
-						<c:if test="${togetherProducts != null}">
+						<c:if test="${not empty togetherProducts}">
 							<ul class="product-list">
 								<c:forEach var="product" items="${togetherProducts}">
 								    <li class="product-item">
-								        <a href="#"><img src="${product.productImg}" alt="${product.productName}"></a>
+								        <a href="/shop/detail?productId=${product.productId}"><img src="${product.productImg}" alt="${product.productName}"></a>
 								        <div class="product-info">
 								            <p class="title"><a href="#">${product.productName}</a></p>
 											<p class="price"><fmt:formatNumber value="${product.productPrice}" pattern="#,###" />원</p>								        </div>
@@ -192,14 +192,18 @@
 							</ul>
 
 						</c:if>	
+						<c:if test="${empty togetherProducts}">
+							<p class="no-recommendation">함께 구매한 상품이 없습니다.</p>
+						</c:if>
+
 				    </div>
 				
 				    <div id="content-frequent" class="tab-content">
-						<c:if test="${byUserProducts != null}">
+						<c:if test="${not empty byUserProducts}">
 							<ul class="product-list">
 								<c:forEach var="product" items="${byUserProducts}">
 								    <li class="product-item">
-								        <a href="#"><img src="${product.productImg}" alt="${product.productName}"></a>
+								        <a href="/shop/detail?productId=${product.productId}"><img src="${product.productImg}" alt="${product.productName}"></a>
 								        <div class="product-info">
 								            <p class="title"><a href="#">${product.productName}</a></p>
 											<p class="price"><fmt:formatNumber value="${product.productPrice}" pattern="#,###" />원</p>								        </div>
@@ -208,6 +212,9 @@
 							</ul>
 
 						</c:if>	
+						<c:if test="${empty byUserProducts}">
+							<p class="no-recommendation">많이 구매한 상품이 없습니다.</p>
+						</c:if>
 				    </div>
 				</section>
 				
