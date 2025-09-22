@@ -87,10 +87,6 @@ public class BoardController {
 		return "board/board_main";
 	}
 	
-	
-	
-	
-	
 	@GetMapping("/board/forum_list")
 	public String forum_list(
 	    @RequestParam(name = "page", defaultValue = "1") int page,
@@ -336,13 +332,6 @@ public class BoardController {
     }
 	
 	
-	
-	
-	
-	
-	
-	
-	
 	@PostMapping("/board/forum_delete")
 	public String forum_delete(@RequestParam("bno") int bno, HttpSession session, RedirectAttributes redirect) {
 	    // 1. 세션에서 로그인된 사용자 정보 가져오기
@@ -376,7 +365,8 @@ public class BoardController {
 	    public String addComment(@RequestParam("bno") int bno,
 	                             @RequestParam("sccontent") String sccontent,
 	                             HttpSession session,
-	                             RedirectAttributes redirect) {
+	                             RedirectAttributes redirect,
+	                             Model model) {
 	        
 	        Member member = (Member) session.getAttribute("loggedInMember");
 	        if (member == null) {
@@ -385,12 +375,21 @@ public class BoardController {
 	        }
 
 	        try {
+	            FilteringResponseDto filteredData = filteringService.filterText("", sccontent);
+	            String filteredComment = filteredData.getFilteredContent();
+
+	            model.addAttribute("originalComment", sccontent);
+	            model.addAttribute("filteredComment", filteredComment);
+	            System.out.println(filteredComment);
+
 	            sComment comment = sComment.builder()
-	                                        .sccontent(sccontent)
+	                                        .sccontent(filteredComment) // 필터링된 내용으로 저장
 	                                        .board(boardRepository.findById(bno).orElse(null))
 	                                        .member(member)
 	                                        .build();
 	            boardService.saveComment(comment);
+	            
+	            // 필터링 메시지와 별개로 댓글 등록 성공 메시지도 전달
 	            redirect.addFlashAttribute("message", "댓글이 성공적으로 등록되었습니다.");
 	        } catch (Exception e) {
 	            redirect.addFlashAttribute("error", "댓글 등록 중 오류가 발생했습니다.");
@@ -399,7 +398,7 @@ public class BoardController {
 
 	        return "redirect:/board/forum_view?bno=" + bno;
 	    }
-	 
+	 	 
 	 
 	// 게시글 수정 페이지로 이동
 	    @GetMapping("/board/forum_edit")
@@ -481,25 +480,6 @@ public class BoardController {
     }
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	@GetMapping("/board/forum_write")
 	public String forum_write() {
         return "board/forum_write";
@@ -511,7 +491,8 @@ public class BoardController {
 	        @RequestParam("bcontent") String bcontent,
 	        @RequestParam(value = "uploadFile", required = false) MultipartFile file,
 	        HttpSession session,
-	        RedirectAttributes redirect) {
+	        RedirectAttributes redirect,
+	        Model model) {
 	    
 	    Member loggedInMember = (Member) session.getAttribute("loggedInMember");
 	    
@@ -520,15 +501,20 @@ public class BoardController {
 	        FilteringResponseDto filteredData = filteringService.filterText(btitle, bcontent);
 	        
 	        String filteredTitle = filteredData.getFilteredTitle();
-	        String filteredContent = filteredData.getFilteredText();
+	        String filteredContent = filteredData.getFilteredContent();
 
 	        String finalContent = filteredContent;
 
-	        // 원본과 필터링된 내용이 다를 경우에만 안내 문구 추가
 	        if (!bcontent.equals(filteredContent)) {
-	            finalContent = "<span style='color: #035fe0;'>AI 클린봇이 적용된 게시글입니다. 욕설이나 비방이 감지된 문장은 삭제되거나 필터링됩니다.</span><br><br>" + filteredContent;
+	            // DB에 저장할 내용은 순수한 필터링 내용만 남김
+	            finalContent = filteredContent;
+	            
+	            // JSP에 원본 내용과 필터링된 내용을 모두 전달
+	            model.addAttribute("originalContent", bcontent);
+	            model.addAttribute("filteredContent", filteredContent);
+	            System.out.println(filteredContent);
 	        }
-	        
+
 	        Board board = new Board();
 	        board.setBtitle(filteredTitle); // 필터링된 제목 저장
 	        board.setBcontent(finalContent); // 필터링된 본문 및 안내 문구 저장

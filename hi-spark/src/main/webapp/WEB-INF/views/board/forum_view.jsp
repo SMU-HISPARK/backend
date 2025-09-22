@@ -30,8 +30,12 @@
         </div>
  
         <div class="view-content">
-            <c:set var="newline" value="<%= System.getProperty(\"line.separator\") %>" />
-            <c:set var="content" value="${fn:replace(board.bcontent, newline, '<br>')}" />
+			<c:set var="newline" value="<%= System.getProperty(\"line.separator\") %>" />
+			<c:set var="content" value="${fn:replace(board.bcontent, newline, '<br>')}" />
+
+			<c:if test="${!originalContent.equals(board.bcontent)}">
+			    <span style='color: #035fe0;'>AI 클린봇이 적용된 게시글입니다. 욕설이나 비방이 감지된 문장은 삭제되거나 필터링됩니다.</span><br><br>
+			</c:if>
             ${content}
             
             <c:if test="${not empty board.bfile}">
@@ -68,7 +72,14 @@
                             <span class="comment-author">${comment.member.name}</span>
                             <span class="comment-date"><fmt:formatDate value="${comment.scdate}" pattern="yyyy.MM.dd HH:mm"/></span>
                         </div>
-                        <div class="comment-body">${comment.sccontent}</div>
+                        <div class="comment-body">
+							<c:if test="${!originalComment.equals(comment.sccontent)}">
+							    <span style='color: #035fe0;'>AI 클린봇이 적용된 댓글입니다. 욕설이나 비방이 감지된 문장은 삭제되거나 필터링됩니다.</span><br><br>
+							</c:if>
+
+							${comment.sccontent}
+						
+						</div>
                         <div class="comment-actions">
                             
                             <%-- 댓글 작성자이거나 관리자인 경우 수정/삭제 버튼 표시 --%>
