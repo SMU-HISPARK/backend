@@ -3,6 +3,8 @@ package com.java.repository;
 import java.sql.Timestamp;
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -28,5 +30,7 @@ public interface OrdersRepository extends JpaRepository<Orders, Integer>{
     // 기간별 총 주문 건수 조회 (취소 주문 제외)
     @Query("SELECT COUNT(o) FROM Orders o WHERE o.createdAt BETWEEN :start AND :end AND o.orderState != -1")
     Long getTotalOrderCountBetween(@Param("start") Timestamp start, @Param("end") Timestamp end);
+
+	Page<Orders> findByMemberLoginIdOrderByCreatedAtDesc(String loginId, Pageable pageable);
 	
 }

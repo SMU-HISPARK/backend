@@ -73,7 +73,6 @@ public class OrderServiceImpl implements OrderService {
 	            }
 
 	            product.setProductQuantity(product.getProductQuantity() - orderQty);
-	            productService.save(product);
 
 	            OrderItem orderItem = new OrderItem();
 	            orderItem.setOrders(order);
@@ -142,7 +141,6 @@ public class OrderServiceImpl implements OrderService {
 	            }
 
 	            product.setProductQuantity(product.getProductQuantity() - orderQty);
-	            productService.save(product);
 
 	            OrderItem orderItem = new OrderItem();
 	            orderItem.setOrders(order);

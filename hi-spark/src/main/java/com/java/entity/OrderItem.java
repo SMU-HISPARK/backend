@@ -27,7 +27,6 @@ public class OrderItem {
 	
 	@ManyToOne
 	@JoinColumn(name="order_id")
-	@JsonIgnore
 	@ToString.Exclude
 	private Orders orders; 
 	

@@ -3,6 +3,9 @@ package com.java.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 import com.java.dto.OrderItemDto;
 import com.java.dto.sComment;
 import com.java.dto.Board;
@@ -12,30 +15,32 @@ import com.java.entity.Orders;
 
 public interface MypageService {
 
-	String getTrackingStatus(String orderCode);
+   String getTrackingStatus(String orderCode);
 
-	List<Orders> getOrdersList();
+   List<Orders> getOrdersList();
 
-	Orders getOrderByCode(String orderCode);
+   Orders getOrderByCode(String orderCode);
 
-	void updateMember(String loginId, String nickname, String phone1, String phone2, String phone3);
+   void updateMember(String loginId, String nickname, String phone1, String phone2, String phone3);
 
-	void updateMemberPassword(String loginId, String password);
+   void updateMemberPassword(String loginId, String password);
 
 
-	void updateMemberPoint(String loginId, int point);
+   void updateMemberPoint(String loginId, int point);
 
-	List<Orders> getOrdersByMemberId(String loginId);
+   List<Orders> getOrdersByMemberId(String loginId);
 
-	void updateOrderAddress(String orderCode, String receiver, String phone, String zipcode, String addressMain, String addressDetail, String deliveryMessage);
+   void updateOrderAddress(String orderCode, String receiver, String phone, String zipcode, String addressMain, String addressDetail, String deliveryMessage);
 
-	boolean cancelOrder(String orderCode, String loginId);
+   boolean cancelOrder(String orderCode, String loginId);
 
-	List<OrderItemDto> getOrderItemsByOrderCode(String orderCode);
+   List<OrderItemDto> getOrderItemsByOrderCode(String orderCode);
 
-	List<Board> getAllBoards(Member member);
+   List<Board> getAllBoards(Member member);
 
-	List<sComment> getCommentsByMember(Member member);
+   List<sComment> getCommentsByMember(Member member);
+
+   Page<Orders> getOrdersByMemberIdWithPaging(String loginId, Pageable pageable);
 
 
 }

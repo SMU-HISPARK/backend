@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ include file="../layout/header.jsp" %>
+<%@ include file="../layout/headerM.jsp" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
@@ -111,6 +111,10 @@
             overflow: hidden;
         }
 
+		.product-description {
+		    white-space: pre-wrap; /* 공백과 줄바꿈을 그대로 유지 */
+		    word-wrap: break-word; /* 긴 단어 줄바꿈 */
+		}
 
         .product-image {
             position: relative;
@@ -217,27 +221,6 @@
         .btn-toggle {
             background: #ffc107;
             color: #1a1a1a;
-        }
-
-        .pagination {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 10px;
-            margin-top: 40px;
-        }
-
-        .pagination button {
-            padding: 8px 12px;
-            border: 1px solid #ddd;
-            background: white;
-            cursor: pointer;
-            border-radius: 4px;
-        }
-
-        .pagination button.active {
-            background: #1a1a1a;
-            color: white;
         }
 
         .modal {
@@ -399,10 +382,10 @@
     <div class="container">
         <ul class="menu">
             <li>
-                <a href="/adpage/graphCommu">커뮤니티 그래프</a>
+                <a href="/adpage/graphCommu">커뮤니티 지수</a>
             </li>
             <li>
-                <a href="/adpage/graphShop">주문 그래프</a>
+                <a href="/adpage/graphShop">주문 통계</a>
             </li>
             <li class="selected">
                 <a href="/adpage/shop">샵 관리</a>
@@ -428,7 +411,9 @@
 			    <c:forEach var="product" items="${products}">
 			        <div class="product-card">
 			            <div class="product-image">
-			                <img src="${product.productImg}" alt="${product.productName}" onerror="this.src='default-image.png'">
+			                <img src="${product.productImg}" 
+						     alt="${product.productName}" 
+						     onerror="this.src='/images/hispark.png'">
 			                <div class="product-status ${product.productQuantity > 0 ? 'status-active' : 'status-soldout'}">
 			                    ${product.productQuantity > 0 ? '판매중' : '품절'}
 			                </div>
@@ -451,45 +436,77 @@
 
                 <!-- pagination -->
             <div class="pg-container">
-		      <div class="paginator">
-		          <div class="pg-btns">
-		              <button>
-		                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-		                      <path d="M21.9323 22.5362C22.6042 21.8162 22.6042 20.7122 21.8842 20.0162L13.5562 12.0002L23.1562 2.76019L21.4762 1.00819L10.0282 12.0002L21.4763 22.9922L21.9323 22.5122L21.9323 22.5362Z" fill="currentColor"/>
-		                      <path d="M12.4786 22.5362C13.1506 21.8162 13.1506 20.7122 12.4306 20.0162L4.10256 12.0002L13.7266 2.76019L12.0466 1.00819L0.598563 12.0002L12.0226 22.9922L12.4786 22.5122L12.4786 22.5362Z" fill="currentColor"/>
-		                  </svg>
-		              </button>
-		              <button>
-		                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-		                      <path d="M16.3325 1.47C17.0125 2.18 16.9925 3.3 16.2825 3.98L7.9425 12L17.5625 21.25L15.8825 23L4.4425 12L15.8825 1L16.3325 1.47Z" fill="currentColor"/>
-		                  </svg>
-		              </button>
-		          </div>
-		
-		          <div class="pg-numbers">
-		              <a class="active">1</a>
-		              <a href="#">2</a>
-		              <a href="#">3</a>
-		              <a href="#">4</a>
-		              <a href="#">5</a>
-		          </div>
-		
-		          <div class="pg-btns">
-		              <button>
-		                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-		                      <path d="M7.6675 1.47C6.9875 2.18 7.0075 3.3 7.7175 3.98L16.0575 12L6.4375 21.25L8.1175 23L19.5575 12L8.1175 1L7.6675 1.47Z" fill="currentColor"/>
-		                  </svg>
-		              </button>
-		              <button>
-		                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-		                      <path d="M2.06775 1.46381C1.39575 2.18381 1.39575 3.28781 2.11575 3.98381L10.4437 11.9998L0.84375 21.2398L2.52375 22.9918L13.9718 11.9998L2.52375 1.00781L2.06775 1.48781V1.46381Z" fill="currentColor"/>
-		                      <path d="M11.5214 1.46381C10.8494 2.18381 10.8494 3.28781 11.5694 3.98381L19.8974 11.9998L10.2734 21.2398L11.9534 22.9918L23.4014 11.9998L11.9774 1.00781L11.5214 1.48781V1.46381Z" fill="currentColor"/>
-		                  </svg>
-		              </button>
-		          </div>
-		      </div>
-		  </div>
-            </div>
+			    <div class="paginator">
+			        <div class="pg-btns">
+			            <c:if test="${page < 2}">
+			                <button class="disabled">
+			                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+			                        <path d="M21.9323 22.5362C22.6042 21.8162 22.6042 20.7122 21.8842 20.0162L13.5562 12.0002L23.1562 2.76019L21.4762 1.00819L10.0282 12.0002L21.4763 22.9922L21.9323 22.5122L21.9323 22.5362Z" fill="currentColor"/>
+			                        <path d="M12.4786 22.5362C13.1506 21.8162 13.1506 20.7122 12.4306 20.0162L4.10256 12.0002L13.7266 2.76019L12.0466 1.00819L0.598563 12.0002L12.0226 22.9922L12.4786 22.5122L12.4786 22.5362Z" fill="currentColor"/>
+			                    </svg>
+			                </button>
+			                <button class="disabled">
+			                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+			                        <path d="M16.3325 1.47C17.0125 2.18 16.9925 3.3 16.2825 3.98L7.9425 12L17.5625 21.25L15.8825 23L4.4425 12L15.8825 1L16.3325 1.47Z" fill="currentColor"/>
+			                    </svg>
+			                </button>
+			            </c:if>
+			            <c:if test="${page >= 2}">
+			                <button onclick="location.href='/adpage/shop'">
+			                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+			                        <path d="M21.9323 22.5362C22.6042 21.8162 22.6042 20.7122 21.8842 20.0162L13.5562 12.0002L23.1562 2.76019L21.4762 1.00819L10.0282 12.0002L21.4763 22.9922L21.9323 22.5122L21.9323 22.5362Z" fill="currentColor"/>
+			                        <path d="M12.4786 22.5362C13.1506 21.8162 13.1506 20.7122 12.4306 20.0162L4.10256 12.0002L13.7266 2.76019L12.0466 1.00819L0.598563 12.0002L12.0226 22.9922L12.4786 22.5122L12.4786 22.5362Z" fill="currentColor"/>
+			                    </svg>
+			                </button>
+			                <button onclick="location.href='/adpage/shop?page=${page-1}'">
+			                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+			                        <path d="M16.3325 1.47C17.0125 2.18 16.9925 3.3 16.2825 3.98L7.9425 12L17.5625 21.25L15.8825 23L4.4425 12L15.8825 1L16.3325 1.47Z" fill="currentColor"/>
+			                    </svg>
+			                </button>
+			            </c:if>
+			        </div>
+			
+			        <div class="pg-numbers">
+			            <c:forEach var="i" begin="${startpage}" end="${endpage}">
+			                <c:if test="${page == i}">
+			                    <a class="active">${i}</a>
+			                </c:if>
+			                <c:if test="${page != i}">
+			                    <a href="/adpage/shop?page=${i}">${i}</a>
+			                </c:if>
+			            </c:forEach>
+			        </div>
+			
+			        <div class="pg-btns">
+			            <c:if test="${page < maxpage}">
+			                <button onclick="location.href='/adpage/shop?page=${page+1}'">
+			                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+			                        <path d="M7.6675 1.47C6.9875 2.18 7.0075 3.3 7.7175 3.98L16.0575 12L6.4375 21.25L8.1175 23L19.5575 12L8.1175 1L7.6675 1.47Z" fill="currentColor"/>
+			                    </svg>
+			                </button>
+			                <button onclick="location.href='/adpage/shop?page=${maxpage}'">
+			                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+			                        <path d="M2.06775 1.46381C1.39575 2.18381 1.39575 3.28781 2.11575 3.98381L10.4437 11.9998L0.84375 21.2398L2.52375 22.9918L13.9718 11.9998L2.52375 1.00781L2.06775 1.48781V1.46381Z" fill="currentColor"/>
+			                        <path d="M11.5214 1.46381C10.8494 2.18381 10.8494 3.28781 11.5694 3.98381L19.8974 11.9998L10.2734 21.2398L11.9534 22.9918L23.4014 11.9998L11.9774 1.00781L11.5214 1.48781V1.46381Z" fill="currentColor"/>
+			                    </svg>
+			                </button>
+			            </c:if>
+			            <c:if test="${page >= maxpage}">
+			                <button class="disabled">
+			                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+			                        <path d="M7.6675 1.47C6.9875 2.18 7.0075 3.3 7.7175 3.98L16.0575 12L6.4375 21.25L8.1175 23L19.5575 12L8.1175 1L7.6675 1.47Z" fill="currentColor"/>
+			                    </svg>
+			                </button>
+			                <button class="disabled">
+			                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+			                        <path d="M2.06775 1.46381C1.39575 2.18381 1.39575 3.28781 2.11575 3.98381L10.4437 11.9998L0.84375 21.2398L2.52375 22.9918L13.9718 11.9998L2.52375 1.00781L2.06775 1.48781V1.46381Z" fill="currentColor"/>
+			                        <path d="M11.5214 1.46381C10.8494 2.18381 10.8494 3.28781 11.5694 3.98381L19.8974 11.9998L10.2734 21.2398L11.9534 22.9918L23.4014 11.9998L11.9774 1.00781L11.5214 1.48781V1.46381Z" fill="currentColor"/>
+			                    </svg>
+			                </button>
+			            </c:if>
+			        </div>
+			    </div>
+			</div>
         </div>
     </div>
 
@@ -553,81 +570,73 @@
         let editingProductId = null;
 
 
-        // 페이지 변경
-        function changePage(page) {
-            if (page === 'prev' && currentPage > 1) {
-                currentPage--;
-            } else if (page === 'next') {
-                currentPage++;
-            } else if (typeof page === 'number') {
-                currentPage = page;
-            }
-            
-            // 페이지네이션 버튼 업데이트
-            document.querySelectorAll('.pagination button').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            
-            console.log('현재 페이지:', currentPage);
-        }
-
         // 새 상품 등록 모달 열기
         function openAddModal() {
-            editingProductId = null;
-            document.getElementById('modalTitle').textContent = '새 상품 등록';
-            document.getElementById('productForm').reset();
-            document.getElementById('previewContainer').innerHTML = '';
-            document.getElementById('productModal').style.display = 'block';
-        }
+		    editingProductId = null;
+		    document.getElementById('modalTitle').textContent = '새 상품 등록';
+		    document.getElementById('productForm').reset();
+		    document.getElementById('previewContainer').innerHTML = '';
+		    document.getElementById('imageInput').value = ''; // 파일 입력 초기화
+		    document.getElementById('productModal').style.display = 'block';
+		}
 
 
-     // 상품 수정 모달 열기 (서버 데이터 사용)
-	 function editProduct(productId) {
-	    editingProductId = productId;
-	    document.getElementById('modalTitle').textContent = '상품 정보 수정';
-	    
-	    // 서버에서 상품 정보 요청
-	    $.ajax({
-	    	url: '/adpage/shop/detail?productId=' + productId,
-	        type: 'GET',
-	        dataType: 'json',
-	        success: function(data) {
-	            document.getElementById('productName').value = data.productName;
-	            document.getElementById('productPrice').value = data.productPrice;
-	            document.getElementById('productStock').value = data.productQuantity;
-	            document.getElementById('productDescription').value = data.productContent;
-	
-	            // 기존 이미지가 있으면 미리보기 표시
-	            const previewContainer = document.getElementById('previewContainer');
-	            previewContainer.innerHTML = '';
-	            if (data.productImg) {
-	                const previewItem = document.createElement('div');
-	                previewItem.className = 'preview-item';
-	                previewItem.innerHTML = `
-	                    <img src="${data.productImg}" alt="Preview">
-	                    <button class="remove-preview" onclick="removePreview(this)">&times;</button>
-	                `;
-	                previewContainer.appendChild(previewItem);
-	            }
-	
-	            document.getElementById('productModal').style.display = 'block';
-	        },
-	        error: function(err) {
-	            console.error(err);
-	            alert('상품 정보를 불러오는데 실패했습니다.');
-	        }
-	    });
-	}
-
+	    // 상품 수정 모달 열기 (서버 데이터 사용)
+		function editProduct(productId) {
+		    editingProductId = productId;
+		    document.getElementById('modalTitle').textContent = '상품 정보 수정';
+		    
+		    $.ajax({
+		        url: '/adpage/shop/detail?productId=' + productId,
+		        type: 'GET',
+		        dataType: 'json',
+		        success: function(data) {
+		            document.getElementById('productName').value = data.productName || '';
+		            document.getElementById('productPrice').value = data.productPrice || '';
+		            document.getElementById('productStock').value = data.productQuantity || '';
+		            document.getElementById('productDelfee').value = data.delfee || '';
+		            
+		            // <br>을 엔터로 변환하여 textarea에 표시
+		            const originalContent = data.productContent || '';
+		            const convertedContent = originalContent.replace(/<br\s*\/?>/gi, '\n');
+		            document.getElementById('productDescription').value = convertedContent;
+		
+		            const previewContainer = document.getElementById('previewContainer');
+		            previewContainer.innerHTML = '';
+		            
+		            // 기존 이미지가 있으면 파일명 형태로 표시
+		            if (data.productImg && data.productImg.trim() !== '' && data.productImg !== 'null' && !data.productImg.includes('hispark.png')) {
+		                const fileName = data.productImg.split('/').pop(); // 경로에서 파일명만 추출
+		                const fileNameDiv = document.createElement('div');
+		                fileNameDiv.className = 'file-name-display';
+		                fileNameDiv.innerHTML = '<div class="file-info existing-file" style = "border : 0.5px solid #d3d3d3; border-radius : 4px;">' +
+		                '<span class="file-icon">📁</span>' +
+		                '<span class="file-name">' + fileName + '</span>' +
+		                '<button class="remove-file" onclick="removeFilePreview(this)" type="button" style = "margin : 0 5px 2px 5px;  padding : 0 2px; ">&times;</button>' +
+		                '</div>';
+		                previewContainer.appendChild(fileNameDiv);
+		            }
+		
+		            document.getElementById('imageInput').value = '';
+		            document.getElementById('productModal').style.display = 'block';
+		        },
+		        error: function(xhr, status, error) {
+		            console.error('Error details:', xhr.responseText);
+		            alert('상품 정보를 불러오는데 실패했습니다: ' + error);
+		        }
+		    });
+		}
+		 
+		 
         // 상품 삭제
         function deleteProduct(productId) {
 		    if (confirm('정말 이 상품을 삭제하시겠습니까?')) {
-		        $.ajax({
-		            url: '/adpage/shop/' + productId,
-		            type: 'DELETE',
+		    	$.ajax({
+		            url: '/adpage/shop/delete?productId=' + productId,
+		            type: 'POST',
 		            success: function(response) {
 		                alert('삭제 완료');
-		                location.reload(); // 페이지 새로고침해서 목록 갱신
+		                location.reload();
 		            },
 		            error: function(err) {
 		                console.error(err);
@@ -643,41 +652,60 @@
         }
 
         // 상품 저장
-        function saveProduct() {
-		    const form = document.getElementById('productForm');
-		    const formData = new FormData(form);
-		
+		function saveProduct() {
+		    console.log('saveProduct 함수 호출됨');
+		    
 		    // 필수값 체크
-		    if (!formData.get('productName') || !formData.get('productPrice') || !formData.get('productStock')) {
+		    const productName = document.getElementById('productName').value.trim();
+		    const productPrice = document.getElementById('productPrice').value.trim();
+		    const productStock = document.getElementById('productStock').value.trim();
+		    const productDelfee = document.getElementById('productDelfee').value.trim();
+		    
+		    if (!productName || !productPrice || !productStock || !productDelfee) {
 		        alert('필수 항목을 모두 입력해주세요.');
 		        return;
 		    }
-		
-		    // 엔티티 매핑용 객체 생성
-		    const data = {
-		        productName: formData.get('productName'),
-		        productPrice: parseInt(formData.get('productPrice')),
-		        productQuantity: parseInt(formData.get('productStock')),
-		        productContent: formData.get('productDescription'),
-		        productImg: document.getElementById('previewContainer').querySelector('img') ? 
-		                    document.getElementById('previewContainer').querySelector('img').src : '',
-		        delfee: 0 // 필요 시 배송비 입력란 추가 가능
-		    };
-		
+		    
+		    const formData = new FormData();
+		    
+		    // 상품 설명에서 엔터를 <br>로 변환
+		    const productDescription = document.getElementById('productDescription').value;
+		    const convertedDescription = productDescription.replace(/\n/g, '<br>');
+		    
+		    // FormData에 데이터 추가
+		    formData.append('productName', productName);
+		    formData.append('productPrice', productPrice);
+		    formData.append('productQuantity', productStock);
+		    formData.append('delfee', productDelfee);
+		    formData.append('productContent', convertedDescription); // 변환된 텍스트 사용
+		    
+		    // 이미지 파일 처리
+		    const imageInput = document.getElementById('imageInput');
+		    if (imageInput.files && imageInput.files.length > 0) {
+		        formData.append('image', imageInput.files[0]);
+		        console.log('이미지 파일 추가됨:', imageInput.files[0].name);
+		    } else {
+		        console.log('이미지 파일 없음');
+		    }
+		    
 		    let ajaxUrl = '/adpage/shop';
-		    let ajaxType = 'POST';
-		
+		    
 		    if (editingProductId) {
-		        ajaxUrl += '/' + editingProductId;
-		        ajaxType = 'PUT'; // 수정일 경우
+		        formData.append('productId', editingProductId);
+		        ajaxUrl = '/adpage/shop/update';
+		        console.log('수정 모드, productId:', editingProductId);
+		    } else {
+		        console.log('등록 모드');
 		    }
 		
 		    $.ajax({
 		        url: ajaxUrl,
-		        type: ajaxType,
-		        contentType: 'application/json',
-		        data: JSON.stringify(data),
+		        type: 'POST',
+		        data: formData,
+		        processData: false,
+		        contentType: false,
 		        success: function(response) {
+		            console.log('성공:', response);
 		            if (editingProductId) {
 		                alert('상품 정보가 수정되었습니다.');
 		            } else {
@@ -686,35 +714,42 @@
 		            closeModal();
 		            location.reload();
 		        },
-		        error: function(err) {
-		            console.error(err);
-		            alert('저장 실패');
+		        error: function(xhr, status, error) {
+		            console.error('AJAX 오류:', xhr.responseText);
+		            alert('저장 실패: ' + (xhr.responseJSON ? xhr.responseJSON.message : error));
 		        }
 		    });
 		}
 
+
         // 이미지 업로드 처리
         document.getElementById('imageInput').addEventListener('change', function(e) {
-            const files = e.target.files;
-            const previewContainer = document.getElementById('previewContainer');
-            
-            Array.from(files).forEach((file, index) => {
-            	// PNG,JPEG,GIF,SVG 가능
-                if (file.type.startsWith('image/')) {
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        const previewItem = document.createElement('div');
-                        previewItem.className = 'preview-item';
-                        previewItem.innerHTML = `
-                            <img src="${e.target.result}" alt="Preview">
-                            <button class="remove-preview" onclick="removePreview(this)">&times;</button>
-                        `;
-                        previewContainer.appendChild(previewItem);
-                    };
-                    reader.readAsDataURL(file);
-                }
-            });
-        });
+		    const files = e.target.files;
+		    const previewContainer = document.getElementById('previewContainer');
+		    previewContainer.innerHTML = ''; // 기존 미리보기 초기화
+		    
+		    console.log('파일 선택됨:', files.length);
+		    
+		    if (files.length > 0) {
+		        const file = files[0]; // 첫 번째 파일만 사용
+		        console.log('파일 정보:', file.name, file.type, file.size);
+		        
+		        if (file.type.startsWith('image/')) {
+		            // 파일명을 표시하는 div 생성
+		            const fileNameDiv = document.createElement('div');
+		            fileNameDiv.className = 'file-name-display';
+		            fileNameDiv.innerHTML = '<div class="file-info existing-file" style = "border : 0.5px solid #d3d3d3; border-radius : 4px;">' +
+	                '<span class="file-icon">📁</span>' +
+	                '<span class="file-name">' + file.name + '</span>' +
+	                '<button class="remove-file" onclick="removeFilePreview(this)" type="button" style = "margin : 0 5px 2px 5px;  padding : 0 2px; ">&times;</button>' +
+	                '</div>';
+	                
+		            previewContainer.appendChild(fileNameDiv);
+		        } else {
+		            alert('이미지 파일만 선택 가능합니다.');
+		        }
+		    }
+		});
 
         // 드래그 앤 드롭 처리
         const uploadArea = document.querySelector('.image-upload');
@@ -736,11 +771,53 @@
             document.getElementById('imageInput').dispatchEvent(new Event('change'));
         });
 
-        // 이미지 미리보기 제거
-        function removePreview(button) {
-            button.parentElement.remove();
+        function removeFilePreview(button) {
+            console.log('파일명 표시 제거');
+            button.parentElement.parentElement.remove();
+            document.getElementById('imageInput').value = '';
         }
 
+        document.getElementById('statusFilter').addEventListener('change', function() {
+            filterProducts();
+        });
+
+        function filterProducts() {
+            const filterValue = document.getElementById('statusFilter').value;
+            const productCards = document.querySelectorAll('.product-card');
+            
+            productCards.forEach(card => {
+                const statusElement = card.querySelector('.product-status');
+                const stockElement = card.querySelector('.product-stock');
+                
+                const stockText = stockElement.textContent;
+                const stockNumber = parseInt(stockText.match(/\d+/)[0]);
+                
+                let showCard = true;
+                
+                switch(filterValue) {
+                    case 'all':
+                        showCard = true;
+                        break;
+                    case 'active':
+                        showCard = stockNumber > 0;
+                        break;
+                    case 'soldout':
+                        showCard = stockNumber === 0;
+                        break;
+                }
+                
+                if (showCard) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+            
+            console.log('필터 적용:', filterValue);
+        }
+        
+        
+        
         // 모달 외부 클릭 시 닫기
         window.addEventListener('click', function(e) {
             const modal = document.getElementById('productModal');

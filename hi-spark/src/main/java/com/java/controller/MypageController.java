@@ -17,6 +17,10 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -50,13 +54,13 @@ import jakarta.servlet.http.HttpSession;
 @RequestMapping("/mypage")
 public class MypageController {
 
-	@Autowired MemberService memberService;
-	@Autowired MypageService mypageService;
-//	@Autowired ResultUnlockedService resultUnlockedService;
-	
+   @Autowired MemberService memberService;
+   @Autowired MypageService mypageService;
+//   @Autowired ResultUnlockedService resultUnlockedService;
+   
     
-	@Autowired HttpSession session;
-	
+   @Autowired HttpSession session;
+   
     @Value("${api1.service_key}")
     private String dservice_key;
 
@@ -78,21 +82,21 @@ public class MypageController {
     @ResponseBody
     @PostMapping("/member/update")
     public String updateMember(@RequestParam(name = "nickname") String nickname,
-    		@RequestParam(name = "phone1") String phone1,
-    		@RequestParam(name = "phone2") String phone2,
-    		@RequestParam(name = "phone3") String phone3) {
-    	
-    	String loginId = (String) session.getAttribute("session_id");
-    	
-    	
-    	mypageService.updateMember(loginId,nickname,phone1,phone2,phone3);
-    	
-    	return "OK";
-    	
+          @RequestParam(name = "phone1") String phone1,
+          @RequestParam(name = "phone2") String phone2,
+          @RequestParam(name = "phone3") String phone3) {
+       
+       String loginId = (String) session.getAttribute("session_id");
+       
+       
+       mypageService.updateMember(loginId,nickname,phone1,phone2,phone3);
+       
+       return "OK";
+       
     }
 
 
-	@GetMapping("/chgpw")
+   @GetMapping("/chgpw")
     public String chgpw() {
         return "mypage/chgpw";
     }
@@ -123,34 +127,34 @@ public class MypageController {
         model.addAttribute("success", "비밀번호가 성공적으로 변경되었습니다.");
         return "mypage/chgpw";
     }
-	
+   
 
 //    @GetMapping("/club")
 //    public String getClubs(Model model, @SessionAttribute("session_id") String loginId) {
 //        
-//    	List<com.java.entity.sourceData.GameResultClub> allClubs = resultUnlockedService.getAllClubs(); // 모든 동아리
+//       List<com.java.entity.sourceData.GameResultClub> allClubs = resultUnlockedService.getAllClubs(); // 모든 동아리
 //        List<GameRun> myClubs = resultUnlockedService.getMyClubs(loginId);   // 내가 가입한 동아리
 //
 //        Map<Integer, String> clubImages = Map.of(
-//        	    1, "/images/mypage/book.png",
-//        	    2, "/images/mypage/band.png",
-//        	    3, "/images/mypage/school.png",
-//        	    4, "/images/mypage/basket.png",
-//        	    5, "/images/mypage/cake.png"
-//        	);
+//               1, "/images/mypage/book.png",
+//               2, "/images/mypage/band.png",
+//               3, "/images/mypage/school.png",
+//               4, "/images/mypage/basket.png",
+//               5, "/images/mypage/cake.png"
+//           );
 //
-//        	List<ClubDto> clubDtos = new ArrayList<>();
-//        	for (com.java.entity.sourceData.GameResultClub club : allClubs) {
-//        	    boolean joined = myClubs.stream()
-//        	            .anyMatch(gr -> gr.getClub() != null && gr.getClub().getClubId() == club.getClubId());
+//           List<ClubDto> clubDtos = new ArrayList<>();
+//           for (com.java.entity.sourceData.GameResultClub club : allClubs) {
+//               boolean joined = myClubs.stream()
+//                       .anyMatch(gr -> gr.getClub() != null && gr.getClub().getClubId() == club.getClubId());
 //
-//        	    clubDtos.add(ClubDto.builder()
-//        	            .clubId(club.getClubId())
-//        	            .name(club.getName())
-//        	            .imageUrl(clubImages.get(club.getClubId())) // 여기서 이미지 매핑
-//        	            .finishedAt(joined ? Timestamp.valueOf(LocalDateTime.now()) : null)
-//        	            .build());
-//        	}
+//               clubDtos.add(ClubDto.builder()
+//                       .clubId(club.getClubId())
+//                       .name(club.getName())
+//                       .imageUrl(clubImages.get(club.getClubId())) // 여기서 이미지 매핑
+//                       .finishedAt(joined ? Timestamp.valueOf(LocalDateTime.now()) : null)
+//                       .build());
+//           }
 //
 //        model.addAttribute("clubs", clubDtos);
 //        return "mypage/club";
@@ -158,9 +162,9 @@ public class MypageController {
 //    }
 
     @GetMapping("/community")
-    public String community(Model model) {
-    	
-    	String loginId = (String) session.getAttribute("session_id");
+    public String community(@RequestParam(name="page", defaultValue = "1") int page,Model model) {
+       
+       String loginId = (String) session.getAttribute("session_id");
         Optional<Member> memberOpt = memberService.findByLoginId(loginId);
 
         Member member = memberService.findByLoginId(loginId)
@@ -173,45 +177,87 @@ public class MypageController {
         model.addAttribute("commentsList", commentsList);
 
         return "mypage/community";
-    	
+       
     }
 
     @GetMapping("/shop")
-    public String shop(Model model) {
+    public String shop(@RequestParam(name="page", defaultValue = "1") int page, Model model) {
         String loginId = (String) session.getAttribute("session_id");
         if (loginId == null) {
             return "redirect:/"; // 로그인하지 않은 경우 홈으로 리다이렉트
         }
 
-        // 엔티티 리스트 가져오기
-        List<Orders> ordersList = mypageService.getOrdersByMemberId(loginId);
-
-        // DTO로 변환
-        List<OrderDto> orderDtoList = ordersList.stream()
-                                                .map(OrderDto::from) // OrderDto.from(Orders order)
+        try {
+            System.out.println("마이페이지 주문내역 페이지 접근: " + loginId);
+            System.out.println("받은 page 파라미터: " + page);
+            
+            // 페이지네이션 설정
+            int currentPage = page - 1; // pageable은 0부터 시작
+            int size = 4; // 1페이지당
+            int rowperpage = 5; // 하단넘버링 개수 5개
+            
+            // 정렬 - 주문일 기준 내림차순 (최신순)
+            Sort sort = Sort.by(Sort.Order.desc("createdAt"));
+            
+            // 주문 가져오기
+            Pageable pageable = PageRequest.of(currentPage, size, sort);
+            Page<Orders> pageList = mypageService.getOrdersByMemberIdWithPaging(loginId, pageable);
+            
+            // DTO로 변환
+            List<OrderDto> orderDtoList = pageList.getContent().stream()
+                                                .map(OrderDto::from)
                                                 .collect(Collectors.toList());
-
-        model.addAttribute("ordersList", orderDtoList); // JSP에 DTO 전달
-        return "mypage/shop";
+            
+            // 페이지 정보 계산
+            int totalElements = (int) pageList.getTotalElements();
+            int totalPages = pageList.getTotalPages();
+            
+            int startpage = ((page - 1) / rowperpage) * rowperpage + 1;
+            int endpage = Math.min(startpage + rowperpage - 1, totalPages);
+            
+            // 디버깅 로그
+            System.out.println("현재 페이지: " + page);
+            System.out.println("총 주문 수: " + totalElements);
+            System.out.println("총 페이지 수: " + totalPages);
+            System.out.println("시작 페이지: " + startpage);
+            System.out.println("끝 페이지: " + endpage);
+            
+            // 모델에 데이터 추가
+            model.addAttribute("ordersList", orderDtoList);
+            model.addAttribute("page", page);
+            model.addAttribute("maxpage", totalPages);
+            model.addAttribute("startpage", startpage);
+            model.addAttribute("endpage", endpage);
+            model.addAttribute("totalOrders", totalElements);
+            
+            return "mypage/shop";
+            
+        } catch (Exception e) {
+            System.err.println("주문내역 페이지 로드 중 오류: " + e.getMessage());
+            e.printStackTrace();
+            model.addAttribute("ordersList", List.of());
+            model.addAttribute("error", "주문내역을 불러오는데 실패했습니다.");
+            return "mypage/shop";
+        }
     }
 
     @ResponseBody
     @GetMapping("/shop/detail")
     public Map<String, Object> getOrderDetail(@RequestParam(name = "orderCode") String orderCode) {
-    	String loginId = (String) session.getAttribute("session_id");
+       String loginId = (String) session.getAttribute("session_id");
 
         // 해당 회원의 주문인지 확인 후 반환
         Orders order = mypageService.getOrderByCode(orderCode);
         if (order.getMember().getLoginId().equals(loginId)) {
-        	
-        	// DTO
-        	List<OrderItemDto> orderItems = mypageService.getOrderItemsByOrderCode(orderCode);
-        	
-        	Map<String, Object> result = new HashMap<>();
+           
+           // DTO
+           List<OrderItemDto> orderItems = mypageService.getOrderItemsByOrderCode(orderCode);
+           
+           Map<String, Object> result = new HashMap<>();
             result.put("order", order);
             result.put("orderItems", orderItems);
-        	
-        	return result;
+           
+           return result;
         }
         return null; // 권한이 없거나 주문이 없는 경우
     }
@@ -220,7 +266,7 @@ public class MypageController {
     @GetMapping("/shop/tracking")
     public String tracking(@RequestParam(name = "orderCode") String orderCode){
         
-    	return mypageService.getTrackingStatus(orderCode);
+       return mypageService.getTrackingStatus(orderCode);
 
     }
 

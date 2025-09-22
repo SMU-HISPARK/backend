@@ -150,12 +150,67 @@
         }
         
         .pg-container {
-		    display: flex;
-		    justify-content: center;
-		    margin: 50px 0 20px 0;
-		    width: 100%
-		}
-		
+          display: flex;
+          justify-content: center;
+          margin: 50px 0 20px 0;
+          width: 100%
+      }
+      
+      .paginator {
+          display: inline-flex;
+          align-items: center;
+          line-height: 1;
+      }
+      
+      .pg-btns {
+          display: inline-flex;
+          margin: 0 10px;
+      }
+      
+      .pg-btns button {
+          border: none;
+          margin: 0;
+          padding: 12px 0;
+          width: 24px;
+          background: transparent;
+          color: #ccc;
+          cursor: pointer;
+          font-size: 30px;
+          line-height: 0;
+      }
+      
+      .pg-btns button:disabled {
+          cursor: default;
+      }
+      
+      .pg-btns button {
+          color: #ccc;
+      }
+      
+      .pg-numbers {
+          display: inline-block;
+          margin: 0 10px;
+          
+      }
+      
+      .pg-numbers a {
+          margin: 0 5px;
+          color: #ccc;
+          font-size: 20px;
+          cursor: pointer;
+          text-decoration: none;
+      }
+      
+      .pg-numbers a.active {
+          color: #1a1a1a;
+      }
+      
+      .pg-btns svg {
+          width: 16px;
+          height: 16px;
+          fill: currentColor;
+      }
+      
 
         /* 주문상품 리스트 */
         .orderProduct{
@@ -451,71 +506,144 @@
         <div class="content">
             <div id="orders-list" class="section active">
                 <!-- 주문내역 목록 -->
-				    <div class="order-list">
-				        <c:forEach var="order" items="${ordersList}">
-					    <div class="order-item">
-					        <div class="order-header">
-					            <div class="post-title">주문번호: ${order.orderCode}</div>
-					            <div class="order-date">${order.createdAt}</div>
-					        </div>
-					        <div class="order-details">
-					            <!-- 상품명 요약 -->
-					            <div class="order-field">
-					                <label>상품명</label>
-					                <span>
-					                    ${order.orderItems[0].product.productName} 
-					                    <c:if test="${fn:length(order.orderItems) > 1}">
-					                        외 ${fn:length(order.orderItems) - 1}건
-					                    </c:if>
-					                </span> 
-					            </div>
-					
-					            <!-- 수량 합계 -->
-					            <div class="order-field">
-					                <label>수량</label>
-					                <c:set var="totalQty" value="0" />
-					                <c:forEach var="item" items="${order.orderItems}">
-					                    <c:set var="totalQty" value="${totalQty + item.quantity}" />
-					                </c:forEach>
-					                <span>${totalQty}개</span>
-					            </div>
-					
-					            <!-- 결제금액 -->
-					            <div class="order-field">
-					                <label>결제금액</label>
-					                <span><fmt:formatNumber value="${order.totalAmount}" pattern="#,###"/>원</span>
-					            </div>
-					
-					            <!-- 주문상태 -->
-					            <div class="order-field">
-					                <label>주문상태</label>
-					                <c:choose>
-					                    <c:when test="${order.orderState == 2}">
-					                        <span class="status-badge fin">배송완료</span>
-					                    </c:when>
-					                    <c:when test="${order.orderState == 1}">
-					                        <span class="status-badge ing">배송중</span>
-					                    </c:when>
-					                    <c:when test="${order.orderState == 0}">
-					                        <span class="status-badge buy">상품준비중</span>
-					                    </c:when>
-					                    <c:when test="${order.orderState == -1}">
-					                        <span class="status-badge can">주문취소</span>
-					                    </c:when>
-					                </c:choose>
-					            </div>
-					        </div>
-					
-					        <!-- 버튼 -->
-					        <div class="order-actions">
-					            <button class="btn btn-small" data-order-code="${order.orderCode}" data-action="detail">주문상세</button>
-					            <button class="btn btn-small" data-order-code="${order.orderCode}" data-action="tracking">배송조회</button>
-					        </div>
-					    </div>
-					</c:forEach>
-				    </div>
-				</div>
+                <div class="order-list">
+                    <c:forEach var="order" items="${ordersList}">
+                   <div class="order-item">
+                       <div class="order-header">
+                           <div class="post-title">주문번호: ${order.orderCode}</div>
+                           <div class="order-date">${order.createdAt}</div>
+                       </div>
+                       <div class="order-details">
+                           <!-- 상품명 요약 -->
+                           <div class="order-field">
+                               <label>상품명</label>
+                               <span>
+                                   ${order.orderItems[0].product.productName} 
+                                   <c:if test="${fn:length(order.orderItems) > 1}">
+                                       외 ${fn:length(order.orderItems) - 1}건
+                                   </c:if>
+                               </span> 
+                           </div>
+               
+                           <!-- 수량 합계 -->
+                           <div class="order-field">
+                               <label>수량</label>
+                               <c:set var="totalQty" value="0" />
+                               <c:forEach var="item" items="${order.orderItems}">
+                                   <c:set var="totalQty" value="${totalQty + item.quantity}" />
+                               </c:forEach>
+                               <span>${totalQty}개</span>
+                           </div>
+               
+                           <!-- 결제금액 -->
+                           <div class="order-field">
+                               <label>결제금액</label>
+                               <span><fmt:formatNumber value="${order.totalAmount}" pattern="#,###"/>원</span>
+                           </div>
+               
+                           <!-- 주문상태 -->
+                           <div class="order-field">
+                               <label>주문상태</label>
+                               <c:choose>
+                                   <c:when test="${order.orderState == 2}">
+                                       <span class="status-badge fin">배송완료</span>
+                                   </c:when>
+                                   <c:when test="${order.orderState == 1}">
+                                       <span class="status-badge ing">배송중</span>
+                                   </c:when>
+                                   <c:when test="${order.orderState == 0}">
+                                       <span class="status-badge buy">상품준비중</span>
+                                   </c:when>
+                                   <c:when test="${order.orderState == -1}">
+                                       <span class="status-badge can">주문취소</span>
+                                   </c:when>
+                               </c:choose>
+                           </div>
+                       </div>
+               
+                       <!-- 버튼 -->
+                       <div class="order-actions">
+                           <button class="btn btn-small" data-order-code="${order.orderCode}" data-action="detail">주문상세</button>
+                           <button class="btn btn-small" data-order-code="${order.orderCode}" data-action="tracking">배송조회</button>
+                       </div>
+                   </div>
+               </c:forEach>
+                </div>
             </div>
+            </div>
+            
+          <div class="pg-container">
+             <div class="paginator">
+                 <div class="pg-btns">
+                     <c:if test="${page < 2}">
+                         <button class="disabled">
+                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                 <path d="M21.9323 22.5362C22.6042 21.8162 22.6042 20.7122 21.8842 20.0162L13.5562 12.0002L23.1562 2.76019L21.4762 1.00819L10.0282 12.0002L21.4763 22.9922L21.9323 22.5122L21.9323 22.5362Z" fill="currentColor"/>
+                                 <path d="M12.4786 22.5362C13.1506 21.8162 13.1506 20.7122 12.4306 20.0162L4.10256 12.0002L13.7266 2.76019L12.0466 1.00819L0.598563 12.0002L12.0226 22.9922L12.4786 22.5122L12.4786 22.5362Z" fill="currentColor"/>
+                             </svg>
+                         </button>
+                         <button class="disabled">
+                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                 <path d="M16.3325 1.47C17.0125 2.18 16.9925 3.3 16.2825 3.98L7.9425 12L17.5625 21.25L15.8825 23L4.4425 12L15.8825 1L16.3325 1.47Z" fill="currentColor"/>
+                             </svg>
+                         </button>
+                     </c:if>
+                     <c:if test="${page >= 2}">
+                         <button onclick="location.href='/mypage/shop'">
+                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                 <path d="M21.9323 22.5362C22.6042 21.8162 22.6042 20.7122 21.8842 20.0162L13.5562 12.0002L23.1562 2.76019L21.4762 1.00819L10.0282 12.0002L21.4763 22.9922L21.9323 22.5122L21.9323 22.5362Z" fill="currentColor"/>
+                                 <path d="M12.4786 22.5362C13.1506 21.8162 13.1506 20.7122 12.4306 20.0162L4.10256 12.0002L13.7266 2.76019L12.0466 1.00819L0.598563 12.0002L12.0226 22.9922L12.4786 22.5122L12.4786 22.5362Z" fill="currentColor"/>
+                             </svg>
+                         </button>
+                         <button onclick="location.href='/mypage/shop?page=${page-1}'">
+                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                 <path d="M16.3325 1.47C17.0125 2.18 16.9925 3.3 16.2825 3.98L7.9425 12L17.5625 21.25L15.8825 23L4.4425 12L15.8825 1L16.3325 1.47Z" fill="currentColor"/>
+                             </svg>
+                         </button>
+                     </c:if>
+                 </div>
+         
+                 <div class="pg-numbers">
+                     <c:forEach var="i" begin="${startpage}" end="${endpage}">
+                         <c:if test="${page == i}">
+                             <a class="active">${i}</a>
+                         </c:if>
+                         <c:if test="${page != i}">
+                             <a href="/mypage/shop?page=${i}">${i}</a>
+                         </c:if>
+                     </c:forEach>
+                 </div>
+         
+                 <div class="pg-btns">
+                     <c:if test="${page < maxpage}">
+                         <button onclick="location.href='/mypage/shop?page=${page+1}'">
+                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                 <path d="M7.6675 1.47C6.9875 2.18 7.0075 3.3 7.7175 3.98L16.0575 12L6.4375 21.25L8.1175 23L19.5575 12L8.1175 1L7.6675 1.47Z" fill="currentColor"/>
+                             </svg>
+                         </button>
+                         <button onclick="location.href='/mypage/shop?page=${maxpage}'">
+                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                 <path d="M2.06775 1.46381C1.39575 2.18381 1.39575 3.28781 2.11575 3.98381L10.4437 11.9998L0.84375 21.2398L2.52375 22.9918L13.9718 11.9998L2.52375 1.00781L2.06775 1.48781V1.46381Z" fill="currentColor"/>
+                                 <path d="M11.5214 1.46381C10.8494 2.18381 10.8494 3.28781 11.5694 3.98381L19.8974 11.9998L10.2734 21.2398L11.9534 22.9918L23.4014 11.9998L11.9774 1.00781L11.5214 1.48781V1.46381Z" fill="currentColor"/>
+                             </svg>
+                         </button>
+                     </c:if>
+                     <c:if test="${page >= maxpage}">
+                         <button class="disabled">
+                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                 <path d="M7.6675 1.47C6.9875 2.18 7.0075 3.3 7.7175 3.98L16.0575 12L6.4375 21.25L8.1175 23L19.5575 12L8.1175 1L7.6675 1.47Z" fill="currentColor"/>
+                             </svg>
+                         </button>
+                         <button class="disabled">
+                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                 <path d="M2.06775 1.46381C1.39575 2.18381 1.39575 3.28781 2.11575 3.98381L10.4437 11.9998L0.84375 21.2398L2.52375 22.9918L13.9718 11.9998L2.52375 1.00781L2.06775 1.48781V1.46381Z" fill="currentColor"/>
+                                 <path d="M11.5214 1.46381C10.8494 2.18381 10.8494 3.28781 11.5694 3.98381L19.8974 11.9998L10.2734 21.2398L11.9534 22.9918L23.4014 11.9998L11.9774 1.00781L11.5214 1.48781V1.46381Z" fill="currentColor"/>
+                             </svg>
+                         </button>
+                     </c:if>
+                 </div>
+             </div>
+         </div>
             
             
             <!-- 주문 상세 페이지 -->
@@ -529,9 +657,9 @@
                 </div>
                 <!-- 버튼 영역 -->
                 <div class="order-detail-actions" id="order-detail-buttons">
-				    <button onclick="openPopup(${order.orderCode})" class = "btn update">배송지 변경</button>
-				    <button onclick = "cancelOrder('')" class = "cancel" id="cancel-btn">주문취소</button>
-				</div>
+                <button onclick="openPopup(${order.orderCode})" class = "btn update">배송지 변경</button>
+                <button onclick = "cancelOrder('')" class = "cancel" id="cancel-btn">주문취소</button>
+            </div>
             </div>
             
             <!-- 배송 조회 페이지 -->
@@ -547,42 +675,53 @@
     </div>
 </div>
     <script>
-	    $(document).ready(function() {
-	        // 이벤트 위임을 사용한 버튼 클릭 처리
-	        $('.order-list').on('click', '.btn[data-action]', function() {
-	            const orderCode = $(this).data('order-code');
-	            const action = $(this).data('action');
-	            
-	            if (action === 'detail') {
-	                showOrderDetail(orderCode);
-	            } else if (action === 'tracking') {
-	                showDeliveryTracking(orderCode);
-	            }
-	        });
-	    });
+       $(document).ready(function() {
+           // 이벤트 위임을 사용한 버튼 클릭 처리
+           $('.order-list').on('click', '.btn[data-action]', function() {
+               const orderCode = $(this).data('order-code');
+               const action = $(this).data('action');
+               
+               if (action === 'detail') {
+                   showOrderDetail(orderCode);
+               } else if (action === 'tracking') {
+                   showDeliveryTracking(orderCode);
+               }
+           });
+       });
     
-	    function openPopup(orderCode){
-	        console.log("openPopup 함수 호출됨, orderCode:", orderCode);
-	        console.log("orderCode 타입:", typeof orderCode);
-	        
-	        if (!orderCode || orderCode === 'undefined' || orderCode === '') {
-	            alert('주문번호가 없습니다.');
-	            return;
-	        }
-	        
-	        // 템플릿 리터럴 대신 문자열 연결 사용
-	        const url = "/mypage/shopupdate?orderCode=" + orderCode;
-	        console.log("생성된 URL:", url);
-	        window.open(url, "배송지 변경", "width=800,height=600,top=100,left=200,resizable=no,scrollbars=yes");
-	    }
+       function openPopup(orderCode){
+           console.log("openPopup 함수 호출됨, orderCode:", orderCode);
+           console.log("orderCode 타입:", typeof orderCode);
+           
+           if (!orderCode || orderCode === 'undefined' || orderCode === '') {
+               alert('주문번호가 없습니다.');
+               return;
+           }
+           
+           // 템플릿 리터럴 대신 문자열 연결 사용
+           const url = "/mypage/shopupdate?orderCode=" + orderCode;
+           console.log("생성된 URL:", url);
+           window.open(url, "배송지 변경", "width=800,height=600,top=100,left=200,resizable=no,scrollbars=yes");
+       }
         
         
-        function showSection(sectionName) {
-        	// 모든 섹션 숨기기
-            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-         // 선택된 섹션 보이기
-        	document.getElementById(sectionName).classList.add('active');
-        }
+       function showSection(sectionName) {
+           // 모든 섹션 숨기기
+           document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+           // 선택된 섹션 보이기
+           document.getElementById(sectionName).classList.add('active');
+           
+           // 페이지네이션 표시/숨김 처리
+           const paginationContainer = document.querySelector('.pg-container');
+           
+           if (sectionName === 'orders-list') {
+               // 주문내역 목록일 때만 페이지네이션 표시
+               paginationContainer.style.display = 'flex';
+           } else {
+               // 주문상세, 배송조회일 때는 페이지네이션 숨김
+               paginationContainer.style.display = 'none';
+           }
+       }
         
         
         function showOrderDetail(orderCode) {
@@ -793,135 +932,135 @@
             });
         }
         // 배송 조회 정보 없을 때 기본 메시지 표시
-		function displayDefaultTrackingInfo(orderCode) {
-		    const html = `
-		        <div class="detail-section">
-		            <div class="subtitle">배송 정보</div>
-		            <div class="detail-grid">
-		                <div class="detail-item"><span>배송 정보가 없습니다.</span></div>
-		            </div>
-		        </div>
-		    `;
-		    document.getElementById('delivery-tracking-content').innerHTML = html;
-		    showSection('delivery-tracking');
-		}
+      function displayDefaultTrackingInfo(orderCode) {
+          const html = `
+              <div class="detail-section">
+                  <div class="subtitle">배송 정보</div>
+                  <div class="detail-grid">
+                      <div class="detail-item"><span>배송 정보가 없습니다.</span></div>
+                  </div>
+              </div>
+          `;
+          document.getElementById('delivery-tracking-content').innerHTML = html;
+          showSection('delivery-tracking');
+      }
         
-		//API에서 받은 실제 배송조회 정보를 화면에 표시하는 함수
-		function displayTrackingInfo(apiResponse, orderCode){
-		    console.log("실제 API 데이터로 화면 구성:", apiResponse);
-		    
-		    // level에 따른 상태 텍스트 변환
-		    var statusText = '';
-		    switch(apiResponse.level) {
-		        case 1: statusText = '접수'; break;
-		        case 2: statusText = '집화'; break; 
-		        case 3: statusText = '터미널입고'; break;
-		        case 4: statusText = '배송입고'; break;
-		        case 5: statusText = '배송출고'; break;
-		        case 6: statusText = '배송완료'; break;
-		        default: statusText = '알 수 없음'; break;
-		    }
-		    
-		    var html = 
-		        '<div class="detail-section">' +
-		            '<div class="subtitle">배송 정보</div>' +
-		            '<div class="detail-grid">' +
-		                '<div class="detail-item"><label>주문번호:</label><span>' + orderCode + '</span></div>' +
-		                '<div class="detail-item"><label>송장번호:</label><span>' + (apiResponse.invoiceNo || '-') + '</span></div>' +
-		                '<div class="detail-item"><label>배송완료여부:</label><span>' + (apiResponse.complete ? '완료' : '진행중') + '</span></div>' +
-		                '<div class="detail-item"><label>현재상태:</label><span class="status-badge">' + statusText + '</span></div>' +
-		            '</div>' +
-		        '</div>' +
-		        '<div class="detail-section">' +
-		            '<div class="subtitle">배송 추적</div>';
-		    
-		    if(apiResponse.trackingDetails && apiResponse.trackingDetails.length > 0){
-		        var sortedTracking = apiResponse.trackingDetails.sort(function(a, b) { return b.time - a.time; });
-		        
-		        for(var i = 0; i < sortedTracking.length; i++){
-		            var step = sortedTracking[i];
-		            html += '<div class="tracking-step">' +
-		                '<div>' +
-		                    '<div class="tracking-status">' + step.kind + '</div>' +
-		                    '<div style="font-size:12px;color:#666;">' + step.where + '</div>' +
-		                '</div>' +
-		                '<div class="tracking-date">' + step.timeString + '</div>' +
-		            '</div>';
-		        }
-		    } else {
-		        html += '<div class="tracking-step">배송조회 정보가 없습니다.</div>';
-		    }
-		    
-		    html += '</div>';
-		    
-		    document.getElementById('delivery-tracking-content').innerHTML = html;
-		    showSection('delivery-tracking');
-		}
+      //API에서 받은 실제 배송조회 정보를 화면에 표시하는 함수
+      function displayTrackingInfo(apiResponse, orderCode){
+          console.log("실제 API 데이터로 화면 구성:", apiResponse);
+          
+          // level에 따른 상태 텍스트 변환
+          var statusText = '';
+          switch(apiResponse.level) {
+              case 1: statusText = '접수'; break;
+              case 2: statusText = '집화'; break; 
+              case 3: statusText = '터미널입고'; break;
+              case 4: statusText = '배송입고'; break;
+              case 5: statusText = '배송출고'; break;
+              case 6: statusText = '배송완료'; break;
+              default: statusText = '알 수 없음'; break;
+          }
+          
+          var html = 
+              '<div class="detail-section">' +
+                  '<div class="subtitle">배송 정보</div>' +
+                  '<div class="detail-grid">' +
+                      '<div class="detail-item"><label>주문번호:</label><span>' + orderCode + '</span></div>' +
+                      '<div class="detail-item"><label>송장번호:</label><span>' + (apiResponse.invoiceNo || '-') + '</span></div>' +
+                      '<div class="detail-item"><label>배송완료여부:</label><span>' + (apiResponse.complete ? '완료' : '진행중') + '</span></div>' +
+                      '<div class="detail-item"><label>현재상태:</label><span class="status-badge">' + statusText + '</span></div>' +
+                  '</div>' +
+              '</div>' +
+              '<div class="detail-section">' +
+                  '<div class="subtitle">배송 추적</div>';
+          
+          if(apiResponse.trackingDetails && apiResponse.trackingDetails.length > 0){
+              var sortedTracking = apiResponse.trackingDetails.sort(function(a, b) { return b.time - a.time; });
+              
+              for(var i = 0; i < sortedTracking.length; i++){
+                  var step = sortedTracking[i];
+                  html += '<div class="tracking-step">' +
+                      '<div>' +
+                          '<div class="tracking-status">' + step.kind + '</div>' +
+                          '<div style="font-size:12px;color:#666;">' + step.where + '</div>' +
+                      '</div>' +
+                      '<div class="tracking-date">' + step.timeString + '</div>' +
+                  '</div>';
+              }
+          } else {
+              html += '<div class="tracking-step">배송조회 정보가 없습니다.</div>';
+          }
+          
+          html += '</div>';
+          
+          document.getElementById('delivery-tracking-content').innerHTML = html;
+          showSection('delivery-tracking');
+      }
 
-		function cancelOrder(orderCode){
-		    if(confirm("주문을 취소하시겠습니까?")){
-		        $.ajax({
-		            url: "/mypage/shop/cancel",
-		            method: "POST", 
-		            data: { orderCode: orderCode },
-		            dataType: "json",
-		            success: function(result) {
-		                if(result.success) {
-		                    alert(orderCode + ' 주문이 취소되었습니다.');
-		                    
-		                    // 주문 목록에서 해당 주문 항목 제거
-		                    // removeOrderFromList(orderCode);
-		                    
-		                    // 주문내역 페이지로 이동
-		                    showOrdersList();
-		                } else {
-		                    alert('주문 취소에 실패했습니다: ' + (result.message || '알 수 없는 오류'));
-		                }
-		            },
-		            error: function(xhr, status, error) {
-		                console.error('주문취소 Ajax 에러:', xhr, status, error);
-		                alert('주문 취소 중 오류가 발생했습니다.');
-		            }
-		        });
-		    }
-		}
-		
-		// 목록에서 특정 주문을 제거
-		function removeOrderFromList(orderCode) {
-		    // 주문 목록에서 해당 주문번호를 가진 항목을 찾아서 제거
-		    const orderItems = document.querySelectorAll('.order-item');
-		    
-		    orderItems.forEach(function(item) {
-		        const orderTitle = item.querySelector('.post-title');
-		        if(orderTitle && orderTitle.textContent.includes(orderCode)) {
-	                item.remove();
-	                checkEmptyOrderList();
-		                
-		        }
-		    });
-		}
+      function cancelOrder(orderCode){
+          if(confirm("주문을 취소하시겠습니까?")){
+              $.ajax({
+                  url: "/mypage/shop/cancel",
+                  method: "POST", 
+                  data: { orderCode: orderCode },
+                  dataType: "json",
+                  success: function(result) {
+                      if(result.success) {
+                          alert(orderCode + ' 주문이 취소되었습니다.');
+                          
+                          // 주문 목록에서 해당 주문 항목 제거
+                          // removeOrderFromList(orderCode);
+                          
+                          // 주문내역 페이지로 이동
+                          showOrdersList();
+                      } else {
+                          alert('주문 취소에 실패했습니다: ' + (result.message || '알 수 없는 오류'));
+                      }
+                  },
+                  error: function(xhr, status, error) {
+                      console.error('주문취소 Ajax 에러:', xhr, status, error);
+                      alert('주문 취소 중 오류가 발생했습니다.');
+                  }
+              });
+          }
+      }
+      
+      // 목록에서 특정 주문을 제거
+      function removeOrderFromList(orderCode) {
+          // 주문 목록에서 해당 주문번호를 가진 항목을 찾아서 제거
+          const orderItems = document.querySelectorAll('.order-item');
+          
+          orderItems.forEach(function(item) {
+              const orderTitle = item.querySelector('.post-title');
+              if(orderTitle && orderTitle.textContent.includes(orderCode)) {
+                   item.remove();
+                   checkEmptyOrderList();
+                      
+              }
+          });
+      }
 
-		// 주문 목록이 비어있는지 확인하고 메시지 표시
-		function checkEmptyOrderList() {
-		    const orderList = document.querySelector('.order-list');
-		    const remainingOrders = orderList.querySelectorAll('.order-item');
-		    
-		    if(remainingOrders.length === 0) {
-		        const emptyMessage = document.createElement('div');
-		        emptyMessage.className = 'empty-message';
-		        emptyMessage.style.textAlign = 'center';
-		        emptyMessage.style.padding = '50px 20px';
-		        emptyMessage.style.color = '#666';
-		        emptyMessage.style.fontSize = '16px';
-		        emptyMessage.innerHTML = '주문내역이 없습니다.';
-		        
-		        orderList.appendChild(emptyMessage);
-		    }
-		}
-		
-		function showOrdersList(){
-		    showSection('orders-list');
-		}
+      // 주문 목록이 비어있는지 확인하고 메시지 표시
+      function checkEmptyOrderList() {
+          const orderList = document.querySelector('.order-list');
+          const remainingOrders = orderList.querySelectorAll('.order-item');
+          
+          if(remainingOrders.length === 0) {
+              const emptyMessage = document.createElement('div');
+              emptyMessage.className = 'empty-message';
+              emptyMessage.style.textAlign = 'center';
+              emptyMessage.style.padding = '50px 20px';
+              emptyMessage.style.color = '#666';
+              emptyMessage.style.fontSize = '16px';
+              emptyMessage.innerHTML = '주문내역이 없습니다.';
+              
+              orderList.appendChild(emptyMessage);
+          }
+      }
+      
+      function showOrdersList(){
+          showSection('orders-list');
+      }
     </script>
 </body>
 </html>
