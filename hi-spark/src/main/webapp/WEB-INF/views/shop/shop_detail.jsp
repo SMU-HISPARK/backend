@@ -109,6 +109,7 @@
 									        </div>
 									    </td>
 									</tr>
+								
                                 <tr class="product_total">
                                     <th>TOTAL</th>
                                    <td>
@@ -230,114 +231,114 @@
 			</div>
 		</div>
             <script>
-						$(document).ready(function () {
-							//sold out일때 js update total 실행안하기
-							
-							let stock = parseInt("${product.productQuantity}", 10);
-						    let unitPrice = parseInt("${product.productPrice}", 10); // 숫자 그대로 받음
-							
-						    // 수량 동기화 함수 
-						    function syncQuantity() {
-						    	let quantity = $("#quantityInput").val();
-						    	$("#hiddenQuantity").val(quantity);
-						    }
-						    
-						    
-						    function updateTotal(quantity) {
-						        let total = unitPrice * quantity;
-						        $(".product_total td").text(formatNumber(total) + " 원");
-						    }
+				$(document).ready(function () {
+					//sold out일때 js update total 실행안하기
+					
+					let stock = parseInt("${product.productQuantity}", 10);
+				    let unitPrice = parseInt("${product.productPrice}", 10); // 숫자 그대로 받음
+					
+				    // 수량 동기화 함수 
+				    function syncQuantity() {
+				    	let quantity = $("#quantityInput").val();
+				    	$("#hiddenQuantity").val(quantity);
+				    }
+				    
+				    
+				    function updateTotal(quantity) {
+				        let total = unitPrice * quantity;
+				        $(".product_total td").text(formatNumber(total) + " 원");
+				    }
+				
+				    // + 버튼
+				    $(".quantity-btn-plus").click(function () {
+				        let input = $("#quantityInput");
+				        let quantity = parseInt(input.val()) || 1;
+
+				        if (stock === 0) {
+				            alert("품절입니다.");
+				            input.val(1);  //품절이면 강제로 1 고정
+				            syncQuantity();
+				           return;
+				        }
+				        if (quantity < stock) {
+				            input.val(quantity + 1);
+				            updateTotal(quantity + 1);
+				            syncQuantity();
+				        } else {
+				            alert("재고를 초과할 수 없습니다.");
+				            input.val(stock); // 재고 이상 못 올라가게 고정
+				            syncQuantity();
+				        }
+				    });
+				
+				    // - 버튼
+				    $(".quantity-btn-minus").click(function () {
+				        let input = $("#quantityInput");
+				        let quantity = parseInt(input.val()) || 1;
+				        
+				        if(quantity > 1){
+					        input.val(quantity - 1);
+					        updateTotal(quantity -1);
+					        syncQuantity();
+				        }else{
+				        	alert("최소 수량은 1개입니다.");
+				            input.val(1); // 최소 1로 고정
+				            syncQuantity();
+				        }
+				    });
+				
+
+				    // 직접 입력
+				    $(".quantity-input").on("input", function () {
+				        let quantity = parseInt($(this).val()) || 1;
+
+				        if (stock === 0) {
+				            alert("품절입니다");
+				            $(this).val(1);
+				            syncQuantity();
+				            return;
+				        }
+				        if (quantity < 1) {
+				            alert("최소 수량은 1개입니다.");
+				            quantity = 1;
+				        }
+				        if (quantity > stock) {
+				            alert("재고를 초과할 수 없습니다");
+				            quantity = stock;
+				        }
+
+				        $(this).val(quantity);
+				        updateTotal(quantity);
+				        syncQuantity();
+				    });
+
+				    // 초기 TOTAL
+				    if (stock > 0) {
+				        updateTotal(1);
+				    } else {
+				        $(".product_total .product_price").html("<span class='product_price'>SOLD OUT</span>");
+				    }
+				    
+				    // 초기수량 동기화
+				    syncQuantity();
+				
+										    
+				    // 장바구니로 전송 
+				    function formatNumber(num) {
+					    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+					}
+				    
+				    
+				    // 수량이 바뀔 때 hidden input 값도 업데이트
+					$(".quantity-input").on("input", function () {
+					    $("#hiddenQuantity").val($(this).val());
+					});
+					$(".quantity-btn-plus, .quantity-btn-minus, .quantity-input").on("input click", function () {
+					    syncQuantity();
+					});
+
+				});
 						
-						    // + 버튼
-						    $(".quantity-btn-plus").click(function () {
-						        let input = $("#quantityInput");
-						        let quantity = parseInt(input.val()) || 1;
-
-						        if (stock === 0) {
-						            alert("품절입니다.");
-						            input.val(1);  // ✅ 품절이면 강제로 1 고정
-						            syncQuantity();
-						           return;
-						        }
-						        if (quantity < stock) {
-						            input.val(quantity + 1);
-						            updateTotal(quantity + 1);
-						            syncQuantity();
-						        } else {
-						            alert("재고를 초과할 수 없습니다.");
-						            input.val(stock); // 재고 이상 못 올라가게 고정
-						            syncQuantity();
-						        }
-						    });
-						
-						    // - 버튼
-						    $(".quantity-btn-minus").click(function () {
-						        let input = $("#quantityInput");
-						        let quantity = parseInt(input.val()) || 1;
-						        
-						        if(quantity > 1){
-							        input.val(quantity - 1);
-							        updateTotal(quantity -1);
-							        syncQuantity();
-						        }else{
-						        	alert("최소 수량은 1개입니다.");
-						            input.val(1); // 최소 1로 고정
-						            syncQuantity();
-						        }
-						    });
-						
-
-						    // 직접 입력
-						    $(".quantity-input").on("input", function () {
-						        let quantity = parseInt($(this).val()) || 1;
-
-						        if (stock === 0) {
-						            alert("품절입니다");
-						            $(this).val(1);
-						            syncQuantity();
-						            return;
-						        }
-						        if (quantity < 1) {
-						            alert("최소 수량은 1개입니다.");
-						            quantity = 1;
-						        }
-						        if (quantity > stock) {
-						            alert("재고를 초과할 수 없습니다");
-						            quantity = stock;
-						        }
-
-						        $(this).val(quantity);
-						        updateTotal(quantity);
-						        syncQuantity();
-						    });
-
-						    // 초기 TOTAL
-						    if (stock > 0) {
-						        updateTotal(1);
-						    } else {
-						        $(".product_total .product_price").html("<span class='product_price'>SOLD OUT</span>");
-						    }
-						    
-						    // 초기수량 동기화
-						    syncQuantity();
-						
-												    
-						    // 장바구니로 전송 
-						    function formatNumber(num) {
-							    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-							}
-						    
-						    
-						    // 수량이 바뀔 때 hidden input 값도 업데이트
-							$(".quantity-input").on("input", function () {
-							    $("#hiddenQuantity").val($(this).val());
-							});
-							$(".quantity-btn-plus, .quantity-btn-minus, .quantity-input").on("input click", function () {
-							    syncQuantity();
-							});
-
-						});
-						
-						</script>
+			</script>
 <script type="text/javascript" src="/js/shop.js"></script>
 <%@ include file="../layout/footer.jsp" %>

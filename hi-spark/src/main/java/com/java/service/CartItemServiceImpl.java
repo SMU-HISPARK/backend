@@ -73,7 +73,7 @@ public class CartItemServiceImpl implements CartItemService {
                 });
     }
 
-    // Cart 객체로 받는 버전
+//     Cart 객체로 받는 버전
     @Override
     public CartItem addCartItem(Cart cart, int productId, int quantity) {
         Product product = productRepository.findById(productId)

@@ -11,10 +11,8 @@
       document.addEventListener('DOMContentLoaded', function() {
         var calendarEl = document.getElementById('calendar');
         var calendar = new FullCalendar.Calendar(calendarEl, {
-        //googleCalendarApiKey: 'AIzaSyCIonVa6P6wlyVTLT2yIJMhoiNhn1nyGbo',
-         eventColor: 'transparent',
+        eventColor: 'transparent',
         events:'/api/events',
-       //  {googleCalendarId: 'b6787d4ee7c0ab597028a73c8b8404764b420c5433dfa7b346323dc395d634a6@group.calendar.google.com'},
         fixedWeekCount: false,
         locale: 'ko',
         dayCellContent: function(arg){
@@ -33,63 +31,10 @@
             right:''
         },
         initialView: 'dayGridMonth',
-        navLinks: true, // can click day/week names to navigate views
-        businessHours: true, // display business hours
+        navLinks: true, 
+        businessHours: true, 
         editable: true,
         selectable: true,
-        /*events: [
-            {
-            title: '하이스파크 라이브방송',
-            start: '2025-09-04T20:00:00',
-            constraint: 'businessHours'
-            },
-            {
-            title: '세웅 생일방송',
-            start: '2025-09-18T20:00:00',
-            constraint: 'availableForMeeting', // defined below
-            color: '#035fe0'
-            },
-            {
-            title: '컨셉포토',
-            start: '2025-09-18',
-            end: '2025-09-21'
-            },
-            {
-            title: '컴백트레일러',
-            start: '2025-09-12T20:00:00'
-            },
-
-            // areas where "Meeting" must be dropped
-            {
-            groupId: 'availableForMeeting',
-            start: '2025-09-11T10:00:00',
-            end: '2025-09-11T16:00:00',
-            display: 'background'
-            },
-            {
-            groupId: 'availableForMeeting',
-            start: '2025-09-13T10:00:00',
-            end: '2025-09-13T16:00:00',
-            display: 'background'
-            },*/
-
-            // red areas where no events can be dropped
-           /*
-            {
-            start: '2025-09-24',
-            end: '2025-09-28',
-            overlap: false,
-            display: 'background',
-            color: '#035fe0'
-            },
-            {
-            start: '2025-09-06',
-            end: '2025-09-08',
-            overlap: false,
-            display: 'background',
-            color: '#035fe0'
-            }*/
-       /* ]*/
        
 	        // 이벤트 클릭 시 상세 정보 표시
 	        eventClick: function(info) {
