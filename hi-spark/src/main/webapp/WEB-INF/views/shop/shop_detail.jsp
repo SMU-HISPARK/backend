@@ -169,6 +169,58 @@
 					}
 				
 				</script>
+				
+				<section class="product-recommendations">
+				    <nav class="product-tabs">
+				        <ul>
+				            <li data-tab="content-together" class="is-active"><a><span class="tab_text">이 상품을 구매한 분들이 <span class="tap_product">함께 구매한 상품</span></span></a></li>
+				            <li data-tab="content-frequent"><a><span class="tab_text">이 상품을 구매한 분들이 <span class="tap_product">많이 구매한 상품</span></a></li>
+				        </ul>
+				    </nav>
+				
+				    <div id="content-together" class="tab-content is-active">
+						<c:if test="${not empty togetherProducts}">
+							<ul class="product-list">
+								<c:forEach var="product" items="${togetherProducts}">
+								    <li class="product-item">
+								        <a href="/shop/detail?productId=${product.productId}"><img src="${product.productImg}" alt="${product.productName}"></a>
+								        <div class="product-info">
+								            <p class="title"><a href="#">${product.productName}</a></p>
+											<p class="price"><fmt:formatNumber value="${product.productPrice}" pattern="#,###" />원</p>								        </div>
+								    </li>
+								</c:forEach>
+							</ul>
+
+						</c:if>	
+						<c:if test="${empty togetherProducts}">
+							<p class="no-recommendation">함께 구매한 상품이 없습니다.</p>
+						</c:if>
+
+				    </div>
+				
+				    <div id="content-frequent" class="tab-content">
+						<c:if test="${not empty byUserProducts}">
+							<ul class="product-list">
+								<c:forEach var="product" items="${byUserProducts}">
+								    <li class="product-item">
+								        <a href="/shop/detail?productId=${product.productId}"><img src="${product.productImg}" alt="${product.productName}"></a>
+								        <div class="product-info">
+								            <p class="title"><a href="#">${product.productName}</a></p>
+											<p class="price"><fmt:formatNumber value="${product.productPrice}" pattern="#,###" />원</p>								        </div>
+								    </li>
+								</c:forEach>
+							</ul>
+
+						</c:if>	
+						<c:if test="${empty byUserProducts}">
+							<p class="no-recommendation">많이 구매한 상품이 없습니다.</p>
+						</c:if>
+				    </div>
+				</section>
+				
+				<br>
+				<br>
+				
                 <div class="Information">
                     <p>상세정보</p>
 					<br>
