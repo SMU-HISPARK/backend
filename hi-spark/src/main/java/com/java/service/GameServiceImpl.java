@@ -58,13 +58,28 @@ public class GameServiceImpl implements GameService {
 	}
 
 	@Override
-	public GameQuestion findByDayAndTime(Integer nextDay, Integer nextTime) {
+	public GameQuestion findByDayAndTime(Integer nextDay, Integer nextTime, String tag) {
 		
 		// 다음 순서의 질문 리스트 추출
 		List<GameQuestion> gqList = gqRep.findByDayAndTime(nextDay, nextTime);
 		
 		// 질문 하나일 시 바로 리턴
 		if(gqList.size() == 1) return gqList.get(0);
+		
+		// 태그로 다음 문항 찾아서 리턴
+		if(tag != null) {
+			for(GameQuestion q: gqList) {
+				if(q.getTag() != null && q.getTag().equals(tag)) {
+					return q;
+				}
+			}
+		}else {	// tag 인풋이 없을 시 tag 문항 배제
+			for(GameQuestion q: gqList) {
+				if(q.getTag() != null) {
+					gqList.remove(q);
+				}
+			}
+		}
 		
 		// 질문 고르는 로직 - 랜덤 (필요 시 변경)
 		int randomQ =  (int)(Math.random() * gqList.size());

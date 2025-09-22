@@ -16,7 +16,7 @@ public interface GameService {
 	// 첫 질문 호출
 	GameQuestion findQuestionById(Integer question_id);
 	// 다음 단계 질문 호출
-	GameQuestion findByDayAndTime(Integer nextDay, Integer nextTime);
+	GameQuestion findByDayAndTime(Integer nextDay, Integer nextTime, String string);
 
 	// 결과 출력
 	GameResultClub findResultById(Integer club_id);

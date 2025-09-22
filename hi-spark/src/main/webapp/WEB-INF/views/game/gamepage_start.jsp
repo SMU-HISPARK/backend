@@ -69,6 +69,10 @@
             justify-content: flex-end;
             text-align: center;
             font-family: 'KccHanbit', sans-serif;
+            box-sizing: border-box;
+            max-width: 700px;
+            margin:auto; 
+            display:flex; flex-direction:column; align-items: center;
         }
         .question_box h4{
             font-size:1.0rem;
@@ -79,6 +83,7 @@
             font-size:1.6rem;
             font-weight: normal;
             margin: 0;
+            padding: 0 30px;
         }
         .question_board {
             height:365px; width: 100%; 
@@ -89,6 +94,9 @@
             width: 100%;
             height: 42px;
             display:flex; flex-direction: column; justify-content: space-between; align-items: center;
+        }
+        .question_content {
+            width: 600px;
         }
         .progress_bar {
             position: relative;
@@ -277,7 +285,7 @@
     <!-- 시작 섹션 -->
     <section class="starting_section">
         <div class="title_box box">
-            <h3>동아리 신입부원 모집 테스트</h3>
+            <h3>나의 학교생활 테스트</h3>
             <p>나에게 맞는 동아리는 어디일까?</p>
         </div>
 
@@ -298,7 +306,7 @@
 
     <!-- 질문 섹션 -->
     <section class="question_section">
-        <div class="question_box box">
+        <div class="question_box">
             <div class="question_board">
                 <div class="question_progress">
                     <div class="progress_bar">
@@ -353,9 +361,7 @@
         let playerName = '';
         let AnswerArr = []; // 질문에 대한 답변을 저장할 배열
         let test_num = 0;      // 현재 질문 번호
-        const total_questions = 6; // 총 질문 수 (임시 설정)
-
-        // const total_day = 4;    // 총 day 수 >> 필요없을듯?
+        const total_questions = 9; // 총 질문 수
 
         /* 이벤트 리스너 */
 
@@ -419,7 +425,8 @@
         $(document).on('click', '.next_button', (e) => {
             e.preventDefault();
             let selected_answer = $('.answer_box .selected').attr("class") == "answer1 selected" ? 'answer1' : 
-                                  $('.answer_box .selected').attr("class") == "answer2 selected" ? 'answer2' : null;
+                                  $('.answer_box .selected').attr("class") == "answer2 selected" ? 'answer2' : 
+                                  $('.answer_box .selected').attr("class") == "answer3 selected" ? 'answer3' : null;
             if(selected_answer == null) {          // 선택한 답변 유효성 검사
                 alert('답변을 선택해주세요.');
                 return;
@@ -432,7 +439,7 @@
 
             // 다음 질문으로 넘어가기
             test_num = parseInt($('.question_box h4').text().split('/')[0]);
-            if(test_num < total_questions) {     // 임시로 3문제까지
+            if(test_num < total_questions) {     
                 test_num++;
                 $('.question_box h4').text(test_num + '/' + total_questions);
                 progressBarUpdate(test_num - 1); // 진행 바 업데이트 함수 호출
@@ -450,20 +457,6 @@
                 createHiddenInput('name', playerName, form);
                 AnswerArr.forEach(n => createHiddenInput('answers', n, form));
                 form.submit();
-
-
-                // 예: AJAX 요청을 통해 서버에 AnswerArr 전송
-                /*
-                $.ajax({
-                    url: '/game/saveRun?name=' + name,
-                    method: 'POST',
-                    contentType: 'application/json',
-                    data: JSON.stringify(AnswerArr),
-                    success: () => console.log("ok"),
-                    error: (xhr) => console.error('fail', xhr.status)
-                    
-                });
-                */
             }
 
             console.log('선택한 답변:', selected_answer);
@@ -516,13 +509,15 @@
                     $('.question_box h3').text(response.text);
                     $('.answer_box .answer1').text(response.options[0].text);
                     $('.answer_box .answer2').text(response.options[1].text);
+                    $('.answer_box .answer3').text(response.options[2].text);
                     $('.question_id').val(response.questionId);
                     $('.answer_box input[name="answer1"]').addClass(response.options[0].tag);
                     $('.answer_box input[name="answer2"]').addClass(response.options[1].tag);
+                    $('.answer_box input[name="answer3"]').addClass(response.options[2].tag);
                     $('.answer_box input[name="answer1"]').val(response.options[0].optionId); 
                     $('.answer_box input[name="answer2"]').val(response.options[1].optionId);
+                    $('.answer_box input[name="answer3"]').val(response.options[2].optionId);
                     $('.question_img').css({"background-image":"url('/images/game/" + response.image + "')"});
-                    // background: url('/images/game/corridor_school01.png') no-repeat;
                 },
                 error: function(xhr, status, err) {
                     alert('다음 질문을 불러오는 데 실패했습니다.');
@@ -533,26 +528,6 @@
                 }
             });
 
-
-
-            /*
-            // 현재는 예시로 질문과 답변을 하드코딩
-
-            let next_question = "다음 질문 예시입니다.";
-            let next_answer1 = "다음 답변1 예시";
-            let next_answer2 = "다음 답변2 예시";
-            let next_question_id = 3;          // 다음 질문 번호
-            let next_tag1 = "next_tag1";       // 다음 답변 태그1
-            let next_tag2 = "next_tag2";       // 다음 답변 태그2
-
-            // 화면 업데이트
-            $('.question_box h3').text(next_question);
-            $('.answer_box .answer1').text(next_answer1);
-            $('.answer_box .answer2').text(next_answer2);
-            $('.question_id').val(next_question_id);
-            $('.answer_box input[name="answer1"]').val(next_tag1); 
-            $('.answer_box input[name="answer2"]').val(next_tag2);
-            */
         }
 
         // hidden input 추가 함수

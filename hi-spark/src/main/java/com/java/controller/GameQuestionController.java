@@ -53,7 +53,7 @@ public class GameQuestionController {
 			nextDay = qSubmitted.getDay();
 		}
 		
-		GameQuestion nextGameQ = gServ.findByDayAndTime(nextDay, nextTime);
+		GameQuestion nextGameQ = gServ.findByDayAndTime(nextDay, nextTime, dto.getTag());
 		
 		System.out.println(nextGameQ.toString());
 		
