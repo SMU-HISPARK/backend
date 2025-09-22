@@ -30,6 +30,11 @@ public class GameController {
 	@Autowired HttpSession session;
 	@Autowired GameService gServ;
 	
+	@GetMapping("/game/episode")
+	public String game_episode() {
+		return "game/episode";
+	}
+	
 	
 	@GetMapping("/game")
 	public String gamepage_start() {
