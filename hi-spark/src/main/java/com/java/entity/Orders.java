@@ -44,6 +44,7 @@ public class Orders {
 	
     @OneToMany(mappedBy = "orders", cascade = CascadeType.ALL, orphanRemoval = true)
     @ToString.Exclude
+    @JsonIgnore
     private List<OrderItem> orderitems;
 	
 	@Column(nullable=false, length=100)
