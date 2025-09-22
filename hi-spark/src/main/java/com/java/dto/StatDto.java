@@ -3,6 +3,7 @@ package com.java.dto;
 import java.util.List;
 
 import com.java.entity.sourceData.GameOptions;
+import com.java.entity.sourceData.GameQuestion;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -29,6 +30,9 @@ public class StatDto {
 	
 	// 가장 높은 비율로 선택된 선택지 (응답 10회 이상 중)
 	private GameOptions mostSelectedOption;
+	
+	// 위 선택지와 연결된 문항
+	private GameQuestion relatedQuestion;
 	
 	
 	// 이스터에그 오픈 비율

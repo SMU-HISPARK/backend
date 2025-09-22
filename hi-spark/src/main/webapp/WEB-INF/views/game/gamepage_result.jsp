@@ -163,16 +163,16 @@
         */
 
         .topbar {
-            border:1px solid black;
+            /*border:1px solid black;*/
             position:relative;
-            height:10vh; width:75vh; 
-            margin:auto;
+            height:10vh; width:100%; 
+            margin-top: 20px;
             display:flex; flex-direction:column; justify-content: center; align-items: center;
             text-align: center;
         }
         .topbar .prev {
             position:absolute;
-            left: 5%;
+            left: 93%;
             top: 50%;
             transform: translateY(-50%);
             font-size: 2rem;
@@ -180,7 +180,9 @@
         }
         .topbar h3 {
             font-size:1.6rem;
+            font-weight: normal;
         }
+        /*
         .stat_box {
             border:1px solid black;
             height:86vh; width:75vh; 
@@ -197,7 +199,7 @@
             border:1px solid black;
         }
         .club_image {
-            /*background-image: url('');*/
+            background-image: url('');
             background-color: lightgray;
             flex: 4;
         }
@@ -207,6 +209,8 @@
         .club_stats {
             flex: 1;
         }
+        */
+
 
         /* 인포그래픽 */
 
@@ -216,7 +220,8 @@
             gap: 40px;
             width: 1200px;
             margin: 0 auto;
-            
+            font-family: 'KccHanbit';
+            font-weight: 400;
             background-color: #fafafa;
             overflow-y: auto;
             
@@ -236,6 +241,16 @@
             text-align: center;
         }
 
+        .kpi-card.left {
+            flex: 2;
+            display:flex; 
+            flex-direction: column; justify-content: center; align-items: center;
+        }
+
+        .kpi-card.right {
+            flex: 5;
+        }
+
         .kpi-label {
             font-size: 14px;
             color: #666;
@@ -243,19 +258,26 @@
 
         .kpi-value {
             font-size: 28px;
-            font-weight: bold;
+            
             margin-top: 8px;
+        }
+        .kpi-value.total {
+            font-weight: bold;
         }
         .chart_box {
             display: flex; flex-direction: row;
         }
 
+        .chart_box h3 {
+            font-weight: normal;
+        }
         .chart-container {
             background: white;
             border-radius: 12px;
             height: auto;
             padding: 24px;
             box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            margin: 20px;
         }
 
         .chart-container.bar {
@@ -306,30 +328,31 @@
     <div class="stats_modal modal">
         <div class="modal_content">
             <div class="topbar">
-                <div class="prev"><</div>
-                <h3>동아리 방문 순위</h3>
+                <div class="prev">x</div>
+                <h3>테스트 통계</h3>
             </div>
             <div class="kpi-top">
-                <div class="kpi-card">
+                <div class="kpi-card left">
                     <div class="kpi-label">총 참여자 수</div>
-                    <div class="kpi-value">1,249명</div>
+                    <div class="kpi-value total">1,249명</div>
                 </div>
-                <div class="kpi-card">
-                    <div class="kpi-label">최다 선택 문항</div>
-                    <div class="kpi-value">점심시간 (42%)</div>
+                <div class="kpi-card right">
+                    <div class="kpi-label">가장 많이 고른 선택지</div>
+                    <div class="kpi-value question">점심을 먹는 곳은?</div>
+                    <div class="kpi-value option">점심시간 (42%)</div>
                 </div>
             </div>
 
             <!-- 첫 번째 그래프 -->
             <div class="chart_box">
                 <div class="chart-container bar">
-                <h3>결과 분포</h3>
+                <h3>결과 비율</h3>
                 <canvas id="resultChart"></canvas>
                 </div>
     
                 <!-- 두 번째 그래프 -->
                 <div class="chart-container pie">
-                <h3>다중 가입 비율</h3>
+                <h3>동아리 다중 가입 비율</h3>
                 <canvas id="multiJoinChart"></canvas>
                 </div>
             </div>
@@ -415,7 +438,7 @@
             shareOrFallback({
                 title: '나에게 어울리는 동아리는?',
                 text: '이 테스트로 나에게 어울리는 동아리를 찾아보세요!',
-                url: new URL(location.href).toString()
+                url: '/game'
             });
             //////// 테스트 공유하는 코드 추가 가능 ////////
         });
@@ -436,8 +459,11 @@
         */
         
 
-
+        const clubNumber = 5;
         const $modal = $(".modal");
+
+        let stat_club_rate = [];
+        let multi_member_rate = [];
 
         // 통계 모달 열기
         $(".result_stats_button").on("click", function() {
@@ -447,11 +473,30 @@
                 dataType: 'json',
                 success: function(res){
                     console.log(res);
-                }
+                    stat_club_rate = res.resultRateList;
+                    multi_member_rate = res.multiClubMemberRateList;
+                    for(let i=0; i<clubNumber; i++){
+                        stat_club_rate[i] = Math.round(stat_club_rate[i] * 1000) / 10;
+                        multi_member_rate[i] = Math.round(multi_member_rate[i] * 1000) / 10;
+                    }
+                    document.querySelector('.kpi-value.total').innerText = res.runs;
+                    if(res.relatedQuestion != null){
+                        document.querySelector('.kpi-value.question').innerText = res.relatedQuestion.text;
+                    }
+                    if(res.mostSelectedOption != null){
+                        document.querySelector('.kpi-value.option').innerText = res.mostSelectedOption.text;
+                    }
+                    console.log(stat_club_rate);
+                    console.log(multi_member_rate);
 
+                    createCharts(stat_club_rate, multi_member_rate);
+                    $modal.css("display", "flex");
+                },
+                error: function(){
+                    alert('error');
+                }
             });
 
-            $modal.css("display", "flex");
         });
 
         // 통계 모달 닫기
@@ -483,7 +528,7 @@
         }
         // 폴백: 링크 복사
         await navigator.clipboard.writeText(url);
-        alert('링크를 클립보드에 복사했어요!');
+         alert('링크를 클립보드에 복사했어요!');
         }
 
 
@@ -499,46 +544,58 @@
 
         /// 통계 ///
 
-        const resultCtx = document.getElementById('resultChart').getContext('2d');
-        const resultChart = new Chart(resultCtx, {
-        type: 'bar',
-        data: {
-            labels: ['A', 'B', 'C', 'D', 'E'],
-            datasets: [{
-            label: '비율',
-            data: [34, 25, 18, 12, 11],
-            backgroundColor: '#84b1ff',
-            }]
-        },
-        options: {
-            indexAxis: 'y',
-            scales: {
-            x: {
-                beginAtZero: true,
-                ticks: { callback: val => `${val}%` }
+        function createCharts(stat_club_rate, multi_member_rate) {
+            // 기존 차트가 있다면 삭제
+            if (window.resultChart && typeof window.resultChart.destroy === 'function') {
+                window.resultChart.destroy();
             }
+            if (window.multiJoinChart && typeof window.multiJoinChart.destroy === 'function') {
+                window.multiJoinChart.destroy();
             }
-        }
-        });
 
-        const multiCtx = document.getElementById('multiJoinChart').getContext('2d');
-        const multiJoinChart = new Chart(multiCtx, {
-        type: 'pie',
-        data: {
-            labels: ['1개 가입', '2개 이상 가입'],
-            datasets: [{
-            data: [67, 33],
-            backgroundColor: ['#ffcc99', '#ff9999'],
-            }]
-        },
-        options: {
-            plugins: {
-            legend: {
-                position: 'bottom'
+            const resultCtx = document.getElementById('resultChart').getContext('2d');
+            window.resultChart = new Chart(resultCtx, {
+            type: 'bar',
+            data: {
+                labels: ['도서부', '밴드부', '선도부', '운동부', '제과제빵부'],
+                datasets: [{
+                label: '비율',
+                data: stat_club_rate,
+                backgroundColor: '#84b1ff',
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                scales: {
+                x: {
+                    beginAtZero: true,
+                    ticks: { callback: val => `${val}%` }
+                }
+                }
             }
+            });
+
+            const multiCtx = document.getElementById('multiJoinChart').getContext('2d');
+            window.multiJoinChart = new Chart(multiCtx, {
+            type: 'pie',
+            data: {
+                labels: ['1개', '2개', '3개', '4개', '5개'],
+                datasets: [{
+                data: multi_member_rate,
+                backgroundColor: ['#ffcc99', '#ff9999','#236ddb','#59bb71','#e64bc4'],
+                }]
+            },
+            options: {
+                plugins: {
+                legend: {
+                    position: 'bottom'
+                }
+                }
             }
+            });
+        
         }
-        });
+
 
     </script>
 </body>

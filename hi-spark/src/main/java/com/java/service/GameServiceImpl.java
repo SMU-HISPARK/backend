@@ -2,6 +2,7 @@ package com.java.service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,6 +10,8 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 
 import com.java.entity.Member;
 import com.java.entity.compositeId.ResponseId;
@@ -266,6 +269,8 @@ public class GameServiceImpl implements GameService {
 	public GameOptions calMostOption() {
 		
 		Map<Integer,Double> optionRateMap = new LinkedHashMap<Integer,Double>();
+		List<Integer> optionMapKeys = new ArrayList<Integer>();
+		List<Double> optionMapValues = new ArrayList<Double>();		
 		Map<Integer,Long> optionCountMap = new LinkedHashMap<Integer,Long>();
 		
 		List<GameQuestion> questionList = gqRep.findAll();
@@ -283,14 +288,38 @@ public class GameServiceImpl implements GameService {
 					// 응답 별 비율 구하기
 					Double rate = optionCountMap.get(o.getOptionId()) / (double)questionCount;
 					optionRateMap.put(o.getOptionId(), rate);
+					optionMapKeys.add(o.getOptionId());
+					optionMapValues.add(rate);
 				}
+				
 			}
+			
+		} // for questionList
+		
+		// 값이 한 개도 없을 경우
+		
+		if(optionMapKeys.size() == 0) {
+			return null;
 		}
 		
+		// 비율 비교 후 그 비율에 해당하는 optionId로 GameOptions 찾기
 		
-		return null;
+		Double[] valuesList = new Double[optionMapValues.size()];
+		for(int i=0; i<optionMapValues.size(); i++) {
+			valuesList[i] = optionMapValues.get(i);
+		}
+		Arrays.sort(valuesList);
+		Double maxRate = valuesList[valuesList.length - 1];
+		Integer mostOptionId = 0;
+		
+		MultiValueMap<Double, Integer> keySearchMap = new LinkedMultiValueMap<Double, Integer>();
+		for(Integer key : optionMapKeys) {			
+			keySearchMap.add(optionRateMap.get(key), key);
+		}
+		mostOptionId = keySearchMap.get(maxRate).getLast();
+		
+		return gOptionsRep.findById(mostOptionId).orElseThrow();
 	}
-
 	
 	
 }

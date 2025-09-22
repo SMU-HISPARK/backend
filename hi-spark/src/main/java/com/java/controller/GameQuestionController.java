@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.java.dto.ResponseDto;
 import com.java.dto.StatDto;
+import com.java.entity.sourceData.GameOptions;
 import com.java.entity.sourceData.GameQuestion;
 import com.java.service.GameService;
 
@@ -78,8 +79,16 @@ public class GameQuestionController {
 		
 		// 4. 가장 높은 비율로 선택된 선택지... 
 		// (질문 생성 후 특정 선택지에 한정해서 뽑을 수도 있음) 
-		statDto.setMostSelectedOption(gServ.calMostOption());
+		GameOptions mostOption = gServ.calMostOption();
+		statDto.setMostSelectedOption(mostOption);
 		
-		return null;
+		// 위 선택지와 연결된 문항
+		if(mostOption == null) {
+			statDto.setRelatedQuestion(null);
+		}else {
+			statDto.setRelatedQuestion(mostOption.getQuestion());			
+		}
+		
+		return statDto;
 	}
 }
