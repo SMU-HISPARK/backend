@@ -28,9 +28,11 @@ import com.java.dto.Poll_Item;
 import com.java.dto.sComment;
 import com.java.entity.Member;
 import com.java.repository.BoardRepository;
+import com.java.repository.MemberRepository;
 import com.java.repository.PollRepository;
 import com.java.repository.Poll_ItemRepository;
 import com.java.repository.Vote_LogRepository;
+import com.java.repository.sCommentRepository;
 import com.java.service.BoardService;
 import com.java.service.PollService;
 
@@ -42,6 +44,12 @@ public class BoardController {
 	
 	@Autowired
 	 private PollRepository pollRepository;
+	
+	@Autowired
+	private MemberRepository memberRepository;
+	
+	@Autowired
+	private sCommentRepository scommentRepository;
 	
 	@Autowired
 	private PollService pollService;
@@ -73,6 +81,9 @@ public class BoardController {
 	public String board_main() {
 		return "board/board_main";
 	}
+	
+	
+	
 	
 	
 	@GetMapping("/board/forum_list")
@@ -239,6 +250,204 @@ public class BoardController {
 	    return "board/forum_view";
 	}
 	
+	
+	// 댓글 삭제 (AJAX 요청 처리)
+    @PostMapping("/board/deleteComment")
+    @ResponseBody
+    public Map<String, Object> deleteComment(@RequestParam("scno") int scno, HttpSession session) {
+        Map<String, Object> response = new HashMap<>();
+        Member loggedInMember = (Member) session.getAttribute("loggedInMember");
+
+        if (loggedInMember == null) {
+            response.put("success", false);
+            response.put("message", "로그인이 필요합니다.");
+            return response;
+        }
+
+        try {
+            sComment comment = scommentRepository.findById(scno).orElse(null);
+            if (comment == null) {
+                response.put("success", false);
+                response.put("message", "해당 댓글을 찾을 수 없습니다.");
+                return response;
+            }
+            
+            // 작성자 본인 또는 관리자만 삭제 가능
+            if (!comment.getMember().getLoginId().equals(loggedInMember.getLoginId()) && !"관리자".equals(loggedInMember.getName())) {
+                response.put("success", false);
+                response.put("message", "삭제 권한이 없습니다.");
+                return response;
+            }
+
+            boardService.deleteComment(scno);
+            response.put("success", true);
+            return response;
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.put("success", false);
+            response.put("message", "댓글 삭제 중 오류가 발생했습니다.");
+            return response;
+        }
+    }
+    
+    @PostMapping("/board/updateComment")
+    @ResponseBody
+    public Map<String, Object> updateComment(@RequestParam("scno") int scno, @RequestParam("sccontent") String sccontent, HttpSession session) {
+        Map<String, Object> response = new HashMap<>();
+        Member loggedInMember = (Member) session.getAttribute("loggedInMember");
+
+        if (loggedInMember == null) {
+            response.put("success", false);
+            response.put("message", "로그인이 필요합니다.");
+            return response;
+        }
+
+        try {
+            // 댓글 존재 여부 및 권한 확인
+            sComment comment = scommentRepository.findById(scno).orElse(null);
+            if (comment == null) {
+                response.put("success", false);
+                response.put("message", "해당 댓글을 찾을 수 없습니다.");
+                return response;
+            }
+            
+            if (!comment.getMember().getLoginId().equals(loggedInMember.getLoginId()) && !"관리자".equals(loggedInMember.getName())) {
+                response.put("success", false);
+                response.put("message", "수정 권한이 없습니다.");
+                return response;
+            }
+
+            // 핵심: BoardService를 호출하여 댓글 업데이트
+            boardService.updateComment(scno, sccontent);
+            response.put("success", true);
+            response.put("message", "댓글이 성공적으로 수정되었습니다.");
+            return response;
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.put("success", false);
+            response.put("message", "댓글 수정 중 오류가 발생했습니다.");
+            return response;
+        }
+    }
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	@PostMapping("/board/forum_delete")
+	public String forum_delete(@RequestParam("bno") int bno, HttpSession session, RedirectAttributes redirect) {
+	    // 1. 세션에서 로그인된 사용자 정보 가져오기
+	    Member loggedInMember = (Member) session.getAttribute("loggedInMember");
+	    if (loggedInMember == null) {
+	        redirect.addFlashAttribute("error", "로그인이 필요합니다.");
+	        return "redirect:/member/login";
+	    }
+
+	    // 2. 삭제할 게시글 정보 가져오기
+	    Board board = boardService.getBoard(bno);
+	    if (board == null) {
+	        redirect.addFlashAttribute("error", "해당 게시글을 찾을 수 없습니다.");
+	        return "redirect:/board/forum_list";
+	    }
+
+	   
+	 // 3. 게시글 작성자 또는 '관리자' 이름의 사용자만 삭제 가능하도록 수정
+        if (board.getMember() == null || (!board.getMember().getMemberId().equals(loggedInMember.getMemberId()) && !"관리자".equals(loggedInMember.getName()))) {
+            redirect.addFlashAttribute("error", "삭제 권한이 없습니다.");
+            return "redirect:/board/forum_view?bno=" + bno;
+        }
+
+	    // 4. 권한이 확인되면 게시글 삭제
+	    boardService.deleteBoard(bno);
+	    redirect.addFlashAttribute("success", "게시글이 삭제되었습니다.");
+	    return "redirect:/board/forum_list";
+	}
+	
+	 @PostMapping("/board/addComment")
+	    public String addComment(@RequestParam("bno") int bno,
+	                             @RequestParam("sccontent") String sccontent,
+	                             HttpSession session,
+	                             RedirectAttributes redirect) {
+	        
+	        Member member = (Member) session.getAttribute("loggedInMember");
+	        if (member == null) {
+	            redirect.addFlashAttribute("error", "로그인이 필요합니다.");
+	            return "redirect:/member/login";
+	        }
+
+	        try {
+	            sComment comment = sComment.builder()
+	                                        .sccontent(sccontent)
+	                                        .board(boardRepository.findById(bno).orElse(null))
+	                                        .member(member)
+	                                        .build();
+	            boardService.saveComment(comment);
+	            redirect.addFlashAttribute("message", "댓글이 성공적으로 등록되었습니다.");
+	        } catch (Exception e) {
+	            redirect.addFlashAttribute("error", "댓글 등록 중 오류가 발생했습니다.");
+	            e.printStackTrace();
+	        }
+
+	        return "redirect:/board/forum_view?bno=" + bno;
+	    }
+	 
+	 
+	// 게시글 수정 페이지로 이동
+	    @GetMapping("/board/forum_edit")
+	    public String forum_edit(@RequestParam("bno") int bno, Model model, HttpSession session, RedirectAttributes redirect) {
+	        Member loggedInMember = (Member) session.getAttribute("loggedInMember");
+	        if (loggedInMember == null) {
+	            redirect.addFlashAttribute("error", "로그인이 필요합니다.");
+	            return "redirect:/member/login";
+	        }
+	        Board board = boardService.getBoard(bno);
+	        if (board == null) {
+	            redirect.addFlashAttribute("error", "해당 게시글을 찾을 수 없습니다.");
+	            return "redirect:/board/forum_list";
+	        }
+
+	        // 게시글 작성자 또는 관리자만 수정 페이지에 접근 가능
+	        if (board.getMember() == null || (!board.getMember().getMemberId().equals(loggedInMember.getMemberId()) && !"관리자".equals(loggedInMember.getName()))) {
+	            redirect.addFlashAttribute("error", "수정 권한이 없습니다.");
+	            return "redirect:/board/forum_view?bno=" + bno;
+	        }
+	        
+	        model.addAttribute("board", board);
+	        return "board/forum_edit";
+	    }
+	    
+	    // 게시글 수정 처리
+	    @PostMapping("/board/forum_edit_save")
+	    public String forum_edit_save(Board board, HttpSession session, RedirectAttributes redirect) {
+	        Member loggedInMember = (Member) session.getAttribute("loggedInMember");
+	        if (loggedInMember == null) {
+	            redirect.addFlashAttribute("error", "로그인이 필요합니다.");
+	            return "redirect:/member/login";
+	        }
+	        Board existingBoard = boardService.getBoard(board.getBno());
+	        if (existingBoard == null) {
+	            redirect.addFlashAttribute("error", "해당 게시글을 찾을 수 없습니다.");
+	            return "redirect:/board/forum_list";
+	        }
+
+	        // 게시글 작성자 또는 관리자만 수정 가능
+	        if (existingBoard.getMember() == null || (!existingBoard.getMember().getMemberId().equals(loggedInMember.getMemberId()) && !"관리자".equals(loggedInMember.getName()))) {
+	            redirect.addFlashAttribute("error", "수정 권한이 없습니다.");
+	            return "redirect:/board/forum_view?bno=" + board.getBno();
+	        }
+	        
+	        existingBoard.setBtitle(board.getBtitle());
+	        existingBoard.setBcontent(board.getBcontent());
+	        
+	        boardService.updateBoard(existingBoard);
+	        redirect.addFlashAttribute("success", "게시글이 수정되었습니다.");
+	        return "redirect:/board/forum_view?bno=" + board.getBno();
+	    }
+	
 	@PostMapping("/api/board/toggleLike")
     @ResponseBody
     public Map<String, Object> toggleLike(@RequestBody Map<String, Object> payload, HttpSession session) {
@@ -265,6 +474,26 @@ public class BoardController {
         }
         return response;
     }
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	@GetMapping("/board/forum_write")
 	public String forum_write() {

@@ -5,12 +5,15 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.java.dto.sComment; // sComment로 변경
 import com.java.entity.Member;
+
+import jakarta.transaction.Transactional;
 
 @Repository
 public interface sCommentRepository extends JpaRepository<sComment, Integer> { // sComment로 변경
@@ -43,6 +46,17 @@ public interface sCommentRepository extends JpaRepository<sComment, Integer> { /
 	                   "GROUP BY TRUNC(scdate) " +
 	                   "ORDER BY TRUNC(scdate)", nativeQuery = true)
 	    List<Object[]> countCommentsByDateRange(@Param("start") LocalDate start, @Param("end") LocalDate end);
+
+	    // 게시글 번호로 댓글 목록 조회
+	    List<sComment> findByBoardBno(int bno);
+	    
+	    // 게시글 번호로 댓글 수 조회
+	    long countByBoardBno(int bno);
+	    
+	    @Modifying
+	    @Transactional
+	    @Query("DELETE FROM sComment c WHERE c.board.bno = :bno")
+		void deleteByBoardBno(@Param("bno") int bno);
 
 
 }

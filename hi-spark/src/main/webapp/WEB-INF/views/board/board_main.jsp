@@ -221,7 +221,7 @@
         <div class="left-section">
             <!-- Notice 게시판 -->
             <div class="board-container">
-                <h2 class="board-title">NOTICE</h2>
+                <h2 class="board-title"><a href="/board/notice_list">NOTICE</a></h2>
                 <table class="post-table">
                     <colgroup>
                         <col style="width: 60px;">
@@ -277,7 +277,7 @@
 
             <!-- Vote 게시판 -->
             <div class="board-container">
-                <h2 class="board-title">VOTE</h2>
+                <h2 class="board-title"><a href="/board/vote_list">VOTE<a></a></h2>
                 <table class="post-table">
                     <colgroup>
                         <col style="width: 60px;">
@@ -335,7 +335,7 @@
         <!-- 오른쪽 영역: Forum -->
         <div class="right-section">
             <div class="board-container">
-                <h2 class="board-title">FORUM</h2>
+                <h2 class="board-title"><a href="/board/forum_list">FORUM</a></h2>
                 <table class="post-table">
                     <colgroup>
                         <col style="width: 80px;">

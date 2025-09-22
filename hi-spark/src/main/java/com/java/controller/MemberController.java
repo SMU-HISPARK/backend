@@ -68,19 +68,13 @@ public class MemberController {
 	        model.addAttribute("redirectTo", redirectTo); // 로그인 실패 후에도 유지
 	        return "member/login";
 	    }
+
 	    Member member = mServ.findById(loginId);
 	    session.setAttribute("loggedInMember", member);
 	    session.setAttribute("session_id", memfind.getLoginId());
 	    session.setAttribute("session_name", memfind.getNickname());
 	    session.setAttribute("memberId", member.getMemberId());
-	    
-	    // redirectTo가 관리자 페이지인 경우에만 해당 페이지로 리다이렉트
-	    if(redirectTo != null && !redirectTo.isEmpty() && redirectTo.startsWith("/adpage/")) {
-	        System.out.println("관리자 페이지로 리다이렉트: " + redirectTo);
-	        return "redirect:" + redirectTo;
-	    }
-	    
-	    // 모든 사용자 (관리자 포함) 메인 페이지로 이동
+
 	    return "redirect:/";
 	}
 

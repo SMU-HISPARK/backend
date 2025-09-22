@@ -39,7 +39,7 @@ public class Vote_Log {
     private Poll_Item pollItem; // FK (선택지 번호)
 
     @ManyToOne
-    @JoinColumn(name = "memberid")
+    @JoinColumn(name = "member_id")
     private Member member; // FK (아이디)
 
     @CreationTimestamp

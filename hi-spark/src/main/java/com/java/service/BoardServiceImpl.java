@@ -21,24 +21,23 @@ import jakarta.transaction.Transactional;
 
 @Service
 public class BoardServiceImpl implements BoardService {
-    
+
     @Autowired
     private BoardRepository boardRepository;
-    
+
     @Autowired
     private Board_LikeRepository boardLikeRepository;
-    
+
     @Autowired
     private MemberRepository memberRepository;
-    
+
     @Autowired
     private sCommentRepository scommentRepository;
-    
+
     @Autowired
     private sComment_LikeRepository scommentLikeRepository;
 
     // 게시글 관련 기능
-    
     @Override
     public List<Board> getBoardList() {
         return boardRepository.findAll();
@@ -60,85 +59,98 @@ public class BoardServiceImpl implements BoardService {
     }
     
     @Override
+    @Transactional // 트랜잭션 추가
     public void deleteBoard(int bno) {
+        // 1. 게시글과 관련된 모든 댓글의 좋아요를 먼저 삭제
+        scommentLikeRepository.deleteByBoardBno(bno);
+
+        // 2. 게시글과 관련된 모든 댓글을 삭제
+        scommentRepository.deleteByBoardBno(bno);
+
+        // 3. 게시글과 관련된 모든 좋아요를 삭제
+        boardLikeRepository.deleteByBoardBno(bno);
+
+        // 4. 자식 레코드를 모두 삭제한 후, 게시글을 삭제
         boardRepository.deleteById(bno);
     }
-    
-    // 게시글 좋아요 관련 기능
+
+    // ... (나머지 기존 메소드들)
     
     @Override
-    @Transactional
     public boolean toggleLike(int bno, String loginId) {
-        Board board = boardRepository.findById(bno).orElse(null);
-        Member member = memberRepository.findByLoginId(loginId).orElseThrow(
-        		() -> new IllegalArgumentException("해당 loginId를 가진 회원이 없습니다."));
+        Optional<Board> optionalBoard = boardRepository.findById(bno);
+        Optional<Member> optionalMember = memberRepository.findByLoginId(loginId);
         
-        if (board == null || member == null) {
-            return false;
+        if (optionalBoard.isPresent() && optionalMember.isPresent()) {
+            Board board = optionalBoard.get();
+            Member member = optionalMember.get();
+            Optional<Board_Like> existingLike = boardLikeRepository.findByBoardAndMember(board, member);
+            
+            if (existingLike.isPresent()) {
+                boardLikeRepository.delete(existingLike.get());
+                return false;
+            } else {
+                Board_Like newLike = Board_Like.builder()
+                    .board(board)
+                    .member(member)
+                    .build();
+                boardLikeRepository.save(newLike);
+                return true;
+            }
         }
-        
-        Optional<Board_Like> existingLike = boardLikeRepository.findByBoardAndMember(board, member);
-        
-        if (existingLike.isPresent()) {
-            boardLikeRepository.delete(existingLike.get());
-            return false; // 좋아요 취소
-        } else {
-            Board_Like newLike = Board_Like.builder()
-                .board(board)
-                .member(member)
-                .build();
-            boardLikeRepository.save(newLike);
-            return true; // 좋아요 추가
-        }
+        return false;
     }
-    
+
     @Override
     public boolean isLikedByUser(int bno, String loginId) {
-        Board board = boardRepository.findById(bno).orElse(null);
-        Member member = memberRepository.findByLoginId(loginId).orElseThrow(
-        		() -> new IllegalArgumentException("해당 loginId를 가진 회원이 없습니다."));
+        Optional<Board> optionalBoard = boardRepository.findById(bno);
+        Optional<Member> optionalMember = memberRepository.findByLoginId(loginId);
         
-        if (board == null || member == null) {
-            return false;
+        if (optionalBoard.isPresent() && optionalMember.isPresent()) {
+            return boardLikeRepository.findByBoardAndMember(optionalBoard.get(), optionalMember.get()).isPresent();
         }
-        
-        return boardLikeRepository.findByBoardAndMember(board, member).isPresent();
+        return false;
     }
     
     @Override
     public long getLikeCount(int bno) {
-        Board board = boardRepository.findById(bno).orElse(null);
-        if (board == null) {
-            return 0;
+        Optional<Board> optionalBoard = boardRepository.findById(bno);
+        if (optionalBoard.isPresent()) {
+            return boardLikeRepository.countByBoard(optionalBoard.get());
         }
-        return boardLikeRepository.countByBoard(board);
+        return 0;
     }
-    
-    // 댓글 관련 기능
-    
+
     @Override
     public sComment saveComment(sComment scomment) {
         return scommentRepository.save(scomment);
     }
     
     @Override
-    public Optional<sComment> updateComment(sComment scomment) {
-        return Optional.of(scommentRepository.save(scomment));
+    @Transactional
+    public void updateComment(int scno, String sccontent) {
+        sComment comment = scommentRepository.findById(scno).orElseThrow(() -> new RuntimeException("Comment not found"));
+        comment.setSccontent(sccontent);
+        scommentRepository.save(comment);
     }
     
     @Override
+    @Transactional
     public void deleteComment(int scno) {
+        // 1. 해당 댓글에 연결된 모든 좋아요를 먼저 삭제
+        scommentLikeRepository.deleteByScommentScno(scno);
+        // 2. 댓글 삭제
         scommentRepository.deleteById(scno);
     }
     
     @Override
     public List<sComment> getCommentsByBno(int bno) {
-        return scommentRepository.findByBoard_BnoOrderByScno(bno);
+        return scommentRepository.findByBoardBno(bno);
     }
-    
+
     @Override
     public long getCommentCount(int bno) {
-        return scommentRepository.countByBoard_Bno(bno);
+        return scommentRepository.countByBoardBno(bno);
     }
     
     // 댓글 좋아요/취소
@@ -151,7 +163,6 @@ public class BoardServiceImpl implements BoardService {
         if (optionalScomment.isPresent() && optionalMember.isPresent()) {
             sComment scomment = optionalScomment.get();
             Member member = optionalMember.get();
-            
             Optional<sComment_Like> existingLike = scommentLikeRepository.findByScommentAndMember(scomment, member);
             
             if (existingLike.isPresent()) {
@@ -201,4 +212,5 @@ public class BoardServiceImpl implements BoardService {
             boardRepository.save(board);
         });
     }
+
 }

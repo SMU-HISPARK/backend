@@ -28,7 +28,9 @@ public interface BoardService {
 
     // 댓글 관련 기능
     sComment saveComment(sComment scomment);
-    Optional<sComment> updateComment(sComment scomment);
+    
+    public void updateComment(int scno, String sccontent);
+    
     void deleteComment(int scno);
     List<sComment> getCommentsByBno(int bno);
     long getCommentCount(int bno);
