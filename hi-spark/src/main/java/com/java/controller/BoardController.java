@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.java.dto.Board;
+import com.java.dto.FilteringResponseDto;
 import com.java.dto.Poll;
 import com.java.dto.Poll_Item;
 import com.java.dto.sComment;
@@ -32,6 +33,7 @@ import com.java.repository.PollRepository;
 import com.java.repository.Poll_ItemRepository;
 import com.java.repository.Vote_LogRepository;
 import com.java.service.BoardService;
+import com.java.service.FilteringService;
 import com.java.service.PollService;
 
 import jakarta.servlet.http.HttpSession;
@@ -57,6 +59,9 @@ public class BoardController {
 
 	@Autowired
     private BoardService boardService;
+	
+	@Autowired
+	private FilteringService filteringService;
 	
 	// 권한 체크 메서드 추가
 	private boolean checkAdminAuth(HttpSession session, RedirectAttributes redirect) {
@@ -272,55 +277,65 @@ public class BoardController {
     }
 
 	@PostMapping("/board/forum_write_proc")
-    public String forumWriteProc(
-                               @RequestParam("btitle") String btitle,
-                               @RequestParam("bcontent") String bcontent,
-                               @RequestParam(value = "uploadFile", required = false) MultipartFile file, // 이 부분을 수정했습니다.
-                               HttpSession session,
-                               RedirectAttributes redirect) {
-        
-        Member loggedInMember = (Member) session.getAttribute("loggedInMember");
-        
-        if (loggedInMember != null) {
-            // Board 객체를 직접 생성
-            Board board = new Board();
-            board.setBtitle(btitle);
-            board.setBcontent(bcontent);
-            board.setMember(loggedInMember);
-            board.setB_type(1); //자유게시판 타입 1로 설정
+	public String forumWriteProc(
+	        @RequestParam("btitle") String btitle,
+	        @RequestParam("bcontent") String bcontent,
+	        @RequestParam(value = "uploadFile", required = false) MultipartFile file,
+	        HttpSession session,
+	        RedirectAttributes redirect) {
+	    
+	    Member loggedInMember = (Member) session.getAttribute("loggedInMember");
+	    
+	    if (loggedInMember != null) {
+	        // 필터링 서비스를 호출하여 제목과 본문을 모두 필터링
+	        FilteringResponseDto filteredData = filteringService.filterText(btitle, bcontent);
+	        
+	        String filteredTitle = filteredData.getFilteredTitle();
+	        String filteredContent = filteredData.getFilteredText();
 
-            if (file != null && !file.isEmpty()) {
-                try {
-                    String originFileName = file.getOriginalFilename();
-                    long time = System.currentTimeMillis();
-                    String uploadFileName = String.format("%d_%s", time, originFileName);
-                    
-                    String fileUrl = "C:/uploads/";
-                    File f = new File(fileUrl + uploadFileName);
-                    
-                    file.transferTo(f);
-                    
-                    board.setBfile(uploadFileName);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    return "error"; 
-                }
-            } else {
-                board.setBfile(null);
-            }
-            
-            boardService.saveBoard(board);
-            
-            redirect.addFlashAttribute("flag", "1");
-            
-            return "redirect:/board/forum_list";
+	        String finalContent = filteredContent;
 
-        } else {
-            return "redirect:/member/login";
-        }
-    }
-	
-	
+	        // 원본과 필터링된 내용이 다를 경우에만 안내 문구 추가
+	        if (!bcontent.equals(filteredContent)) {
+	            finalContent = "<span style='color: #035fe0;'>AI 클린봇이 적용된 게시글입니다. 욕설이나 비방이 감지된 문장은 삭제되거나 필터링됩니다.</span><br><br>" + filteredContent;
+	        }
+	        
+	        Board board = new Board();
+	        board.setBtitle(filteredTitle); // 필터링된 제목 저장
+	        board.setBcontent(finalContent); // 필터링된 본문 및 안내 문구 저장
+	        board.setMember(loggedInMember);
+	        board.setB_type(1);
+
+	        if (file != null && !file.isEmpty()) {
+	            try {
+	                String originFileName = file.getOriginalFilename();
+	                long time = System.currentTimeMillis();
+	                String uploadFileName = String.format("%d_%s", time, originFileName);
+	                
+	                String fileUrl = "C:/uploads/";
+	                File f = new File(fileUrl + uploadFileName);
+	                
+	                file.transferTo(f);
+	                
+	                board.setBfile(uploadFileName);
+	            } catch (Exception e) {
+	                e.printStackTrace();
+	                return "error"; 
+	            }
+	        } else {
+	            board.setBfile(null);
+	        }
+	        
+	        boardService.saveBoard(board);
+	        
+	        redirect.addFlashAttribute("flag", "1");
+	        
+	        return "redirect:/board/forum_list";
+
+	    } else {
+	        return "redirect:/member/login";
+	    }
+	}
 	
 	@GetMapping("/board/notice_list")
 	public String notice_list(
