@@ -31,6 +31,8 @@ public class GameQuestionController {
 	@PostMapping("/game/nextQuestion")
 	public GameQuestion nextQuestion(@RequestBody ResponseDto dto) {
 		
+		System.out.println(dto.toString());
+		
 		GameQuestion questionInit = gServ.findQuestionById(getInitalQNum());
 		Integer nextTime = 0;
 		Integer nextDay = 0;
@@ -39,7 +41,7 @@ public class GameQuestionController {
 		
 		// 첫 번째 질문 리턴
 		if(dto.getQuestionId() == null) {
-			System.out.println(questionInit.toString());
+			/*System.out.println(questionInit.toString());*/
 			return questionInit;
 		}
 		
@@ -81,6 +83,8 @@ public class GameQuestionController {
 		// (질문 생성 후 특정 선택지에 한정해서 뽑을 수도 있음) 
 		GameOptions mostOption = gServ.calMostOption();
 		statDto.setMostSelectedOption(mostOption);
+		
+		statDto.setSelectedRate(gServ.getSelectedRate());
 		
 		// 위 선택지와 연결된 문항
 		if(mostOption == null) {

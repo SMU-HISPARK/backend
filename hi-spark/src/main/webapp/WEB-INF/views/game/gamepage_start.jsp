@@ -65,7 +65,7 @@
         }
         .question_box {
             margin-top:20px;
-            min-height: 450px;
+            min-height: 470px;
             justify-content: flex-end;
             text-align: center;
             font-family: 'KccHanbit', sans-serif;
@@ -512,8 +512,11 @@
                     $('.answer_box .answer3').text(response.options[2].text);
                     $('.question_id').val(response.questionId);
                     $('.answer_box input[name="answer1"]').addClass(response.options[0].tag);
+                    if(response.options[0].tag == null) $('.answer_box input[name="answer1"]').removeClass();
                     $('.answer_box input[name="answer2"]').addClass(response.options[1].tag);
+                    if(response.options[1].tag == null) $('.answer_box input[name="answer2"]').removeClass();
                     $('.answer_box input[name="answer3"]').addClass(response.options[2].tag);
+                    if(response.options[2].tag == null) $('.answer_box input[name="answer3"]').removeClass();
                     $('.answer_box input[name="answer1"]').val(response.options[0].optionId); 
                     $('.answer_box input[name="answer2"]').val(response.options[1].optionId);
                     $('.answer_box input[name="answer3"]').val(response.options[2].optionId);
