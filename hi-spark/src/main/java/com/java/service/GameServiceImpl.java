@@ -82,6 +82,8 @@ public class GameServiceImpl implements GameService {
 					return q;
 				}
 			}
+		}else if(nextTime == 1){
+			
 		}else {	// tag 인풋이 없을 시 tag 문항 배제
 			gqList.removeIf(q -> q.getTag() != null);
 		}
