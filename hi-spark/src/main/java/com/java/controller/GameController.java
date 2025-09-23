@@ -30,25 +30,12 @@ public class GameController {
 	@Autowired HttpSession session;
 	@Autowired GameService gServ;
 	
-	@GetMapping("/game/episode")
-	public String game_episode() {
-		return "game/episode";
-	}
-	
 	
 	@GetMapping("/game")
 	public String gamepage_start() {
 		
 		return "game/gamepage_start";
 	}
-	
-	
-	@GetMapping("/game/result")
-	public String gamepage_result() {
-		
-		return "game/gamepage_result";
-	}
-	
 	
 	@PostMapping("/game/saveRun")
 	public String saveRun(
@@ -150,5 +137,16 @@ public class GameController {
 		return "game/gamepage_result";
 		
 	}
+	
+	@PostMapping("/game/saveGuestRun")
+	public String saveGuestRun(
+			@RequestParam("club_id") Integer clubId,
+			@RequestParam("userName") String userName) {
+		session.setAttribute("returnTo","game/gamepage_result");
+		session.setAttribute("resultClubId", clubId);
+		session.setAttribute("userName", userName);
+		return "redirect:/member/login";
+	}
+	
 	
 }

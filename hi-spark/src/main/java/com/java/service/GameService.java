@@ -3,6 +3,7 @@ package com.java.service;
 import java.util.List;
 
 import com.java.entity.Member;
+import com.java.entity.sourceData.GameOptions;
 import com.java.entity.sourceData.GameQuestion;
 import com.java.entity.sourceData.GameResultClub;
 import com.java.entity.userData.GameRun;
@@ -15,7 +16,7 @@ public interface GameService {
 	// 첫 질문 호출
 	GameQuestion findQuestionById(Integer question_id);
 	// 다음 단계 질문 호출
-	GameQuestion findByDayAndTime(Integer nextDay, Integer nextTime);
+	GameQuestion findByDayAndTime(Integer nextDay, Integer nextTime, String string);
 
 	// 결과 출력
 	GameResultClub findResultById(Integer club_id);
@@ -33,6 +34,7 @@ public interface GameService {
 	void sessionSave(GameSession gameSession);
 	void save(GameRun gameRun, List<Integer> runResponse);
 	void resultUnlock(String loginId, GameResultClub gameResult, GameRun gameRun);
+	void saveGuestRun(String guestId, String loginId);
 	
 	///
 	
@@ -41,6 +43,15 @@ public interface GameService {
 	
 	// 이번 회차 게임 점수 계산
 	Integer[] getResult(List<Integer> runResponses);
+	
+	
+	/// stats
+	
+	Long gameRunCount();
+	List<Double> calResultRate();
+	Long calMemberCount();
+	List<Double> calMultiRate();
+	GameOptions calMostOption();
 	
 
 

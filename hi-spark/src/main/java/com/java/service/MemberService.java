@@ -16,4 +16,10 @@ public interface MemberService {
 	Optional<Member> findByLoginId(String loginId);
 
 	Member findById(String loginId);
+	
+	boolean existsByLoginId(String loginId);
+
+	boolean existsByEmail(String email);
+
+	
 }

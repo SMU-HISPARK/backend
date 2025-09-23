@@ -50,5 +50,18 @@ public class MemberServiceImpl implements MemberService {
 		return member;
 	}
 	
+
+	@Override
+	public boolean existsByLoginId(String loginId) {
+		return memberRepository.existsByLoginId(loginId);
+	}
+
+	@Override
+	public boolean existsByEmail(String email) {
+		return memberRepository.existsByEmail(email);
+	}
+
+	
+	
 	
 }

@@ -1,12 +1,11 @@
 package com.java.repository;
 
-import java.util.List;
-
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import com.java.entity.sourceData.GameResultClub;
 
-public interface GameResultClubRepository extends JpaRepository<GameResultClub, Integer>{
+@Repository
+public interface GameResultClubRepository extends JpaRepository<GameResultClub, Integer> {
 
-	List<GameResultClub> findAll();
 }

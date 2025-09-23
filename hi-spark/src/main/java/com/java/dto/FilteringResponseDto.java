@@ -7,6 +7,6 @@ import lombok.Data;
 public class FilteringResponseDto {
     @JsonProperty("filtered_title")
     private String filteredTitle;
-    @JsonProperty("filtered_content")
-    private String filteredContent;
+    @JsonProperty("filtered_text")
+    private String filteredText;
 }

@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.java.dto.MemberDto;
 import com.java.entity.Member;
@@ -33,6 +34,19 @@ public class MemberController {
 	public String step02() {
 		return "member/step02";
 	}
+	
+	@ResponseBody
+	@PostMapping("/member/idCheck")
+	public boolean idCheck(@RequestParam("loginId") String loginId) {
+		return !mServ.existsByLoginId(loginId);
+	}
+	
+	@ResponseBody
+	@PostMapping("/member/mailCheck")
+	public boolean mailCheck(@RequestParam("email") String email) {
+		return !mServ.existsByEmail(email);
+	}
+	
 	
 	@PostMapping("/member/step03")
 	public String step03(Member member) {
