@@ -68,8 +68,10 @@ public class BoardController {
 	@Autowired
     private BoardService boardService;
 	
+
 	@Autowired
 	private FilteringService filteringService;
+	
 	
 	// 권한 체크 메서드 추가
 	private boolean checkAdminAuth(HttpSession session, RedirectAttributes redirect) {
@@ -86,6 +88,10 @@ public class BoardController {
 	public String board_main() {
 		return "board/board_main";
 	}
+	
+	
+	
+	
 	
 	@GetMapping("/board/forum_list")
 	public String forum_list(
@@ -223,15 +229,34 @@ public class BoardController {
 	    // 로그인 사용자 ID 가져오기
 	    String loginId = null;
 	    Member loggedInMember = (Member) session.getAttribute("loggedInMember");
-	    
+
 	    if (loggedInMember != null) {
 	        loginId = loggedInMember.getLoginId();
 	        isLiked = boardService.isLikedByUser(bno, loginId);
 	    }
-	    
-	    // 댓글 목록 가져오기 (댓글 좋아요 관련 로직은 제거)
+
+	    // 댓글 목록 가져오기 (댓글 좋아요 관련 로직 추가)
 	    List<sComment> comments = boardService.getCommentsByBno(bno);
 	    long commentCount = boardService.getCommentCount(bno);
+
+	    List<Map<String, Object>> commentsWithLikeInfo = new ArrayList<>();
+	    if (loggedInMember != null) {
+	        for (sComment comment : comments) {
+	            Map<String, Object> commentInfo = new HashMap<>();
+	            commentInfo.put("comment", comment);
+	            commentInfo.put("isLiked", boardService.isCommentLikedByUser(comment.getScno(), loggedInMember.getMemberId()));
+	            commentInfo.put("likeCount", boardService.getCommentLikeCount(comment.getScno()));
+	            commentsWithLikeInfo.add(commentInfo);
+	        }
+	    } else {
+	        for (sComment comment : comments) {
+	            Map<String, Object> commentInfo = new HashMap<>();
+	            commentInfo.put("comment", comment);
+	            commentInfo.put("isLiked", false);
+	            commentInfo.put("likeCount", boardService.getCommentLikeCount(comment.getScno()));
+	            commentsWithLikeInfo.add(commentInfo);
+	        }
+	    }
 
 	    // 이전글/다음글
 	    int bType = 1; // Forum 게시판 타입
@@ -242,7 +267,7 @@ public class BoardController {
 	    model.addAttribute("board", board);
 	    model.addAttribute("isLiked", isLiked);
 	    model.addAttribute("likeCount", likeCount);
-	    model.addAttribute("comments", comments);
+	    model.addAttribute("comments", commentsWithLikeInfo); // 수정된 댓글 리스트로 변경
 	    model.addAttribute("commentCount", commentCount);
 	    model.addAttribute("prevBoard", prevBoard);
 	    model.addAttribute("nextBoard", nextBoard);
@@ -332,6 +357,13 @@ public class BoardController {
     }
 	
 	
+	
+	
+	
+	
+	
+	
+	
 	@PostMapping("/board/forum_delete")
 	public String forum_delete(@RequestParam("bno") int bno, HttpSession session, RedirectAttributes redirect) {
 	    // 1. 세션에서 로그인된 사용자 정보 가져오기
@@ -398,7 +430,6 @@ public class BoardController {
 
 	        return "redirect:/board/forum_view?bno=" + bno;
 	    }
-	 	 
 	 
 	// 게시글 수정 페이지로 이동
 	    @GetMapping("/board/forum_edit")
@@ -480,10 +511,54 @@ public class BoardController {
     }
 	
 	
+	
+	@PostMapping("/board/toggleCommentLike")
+	@ResponseBody
+	public Map<String, Object> toggleCommentLike(@RequestParam("scno") int scno, HttpSession session) {
+	    Map<String, Object> response = new HashMap<>();
+	    Member loggedInMember = (Member) session.getAttribute("loggedInMember");
+	    if (loggedInMember == null) {
+	        response.put("success", false);
+	        response.put("message", "로그인이 필요합니다.");
+	        return response;
+	    }
+
+	    try {
+	        boolean isLiked = boardService.toggleCommentLike(scno, loggedInMember.getMemberId());
+	        long likeCount = boardService.getCommentLikeCount(scno);
+
+	        response.put("success", true);
+	        response.put("isLiked", isLiked);
+	        response.put("likeCount", likeCount);
+	        return response;
+	    } catch (Exception e) {
+	        // 예상치 못한 오류 발생 시 success: false 응답 반환
+	        e.printStackTrace();
+	        response.put("success", false);
+	        
+	        return response;
+	    }
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	@GetMapping("/board/forum_write")
 	public String forum_write() {
         return "board/forum_write";
     }
+
 
 	@PostMapping("/board/forum_write_proc")
 	public String forumWriteProc(
@@ -551,6 +626,8 @@ public class BoardController {
 	        return "redirect:/member/login";
 	    }
 	}
+	
+	
 	
 	@GetMapping("/board/notice_list")
 	public String notice_list(

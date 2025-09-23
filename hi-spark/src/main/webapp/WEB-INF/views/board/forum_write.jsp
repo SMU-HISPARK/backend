@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 pageEncoding="UTF-8"%>
 <%@ include file="../layout/Cheader.jsp" %>
-<title>HISPARK FORUM EDIT</title>
+<title>HISPARK FORUM write</title>
 <link rel="stylesheet" href="/css/c_write.css">
 <link rel="stylesheet" href="/css/common.css">
 
@@ -33,7 +33,7 @@ pageEncoding="UTF-8"%>
         </div>
         
         <div class="button-group">
-            <button type="submit" class="write-btn" style="background-color: #035fe0; color: #fff; border-color: #035fe0;">확인</button>
+            <button type="submit" class="write-btn" style="background-color: #035fe0; color: #fff; border-color: #035fe0;">작성</button>
             <button type="button" class="cancel-btn" style="background-color: #fafafa; color: #333;" onclick="location.href='/board/forum_view?bno=${board.bno}'">취소</button>
         </div>
     </form>

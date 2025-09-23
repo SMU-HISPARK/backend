@@ -140,10 +140,10 @@
     <div class="container">
         <ul class="menu">
             <li>
-                <a href="/adpage/graphCommu">커뮤니티 그래프</a>
+                <a href="/adpage/graphCommu">커뮤니티 지수</a>
             </li>
             <li class="selected">
-                <a href="/adpage/graphShop">주문 그래프</a>
+                <a href="/adpage/graphShop">주문 통계</a>
             </li>
             <li>
                 <a href="/adpage/shop">샵 관리</a>

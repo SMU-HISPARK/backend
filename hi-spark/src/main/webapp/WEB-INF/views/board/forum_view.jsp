@@ -9,6 +9,7 @@
 </head>
 <body>
 
+    
     <div class="breadcrumb-container">
         <a href="#">홈</a> / <a href="/board/forum_list">게시판</a> / <span class="current"><a href="/board/forum_list">자유게시판</a></span>
     </div>
@@ -66,42 +67,40 @@
         <div class="comment-section">
             <h4>댓글 <span id="commentCount">(${commentCount})</span></h4>
             <div class="comment-List">
-                <c:forEach var="comment" items="${comments}">
-                    <div class="comment-item" data-scno="${comment.scno}">
-                        <div class="comment-meta">
-                            <span class="comment-author">${comment.member.name}</span>
-                            <span class="comment-date"><fmt:formatDate value="${comment.scdate}" pattern="yyyy.MM.dd HH:mm"/></span>
-                        </div>
-                        <div class="comment-body">
-							<c:if test="${!originalComment.equals(comment.sccontent)}">
+                <c:forEach var="commentInfo" items="${comments}">
+    <div class="comment-item" data-scno="${commentInfo.comment.scno}">
+        <div class="comment-meta">
+            <span class="comment-author">${commentInfo.comment.member.name}</span>
+            <span class="comment-date"><fmt:formatDate value="${commentInfo.comment.scdate}" pattern="yyyy.MM.dd HH:mm"/></span>
+        </div>
+                                <div class="comment-body">
+							<!--<c:if test="${!originalComment.equals(comment.sccontent)}">
 							    <span style='color: #035fe0;'>AI 클린봇이 적용된 댓글입니다. 욕설이나 비방이 감지된 문장은 삭제되거나 필터링됩니다.</span><br><br>
-							</c:if>
+							</c:if> -->
 
-							${comment.sccontent}
+							${commentInfo.comment.sccontent}
 						
 						</div>
-                        <div class="comment-actions">
-                            
-                            <%-- 댓글 작성자이거나 관리자인 경우 수정/삭제 버튼 표시 --%>
-                            <c:if test="${sessionScope.loggedInMember.memberId == comment.member.memberId || sessionScope.loggedInMember.name == '관리자'}">
-                                <a href="javascript:void(0);" onclick="editComment(${comment.scno})" class="comment-action-icon">
-								    <i class="fas fa-edit"></i>
-								</a>
-                                
-                                <a href="javascript:void(0);" onclick="deleteComment(${comment.scno})" class="comment-action-icon">
-                                    <i class="fas fa-trash-alt"></i>
-                                </a>
-                            </c:if>
-                            <%-- 좋아요 버튼 --%>
-                            <div class="comment-like-box">
-                                <a href="javascript:void(0);" class="comment-like-button" data-scno="${comment.scno}">
-                                    <i class="fa-heart <c:if test="${boardService.isCommentLikedByUser(comment.scno, sessionScope.loggedInMember.memberId)}">fas</c:if><c:if test="${!boardService.isCommentLikedByUser(comment.scno, sessionScope.loggedInMember.memberId)}">far</c:if>"></i>
-                                </a>
-                                <span class="comment-like-count">${boardService.getCommentLikeCount(comment.scno)}</span>
-                            </div>
-                        </div>
-                    </div>
-                </c:forEach>
+        <div class="comment-actions">
+            <%-- 댓글 작성자이거나 관리자인 경우 수정/삭제 버튼 표시 --%>
+            <c:if test="${sessionScope.loggedInMember.memberId == commentInfo.comment.member.memberId || sessionScope.loggedInMember.name == '관리자'}">
+                <a href="javascript:void(0);" onclick="editComment(${commentInfo.comment.scno})" class="comment-action-icon">
+                    <i class="fas fa-edit"></i>
+                </a>
+                <a href="javascript:void(0);" onclick="deleteComment(${commentInfo.comment.scno})" class="comment-action-icon">
+                    <i class="fas fa-trash-alt"></i>
+                </a>
+            </c:if>
+            <%-- 좋아요 버튼 --%>
+            <div class="comment-like-box" data-scno="${commentInfo.comment.scno}" onclick="toggleCommentLike(${commentInfo.comment.scno})">
+    <a href="#" class="comment-like-button">
+        <i class="fa-heart <c:if test="${commentInfo.isLiked}">fa-solid</c:if><c:if test="${!commentInfo.isLiked}">fa-regular</c:if>"></i>
+    </a>
+    <span class="comment-like-count" id="comment-like-count-${commentInfo.comment.scno}">${commentInfo.likeCount}</span>
+</div>
+        </div>
+    </div>
+</c:forEach>
             </div>
             
             <c:if test="${not empty loggedInMember}">
@@ -213,7 +212,7 @@
                     }
                 },
                 error: function(xhr, status, error) {
-                    alert('좋아요 처리 중 오류가 발생했습니다.');
+                    
                     console.error("AJAX Error: ", status, error);
                 }
             });
@@ -253,7 +252,7 @@
                     }
                 },
                 error: function(xhr, status, error) {
-                    alert('댓글 좋아요 처리 중 오류가 발생했습니다.');
+                    
                     console.error("AJAX Error: ", status, error);
                 }
             });
@@ -371,6 +370,48 @@
                 }
             });
         }
+    }
+    
+    
+ // 댓글 좋아요 토글 함수
+    function toggleCommentLike(scno) {
+        if ("${loggedInMember}" === "") {
+            alert('로그인이 필요합니다.');
+            window.location.href = '/member/login';
+            return;
+        }
+
+        $.ajax({
+            url: '/board/toggleCommentLike',
+            type: 'POST',
+            data: {
+                scno: scno
+            },
+            success: function(response) {
+                // 이 success 콜백은 서버가 200 OK 응답을 보내면 실행됩니다.
+                // 위 BoardController 수정사항을 적용하면,
+                // 예외 발생 시에도 200 OK 응답 내부에 success: false가 담겨 오므로
+                // 이 블록에서 모두 처리 가능합니다.
+                if (response.success) {
+                    let likeIcon = $('[data-scno="' + scno + '"]').find('.comment-like-button i');
+                    let likeCount = $('#comment-like-count-' + scno);
+
+                    if (response.isLiked) {
+                        likeIcon.removeClass('fa-regular').addClass('fa-solid');
+                    } else {
+                        likeIcon.removeClass('fa-solid').addClass('fa-regular');
+                    }
+                    likeCount.text(response.likeCount);
+                } else {
+                    alert(response.message);
+                }
+            },
+            error: function(xhr, status, error) {
+                // 이 error 콜백은 서버가 500과 같은 오류 코드를 보낼 때만 실행됩니다.
+                // 위 BoardController 수정사항을 적용하면 이 코드는 더 이상 실행되지 않습니다.
+                
+            }
+        });
     }
 </script>
 <%@ include file="../layout/footer.jsp" %>

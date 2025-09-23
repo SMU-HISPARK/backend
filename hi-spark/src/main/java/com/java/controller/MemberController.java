@@ -24,7 +24,7 @@ public class MemberController {
 	@Autowired HttpSession session;
 	@Autowired MemberService mServ;
 	@Autowired MainService mainService;
-	
+
 	@GetMapping("/member/step01")
 	public String step01() {
 		return "member/step01";
@@ -55,6 +55,8 @@ public class MemberController {
 		
 		return "member/step03";
 	}
+	
+
 	
 
 	@GetMapping("/member/login")

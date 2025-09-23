@@ -33,7 +33,7 @@ pageEncoding="UTF-8"%>
         </div>
         
         <div class="button-group">
-            <button type="submit" class="write-btn" style="background-color: #035fe0; color: #fff; border-color: #035fe0;">수정</button>
+            <button type="submit" class="update-btn" style="background-color: #035fe0; color: #fff; border-color: #035fe0;">수정</button>
             <button type="button" class="cancel-btn" style="background-color: #fafafa; color: #333;" onclick="location.href='/board/forum_view?bno=${board.bno}'">취소</button>
         </div>
     </form>

@@ -91,9 +91,6 @@
            <li>
            <a href = "/mypage/member">회원정보</a>
            </li>
-           <li>
-               <a href = "/mypage/club">가입 동아리</a>
-           </li>
            <li  class = "selected">
                <a href = "/mypage/community">게시글 관리</a>
            </li>

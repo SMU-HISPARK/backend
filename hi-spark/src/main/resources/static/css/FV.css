@@ -45,7 +45,7 @@
             text-decoration: none;
         }
         
-        .comment-form .btn-primary{ align-self: flex-end;}
+        .comment-form .btn-primary { align-self: flex-end;}
         
         .form-control {
      resize: vertical; min-height: 80px; padding: 10px; border: 1px solid #ddd; margin-bottom: 10px;
