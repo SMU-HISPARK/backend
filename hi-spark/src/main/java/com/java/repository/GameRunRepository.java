@@ -16,6 +16,4 @@ public interface GameRunRepository extends JpaRepository<GameRun, Long> {
 
 	Long countByResultClub(GameResultClub resultClub);
 
-	List<GameRun> findByMember_LoginId(String memberId);
-	
 }
