@@ -253,7 +253,12 @@
 
         .kpi-label {
             font-size: 14px;
-            color: #666;
+            color: #353535;
+        }
+        .kpi-value.question {
+            font-size: 1.0rem;
+            font-weight: 400;
+            color: #bdbdbd;
         }
 
         .kpi-value {
@@ -263,6 +268,12 @@
         }
         .kpi-value.total {
             font-weight: bold;
+        }
+        .option_box {
+            display: flex;
+            flex-direction: row;
+            gap: 7px;
+            justify-content: center;
         }
         .chart_box {
             display: flex; flex-direction: row;
@@ -339,7 +350,7 @@
                 <div class="kpi-card right">
                     <div class="kpi-label">가장 많이 고른 선택지</div>
                     <div class="kpi-value question">점심을 먹는 곳은?</div>
-                    <div class="kpi-value option">점심시간 (42%)</div>
+                    <div class="option_box"><div class="kpi-value option">점심시간</div><div class="kpi-value option-rate"></div></div>
                 </div>
             </div>
 
@@ -464,6 +475,7 @@
 
         let stat_club_rate = [];
         let multi_member_rate = [];
+        let option_rate;
 
         // 통계 모달 열기
         $(".result_stats_button").on("click", function() {
@@ -475,10 +487,12 @@
                     console.log(res);
                     stat_club_rate = res.resultRateList;
                     multi_member_rate = res.multiClubMemberRateList;
+
                     for(let i=0; i<clubNumber; i++){
                         stat_club_rate[i] = Math.round(stat_club_rate[i] * 1000) / 10;
                         multi_member_rate[i] = Math.round(multi_member_rate[i] * 1000) / 10;
                     }
+                    option_rate = Math.round(res.selectedRate * 1000) / 10;
                     document.querySelector('.kpi-value.total').innerText = res.runs;
                     if(res.relatedQuestion != null){
                         document.querySelector('.kpi-value.question').innerText = res.relatedQuestion.text;
@@ -486,6 +500,7 @@
                     if(res.mostSelectedOption != null){
                         document.querySelector('.kpi-value.option').innerText = res.mostSelectedOption.text;
                     }
+                    document.querySelector('.option-rate').innerText = "(" + option_rate + "%)";
                     console.log(stat_club_rate);
                     console.log(multi_member_rate);
 

@@ -1,6 +1,7 @@
 package com.java.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.java.entity.Member;
 import com.java.entity.sourceData.GameOptions;
@@ -52,6 +53,7 @@ public interface GameService {
 	Long calMemberCount();
 	List<Double> calMultiRate();
 	GameOptions calMostOption();
+	Double getSelectedRate();
 	
 
 

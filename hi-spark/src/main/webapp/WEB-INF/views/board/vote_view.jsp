@@ -43,7 +43,7 @@
                     <div class="vote-options-container">
                         <div class="vote-title-re">
                             <h4>${poll.poll_title}</h4>
-                            <span id="voteEndTime" class="vote-end-time" style="padding-top:20px;">
+                            <span id="voteEndTime" class="vote-end-time">
                                 <c:if test="${isPollEnded}">투표가 종료되었습니다.</c:if>
                                 <c:if test="${!isPollEnded}">투표 종료 : <fmt:formatDate value="${poll.poll_end_date}" pattern="yyyy.MM.dd HH:mm"/></c:if>
                             </span>

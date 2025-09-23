@@ -34,9 +34,7 @@
 			<c:set var="newline" value="<%= System.getProperty(\"line.separator\") %>" />
 			<c:set var="content" value="${fn:replace(board.bcontent, newline, '<br>')}" />
 
-			<c:if test="${!originalContent.equals(board.bcontent)}">
-			    <span style='color: #035fe0;'>AI 클린봇이 적용된 게시글입니다. 욕설이나 비방이 감지된 문장은 삭제되거나 필터링됩니다.</span><br><br>
-			</c:if>
+		    <span style='color: #035fe0;'>AI 클린봇이 가동 중입니다. 욕설이나 비방이 감지된 문장은 삭제되거나 필터링됩니다.</span><br><br>
             ${content}
             
             <c:if test="${not empty board.bfile}">

@@ -3,6 +3,7 @@ package com.java.service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -49,6 +50,7 @@ public class GameServiceImpl implements GameService {
 	@Autowired ResultUnlockedRepository ruRep;
 	
 	private static final int clubNumber = 5;
+	private Double maxOptionRate = 0.0;
 	
 	@Override
 	public GameQuestion findQuestionById(Integer questionId) {
@@ -63,8 +65,15 @@ public class GameServiceImpl implements GameService {
 		// 다음 순서의 질문 리스트 추출
 		List<GameQuestion> gqList = gqRep.findByDayAndTime(nextDay, nextTime);
 		
+		System.out.println(tag);
+		
 		// 질문 하나일 시 바로 리턴
 		if(gqList.size() == 1) return gqList.get(0);
+		
+		// tag가 공백이어도 null처리
+		if(tag != null && tag.trim().isEmpty()) {
+		    tag = null;
+		}
 		
 		// 태그로 다음 문항 찾아서 리턴
 		if(tag != null) {
@@ -73,13 +82,13 @@ public class GameServiceImpl implements GameService {
 					return q;
 				}
 			}
+		}else if(nextTime == 1){
+			
 		}else {	// tag 인풋이 없을 시 tag 문항 배제
-			for(GameQuestion q: gqList) {
-				if(q.getTag() != null) {
-					gqList.remove(q);
-				}
-			}
+			gqList.removeIf(q -> q.getTag() != null);
 		}
+		
+		System.out.println(gqList);
 		
 		// 질문 고르는 로직 - 랜덤 (필요 시 변경)
 		int randomQ =  (int)(Math.random() * gqList.size());
@@ -325,6 +334,7 @@ public class GameServiceImpl implements GameService {
 		}
 		Arrays.sort(valuesList);
 		Double maxRate = valuesList[valuesList.length - 1];
+		maxOptionRate = maxRate;
 		Integer mostOptionId = 0;
 		
 		MultiValueMap<Double, Integer> keySearchMap = new LinkedMultiValueMap<Double, Integer>();
@@ -333,7 +343,13 @@ public class GameServiceImpl implements GameService {
 		}
 		mostOptionId = keySearchMap.get(maxRate).getLast();
 		
+		
 		return gOptionsRep.findById(mostOptionId).orElseThrow();
+	}
+
+	@Override
+	public Double getSelectedRate() {
+		return maxOptionRate;
 	}
 	
 	

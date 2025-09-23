@@ -30,6 +30,8 @@ public class StatDto {
 	
 	// 가장 높은 비율로 선택된 선택지 (응답 10회 이상 중)
 	private GameOptions mostSelectedOption;
+	// 비율
+	Double selectedRate; 
 	
 	// 위 선택지와 연결된 문항
 	private GameQuestion relatedQuestion;
