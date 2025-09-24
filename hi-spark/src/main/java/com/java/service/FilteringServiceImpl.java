@@ -10,7 +10,7 @@ import org.springframework.http.HttpEntity;
 public class FilteringServiceImpl implements FilteringService {
 
     private final RestTemplate restTemplate = new RestTemplate();
-    private final String apiUrl = "https://525088021188.ngrok-free.app/filter-text";
+    private final String apiUrl = "https://2c39b19acbca.ngrok-free.app/filter-text";
 
     @Override
     public FilteringResponseDto filterText(String originalTitle, String originalContent) {

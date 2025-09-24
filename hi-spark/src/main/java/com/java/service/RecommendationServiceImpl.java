@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 public class RecommendationServiceImpl implements RecommendationService {
 
     private final RestTemplate restTemplate;
-    private static final String RECOMMEND_API_BASE_URL = "https://525088021188.ngrok-free.app";
+    private static final String RECOMMEND_API_BASE_URL = "https://2c39b19acbca.ngrok-free.app";
 
     @Autowired
     public RecommendationServiceImpl(RestTemplate restTemplate) {

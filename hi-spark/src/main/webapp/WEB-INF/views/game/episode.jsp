@@ -181,7 +181,7 @@ pageEncoding="UTF-8"%>
           },
           {
               speaker: "나레이션",
-              text: "정훈이 웃음이 먼저 앞서는 톤으로 멀리서부터 다가오며 손을 흔든다.",
+              text: "정훈이 웃음이 앞서는 말투로 멀리서부터 다가오며 손을 흔든다.",
               type: "choice",
               choices: [
                   { text: "(순간 살짝 당황하며) 안녕하세요…", next: 3, affectionChange: 0 },
@@ -198,7 +198,7 @@ pageEncoding="UTF-8"%>
           },
           {
               speaker: "정훈",
-              text: "오, 웃는다. 괜찮네. 첫날이면 다들 좀 얼어있기 마련인데.",
+              text: "오, 웃는다. 첫날이면 다들 좀 얼어있기 마련인데…",
               type: "continue",
               next: 5,
               characterImage: "/images/episode/smile.png" 
@@ -537,7 +537,7 @@ pageEncoding="UTF-8"%>
           endingContainer.innerHTML =
               "<h1>" + endingMessage + "</h1>" +
               '<button class="restart-button" onclick="location.reload()" style="margin-bottom:10px;">다시 시작</button>' +
-              '<button class="restart-button" onclick="location.href=\'/\'">메인으로</button>';
+              '<button class="restart-button" onclick="location.href=\'/game\'">메인으로</button>';
       }
       
       // 키보드 단축키

@@ -27,10 +27,6 @@ pageEncoding="UTF-8"%>
             <textarea id="post-content" name="bcontent" placeholder="내용을 입력하세요" required>${board.bcontent}</textarea>
         </div>
         
-        <div class="form-group">
-            <label for="post-file">파일 첨부</label>
-            <input type="file" id="post-file" name="file">
-        </div>
         
         <div class="button-group">
             <button type="submit" class="write-btn" style="background-color: #035fe0; color: #fff; border-color: #035fe0;">작성</button>

@@ -279,9 +279,21 @@
             cursor: pointer;
             margin-left: 450px;
         }
+        
+        #snb{position: absolute; top: 0; right: 0; margin:0 27px 0 0;}
+		#snb ul{width:100%; list-style: none; }
+		#snb ul li{float:left; height:25px; line-height:0px; padding:0 2px 0 18px;}
+		#snb ul li a{text-decoration : none; color:#666; font-size:11px; font-weight:600;}
+        
+        
     </style>
 </head>
 <body>
+		<div id="snb">
+			<ul>
+				<li><a href="/">메인으로</a></li>
+			</ul>
+		</div>
     <!-- 시작 섹션 -->
     <section class="starting_section">
         <div class="title_box box">
